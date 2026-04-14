@@ -59,8 +59,4 @@ export class AuthService {
             access_token: this.jwtService.sign(user),
         };
     }
-
-    async getProfile() {
-        return;
-    }
 }

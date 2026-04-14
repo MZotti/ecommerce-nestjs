@@ -19,9 +19,4 @@ export class AuthController {
 	async login(@Payload() loginDto: LoginDto) {
 		return this.authService.login(loginDto);
 	}
-
-	@MessagePattern('me')
-	async me(@Payload() req: Request) {
-		return this.authService.getProfile();
-	}
 }

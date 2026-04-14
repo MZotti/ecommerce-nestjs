@@ -49,7 +49,7 @@ export class AuthController {
 
     @UseGuards(JwtAuthGuard)
     @Get('me')
-    async getProfile(@Req() req) {
-        return this.client.send('login', req);
+    getProfile(@Req() req) {
+        return req.user;
     }
 }
