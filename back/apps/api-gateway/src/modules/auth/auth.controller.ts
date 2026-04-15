@@ -50,6 +50,8 @@ export class AuthController {
     @UseGuards(JwtAuthGuard)
     @Get('me')
     getProfile(@Req() req) {
-        return req.user;
+        const user = req.user;
+        delete user.password;
+        return user;
     }
 }
