@@ -13,10 +13,10 @@ export class CreateProductDto {
     description!: string;
 
     @IsNotEmpty({ message: 'Price required' })
-    @IsNumber({})
+    @IsNumber()
     price!: number;
 
     @IsNotEmpty({ message: 'Stock required' })
-    @IsNumber({})
+    @IsNumber()
     stock!: number;
 }
