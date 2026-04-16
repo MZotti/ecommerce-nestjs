@@ -1,6 +1,6 @@
 import { CreateProductDto } from '@app/common/dto/products/create-product.dto';
 import { UpdateProductDto } from '@app/common/dto/products/update-product.dto';
-import { Body, Controller, Delete, Get, HttpException, Inject, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, Inject, Param, Post, Put, Query } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 
@@ -11,8 +11,14 @@ export class ProductsController {
     ) { }
 
     @Get()
-    async findAll() {
-        return this.client.send('findAllProducts', {});
+    async findAll(
+        @Query('page') page = 1,
+        @Query('limit') limit = 10
+    ) {
+        return this.client.send('findAllProducts', {
+            page: Number(page),
+            limit: Number(limit)
+        });
     }
 
     @Get(':id')

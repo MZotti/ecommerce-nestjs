@@ -9,8 +9,26 @@ import slugfy from 'slugify';
 export class ProductsService {
     constructor(private prisma: PrismaService) { }
 
-    async findAll() {
-        return this.prisma.product.findMany();
+    async findAll({ page, limit }: { page: number, limit: number }) {
+        const skip = (page - 1) * limit;
+
+        const [data, total] = await Promise.all([
+            this.prisma.product.findMany({
+                skip,
+                take: limit,
+                orderBy: { createdAt: 'desc' },
+            }),
+            this.prisma.product.count(),
+        ]);
+
+        return {
+            data,
+            meta: {
+                total,
+                page,
+                lastPage: Math.ceil(total / limit),
+            },
+        };
     }
 
     async find(id: number) {
