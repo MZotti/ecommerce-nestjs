@@ -8,11 +8,11 @@ datasource db {
 
 model User {
   id        Int       @id @default(autoincrement())
+  role      Role      @relation(fields: [roleId], references: [id])
+  roleId    Int
   name      String
   email     String    @unique
   password  String
-  role   Role @relation(fields: [roleId], references: [id])
-  roleId Int
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -27,13 +27,24 @@ model Role {
 }
 
 model Product {
+  id          Int       @id @default(autoincrement())
+  category    Category  @relation(fields: [categoryId], references: [id])
+  categoryId  Int
+  name        String
+  slug        String
+  description String?
+  price       Float
+  stock       Int
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+}
+
+model Category {
   id        Int       @id @default(autoincrement())
   name      String
-  description String?
-  price     Float
-  stock Int
+  slug      String
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
+  products Product[]
 }

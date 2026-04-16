@@ -9,7 +9,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 		AuthModule,
 		ClientsModule.register([
 			{
-				name: 'AUTH_SERVICE', // 🔥 precisa bater com o Inject
+				name: 'AUTH_SERVICE',
 				transport: Transport.TCP,
 				options: {
 					port: 3001,

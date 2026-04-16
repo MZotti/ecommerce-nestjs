@@ -2,8 +2,8 @@ import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/co
 import { PrismaService } from '@app/database/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { RegisterDto } from '@app/common/dto/register.dto';
-import { LoginDto } from '@app/common/dto/login.dto';
+import { RegisterDto } from '@app/common/dto/auth/register.dto';
+import { LoginDto } from '@app/common/dto/auth/login.dto';
 import { RpcException } from '@nestjs/microservices';
 
 @Injectable()
@@ -31,7 +31,12 @@ export class AuthService {
                 password: hashedPassword,
                 roleId
             },
-            select: { id: true, email: true, createdAt: true },
+            select: { 
+                id: true, 
+                name: true,
+                email: true, 
+                role: true,
+                createdAt: true },
         });
     }
 

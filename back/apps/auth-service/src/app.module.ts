@@ -12,5 +12,4 @@ import { ConfigModule } from '@nestjs/config';
 		DatabaseModule
 	],
 })
-
 export class AuthServiceModule { }

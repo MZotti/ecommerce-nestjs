@@ -1,8 +1,8 @@
 import { Body, Controller, Get, HttpException, Inject, Post, Req, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { JwtAuthGuard } from '../jwt/jwt-auth.guard';
-import { RegisterDto } from '@app/common/dto/register.dto';
-import { LoginDto } from '@app/common/dto/login.dto';
+import { RegisterDto } from '@app/common/dto/auth/register.dto';
+import { LoginDto } from '@app/common/dto/auth/login.dto';
 import { lastValueFrom } from 'rxjs';
 
 @Controller('auth')
