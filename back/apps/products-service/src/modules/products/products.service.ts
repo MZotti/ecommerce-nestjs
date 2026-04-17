@@ -132,4 +132,31 @@ export class ProductsService {
 
         return {};
     }
+
+    async decreaseStock(items: { productId: number; quantity: number }[]) {
+        for (const item of items) {
+            const product = await this.prisma.product.findUnique({
+                where: { id: item.productId },
+            });
+
+            if (!product) {
+                throw new RpcException(`Product not found: ${item.productId}`);
+            }
+
+            if (product.stock < item.quantity) {
+                throw new RpcException(`Insufficient stock for ${product.name}`);
+            }
+
+            await this.prisma.product.update({
+                where: { id: item.productId },
+                data: {
+                    stock: {
+                        decrement: item.quantity,
+                    },
+                },
+            });
+        }
+
+        return true;
+    }
 }

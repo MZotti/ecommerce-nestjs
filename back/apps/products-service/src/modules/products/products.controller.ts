@@ -46,4 +46,9 @@ export class ProductsController {
 
         return this.productsService.delete(Number(id));
     }
+
+    @MessagePattern('decreaseStock')
+    async decreaseStock(@Payload() items: { productId: number; quantity: number }[]) {
+        return this.productsService.decreaseStock(items);
+    }
 }

@@ -83,6 +83,17 @@ export class OrdersService {
             };
         });
 
+        try {
+            await lastValueFrom(
+                this.productsClient.send('decreaseStock', orderItems),
+            );
+        } catch (error: any) {
+            throw new RpcException({
+                statusCode: 403,
+                message: error.message,
+            });
+        }
+
         return this.prisma.order.create({
             data: {
                 userId,
