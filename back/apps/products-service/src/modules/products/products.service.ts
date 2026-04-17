@@ -133,6 +133,29 @@ export class ProductsService {
         return {};
     }
 
+    async increaseStock(items: { productId: number; quantity: number }[]) {
+        for (const item of items) {
+            const product = await this.prisma.product.findUnique({
+                where: { id: item.productId },
+            });
+
+            if (!product) {
+                throw new RpcException(`Product not found: ${item.productId}`);
+            }
+
+            await this.prisma.product.update({
+                where: { id: item.productId },
+                data: {
+                    stock: {
+                        increment: item.quantity,
+                    },
+                },
+            });
+        }
+
+        return true;
+    }
+
     async decreaseStock(items: { productId: number; quantity: number }[]) {
         for (const item of items) {
             const product = await this.prisma.product.findUnique({

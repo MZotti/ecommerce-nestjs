@@ -1,5 +1,5 @@
 import { CreateOrderDto } from '@app/common/dto/orders/create-order.dto';
-import { Body, Controller, Get, HttpException, Inject, Param, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, Inject, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 import { JwtAuthGuard } from '../../jwt/jwt-auth.guard';
@@ -44,6 +44,38 @@ export class BackofficeOrdersController {
     @UseGuards(JwtAuthGuard)
     @Post()
     async create(@Body() dto: CreateOrderDto) {
-        return this.client.send('create', dto);
+        try {
+            return await lastValueFrom(
+                this.client.send('create', dto)
+            )
+        } catch (error: any) {
+            if (error?.statusCode) {
+                throw new HttpException(error.message, error.statusCode);
+            }
+
+            throw new HttpException(
+                'Internal server error',
+                500,
+            );
+        }
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Patch('cancel/:id')
+    async cancelOrder(@Param('id') id: number) {
+        try {
+            return await lastValueFrom(
+                this.client.send('cancelOrder', { id })
+            );
+        } catch (error: any) {
+            if (error?.statusCode) {
+                throw new HttpException(error.message, error.statusCode);
+            }
+
+            throw new HttpException(
+                'Internal server error',
+                500,
+            );
+        }
     }
 }

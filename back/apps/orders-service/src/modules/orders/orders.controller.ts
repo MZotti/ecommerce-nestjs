@@ -15,7 +15,7 @@ export class OrdersController {
     }
 
     @MessagePattern('findOrder')
-    async find(@Payload() payload: { id: string; }) {
+    async find(@Payload() payload: { id: number; }) {
         const { id } = payload;
 
         return this.ordersService.find(Number(id));
@@ -24,5 +24,12 @@ export class OrdersController {
     @MessagePattern('create')
     async create(@Payload() dto: CreateOrderDto) {
         return this.ordersService.create(dto);
+    }
+
+    @MessagePattern('cancelOrder')
+    async cancelOrder(@Payload() payload: { id: number; }) {
+        const { id } = payload
+
+        return this.ordersService.cancelOrder(Number(id));
     }
 }
