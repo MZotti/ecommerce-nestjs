@@ -1,8 +1,9 @@
 import { CreateUserDto } from '@app/common/dto/users/create-user.dto';
 import { UpdateUserDto } from '@app/common/dto/users/update-user.dto';
-import { Body, Controller, Delete, Get, HttpException, Inject, Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, Inject, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
+import { JwtAuthGuard } from '../../jwt/jwt-auth.guard';
 
 @Controller('backoffice/users')
 export class BackofficeUsersController {
@@ -10,6 +11,7 @@ export class BackofficeUsersController {
         @Inject('AUTH_SERVICE') private client: ClientProxy,
     ) { }
 
+    @UseGuards(JwtAuthGuard)
     @Get()
     async findAll(
         @Query('page') page = 1,
@@ -21,6 +23,7 @@ export class BackofficeUsersController {
         });
     }
 
+    @UseGuards(JwtAuthGuard)
     @Get(':id')
     async find(@Param('id') id: number) {
         try {
@@ -39,11 +42,13 @@ export class BackofficeUsersController {
         }
     }
 
+    @UseGuards(JwtAuthGuard)
     @Post()
     async create(@Body() dto: CreateUserDto) {
         return this.client.send('create', dto);
     }
 
+    @UseGuards(JwtAuthGuard)
     @Put(':id')
     async update(@Param('id') id: number, @Body() dto: UpdateUserDto) {
         try {
@@ -62,6 +67,7 @@ export class BackofficeUsersController {
         }
     }
 
+    @UseGuards(JwtAuthGuard)
     @Delete(':id')
     async delete(@Param('id') id: number) {
         try {

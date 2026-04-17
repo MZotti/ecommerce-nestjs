@@ -1,7 +1,8 @@
 import { CreateOrderDto } from '@app/common/dto/orders/create-order.dto';
-import { Body, Controller, Get, HttpException, Inject, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, Inject, Param, Post, Query, UseGuards } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
+import { JwtAuthGuard } from '../../jwt/jwt-auth.guard';
 
 @Controller('backoffice/orders')
 export class BackofficeOrdersController {
@@ -9,6 +10,7 @@ export class BackofficeOrdersController {
         @Inject('ORDERS_SERVICE') private client: ClientProxy,
     ) { }
 
+    @UseGuards(JwtAuthGuard)
     @Get()
     async findAll(
         @Query('page') page = 1,
@@ -20,6 +22,7 @@ export class BackofficeOrdersController {
         });
     }
 
+    @UseGuards(JwtAuthGuard)
     @Get(':id')
     async find(@Param('id') id: number) {
         try {
@@ -38,6 +41,7 @@ export class BackofficeOrdersController {
         }
     }
 
+    @UseGuards(JwtAuthGuard)
     @Post()
     async create(@Body() dto: CreateOrderDto) {
         return this.client.send('create', dto);
