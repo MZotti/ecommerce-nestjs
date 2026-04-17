@@ -42,9 +42,47 @@ model Product {
 }
 
 model Category {
-  id        Int       @id @default(autoincrement())
+  id        Int     @id @default(autoincrement())
   name      String
   slug      String
 
   products Product[]
+}
+
+model Order {
+  id            Int           @id @default(autoincrement())
+  userId        Int
+
+  total         Float
+  paymentMethod PaymentMethod
+  status        OrderStatus
+
+  items         OrderItem[]
+
+  createdAt     DateTime      @default(now())
+}
+
+enum PaymentMethod {
+  PIX
+  PAYMENT_ORDER
+  CREDIT
+  DEBIT
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  SHIPPED
+  CANCELED
+  FINISHED
+}
+
+model OrderItem {
+  id        Int     @id @default(autoincrement())
+  order     Order   @relation(fields: [orderId], references: [id])
+  orderId   Int
+  
+  productId Int
+  quantity  Int
+  price     Float
 }

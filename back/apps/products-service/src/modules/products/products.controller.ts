@@ -1,8 +1,9 @@
-import { Controller } from '@nestjs/common';
+import { Body, Controller } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { CreateProductDto } from '@app/common/dto/products/create-product.dto';
 import { UpdateProductDto } from '@app/common/dto/products/update-product.dto';
+import { Product } from '@prisma/client';
 
 @Controller('products')
 export class ProductsController {
@@ -13,6 +14,11 @@ export class ProductsController {
     @MessagePattern('findAllProducts')
     async findAll(@Payload() payload: { page: number; limit: number }) {
         return this.productsService.findAll(payload);
+    }
+
+    @MessagePattern('findManyByIds')
+    async findManyByIds(@Body() ids: number[]) {
+        return this.productsService.findManyByIds(ids);
     }
 
     @MessagePattern('findProduct')

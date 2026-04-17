@@ -6,6 +6,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { BackofficeProductsModule } from './modules/backoffice/products/backoffice-products.module';
 import { BackofficeCategoriesModule } from './modules/backoffice/categories/backoffice-categories.module';
 import { BackofficeUsersModule } from './modules/backoffice/users/backoffice-users.module';
+import { BackofficeOrdersModule } from './modules/backoffice/orders/backoffice-orders.module';
 
 @Module({
 	imports: [
@@ -13,6 +14,7 @@ import { BackofficeUsersModule } from './modules/backoffice/users/backoffice-use
 		BackofficeUsersModule,
 		BackofficeProductsModule,
 		BackofficeCategoriesModule,
+		BackofficeOrdersModule,
 		ClientsModule.register([
 			{
 				name: 'AUTH_SERVICE',
@@ -26,6 +28,13 @@ import { BackofficeUsersModule } from './modules/backoffice/users/backoffice-use
 				transport: Transport.TCP,
 				options: {
 					port: 3002,
+				},
+			},
+			{
+				name: 'ORDERS_SERVICE',
+				transport: Transport.TCP,
+				options: {
+					port: 3003,
 				},
 			},
 		]),

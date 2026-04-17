@@ -11,6 +11,7 @@
     "start:api": "nest start api-gateway --watch --exec \"node -r tsconfig-paths/register\"",
     "start:auth": "nest start auth-service --watch --exec \"node -r tsconfig-paths/register\"",
     "start:products": "nest start products-service --watch --exec \"node -r tsconfig-paths/register\"",
+    "start:orders": "nest start orders-service --watch --exec \"node -r tsconfig-paths/register\"",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/apps/ecommerce-back/main",
     "build": "nest build",
