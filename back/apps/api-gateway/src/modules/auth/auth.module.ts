@@ -12,9 +12,10 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 				name: 'AUTH_SERVICE',
 				transport: Transport.TCP,
 				options: {
+					host: 'auth-service',
 					port: 3001,
 				},
-			},
+			}
 		]),
 		JwtModule.register({
 			secret: process.env.JWT_SECRET || 'secret',

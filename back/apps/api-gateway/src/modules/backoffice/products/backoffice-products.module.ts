@@ -3,7 +3,7 @@ import { BackofficeProductsController } from './backoffice-products.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
-    providers: [BackofficeProductsModule],
+	providers: [BackofficeProductsModule],
 	controllers: [BackofficeProductsController],
 	imports: [
 		ClientsModule.register([
@@ -11,10 +11,11 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 				name: 'PRODUCTS_SERVICE',
 				transport: Transport.TCP,
 				options: {
+					host: 'products-service',
 					port: 3002,
 				},
-			},
-		])
+			}
+		]),
 	]
 })
 export class BackofficeProductsModule { }

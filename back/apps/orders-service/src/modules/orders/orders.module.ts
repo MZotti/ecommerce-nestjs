@@ -7,15 +7,26 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 	controllers: [OrdersController],
 	providers: [OrdersService],
 	imports: [
-		OrdersModule,
 		ClientsModule.register([
 			{
 				name: 'PRODUCTS_SERVICE',
 				transport: Transport.TCP,
 				options: {
+					host: 'products-service',
 					port: 3002,
 				},
 			},
+			{
+				name: 'EVENT_BUS',
+				transport: Transport.RMQ,
+				options: {
+					urls: [process.env.RABBITMQ_URL || ''],
+					queue: 'products_events_queue',
+					queueOptions: {
+						durable: true,
+					},
+				},
+			}
 		]),
 	]
 })

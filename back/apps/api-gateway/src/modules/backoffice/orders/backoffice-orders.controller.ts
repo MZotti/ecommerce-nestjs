@@ -35,7 +35,7 @@ export class BackofficeOrdersController {
             }
 
             throw new HttpException(
-                'Internal server error',
+                error,
                 500,
             );
         }
@@ -46,7 +46,7 @@ export class BackofficeOrdersController {
     async create(@Body() dto: CreateOrderDto) {
         try {
             return await lastValueFrom(
-                this.client.send('create', dto)
+                this.client.send('createOrder', dto)
             )
         } catch (error: any) {
             if (error?.statusCode) {
@@ -54,7 +54,7 @@ export class BackofficeOrdersController {
             }
 
             throw new HttpException(
-                'Internal server error',
+                error,
                 500,
             );
         }
@@ -73,7 +73,7 @@ export class BackofficeOrdersController {
             }
 
             throw new HttpException(
-                'Internal server error',
+                error,
                 500,
             );
         }

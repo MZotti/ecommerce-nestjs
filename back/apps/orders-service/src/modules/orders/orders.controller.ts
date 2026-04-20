@@ -21,7 +21,7 @@ export class OrdersController {
         return this.ordersService.find(Number(id));
     }
 
-    @MessagePattern('create')
+    @MessagePattern('createOrder')
     async create(@Payload() dto: CreateOrderDto) {
         return this.ordersService.create(dto);
     }

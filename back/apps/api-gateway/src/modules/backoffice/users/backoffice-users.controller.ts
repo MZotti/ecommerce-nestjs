@@ -36,7 +36,7 @@ export class BackofficeUsersController {
             }
 
             throw new HttpException(
-                'Internal server error',
+                error,
                 500,
             );
         }
@@ -45,7 +45,7 @@ export class BackofficeUsersController {
     @UseGuards(JwtAuthGuard)
     @Post()
     async create(@Body() dto: CreateUserDto) {
-        return this.client.send('create', dto);
+        return this.client.send('createUser', dto);
     }
 
     @UseGuards(JwtAuthGuard)
@@ -53,7 +53,7 @@ export class BackofficeUsersController {
     async update(@Param('id') id: number, @Body() dto: UpdateUserDto) {
         try {
             return await lastValueFrom(
-                this.client.send('update', { id, data: dto })
+                this.client.send('updateUser', { id, data: dto })
             );
         } catch (error: any) {
             if (error?.statusCode) {
@@ -61,7 +61,7 @@ export class BackofficeUsersController {
             }
 
             throw new HttpException(
-                'Internal server error',
+                error,
                 500,
             );
         }
@@ -72,7 +72,7 @@ export class BackofficeUsersController {
     async delete(@Param('id') id: number) {
         try {
             return await lastValueFrom(
-                this.client.send('delete', { id })
+                this.client.send('deleteUser', { id })
             );
         } catch (error: any) {
             if (error?.statusCode) {
@@ -80,7 +80,7 @@ export class BackofficeUsersController {
             }
 
             throw new HttpException(
-                'Internal server error',
+                error,
                 500,
             );
         }

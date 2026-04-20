@@ -11,10 +11,11 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 				name: 'ORDERS_SERVICE',
 				transport: Transport.TCP,
 				options: {
+					host: 'orders-service',
 					port: 3003,
 				},
-			},
-		])
+			}
+		]),
 	]
 })
 export class BackofficeOrdersModule { }

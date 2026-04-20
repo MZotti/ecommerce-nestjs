@@ -23,7 +23,7 @@ export class AuthController {
             }
 
             throw new HttpException(
-                'Internal server error',
+                error,
                 500,
             );
         }
@@ -36,12 +36,13 @@ export class AuthController {
                 this.client.send('login', loginDto),
             );
         } catch (error: any) {
+            console.log(error)
             if (error?.statusCode) {
                 throw new HttpException(error.message, error.statusCode);
             }
 
             throw new HttpException(
-                'Internal server error',
+                error,
                 500,
             );
         }

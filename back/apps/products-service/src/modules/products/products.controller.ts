@@ -1,6 +1,6 @@
 import { Body, Controller } from '@nestjs/common';
 import { ProductsService } from './products.service';
-import { MessagePattern, Payload } from '@nestjs/microservices';
+import { Ctx, EventPattern, MessagePattern, Payload, RmqContext } from '@nestjs/microservices';
 import { CreateProductDto } from '@app/common/dto/products/create-product.dto';
 import { UpdateProductDto } from '@app/common/dto/products/update-product.dto';
 import { Product } from '@prisma/client';
@@ -28,32 +28,53 @@ export class ProductsController {
         return this.productsService.find(Number(id));
     }
 
-    @MessagePattern('create')
+    @MessagePattern('createProduct')
     async create(@Payload() dto: CreateProductDto) {
         return this.productsService.create(dto);
     }
 
-    @MessagePattern('update')
+    @MessagePattern('updateProduct')
     async update(@Payload() payload: { id: string; data: UpdateProductDto }) {
         const { id, data } = payload;
 
         return this.productsService.update(Number(id), data);
     }
 
-    @MessagePattern('delete')
+    @MessagePattern('deleteProduct')
     async delete(@Payload() payload: { id: string; }) {
         const { id } = payload;
 
         return this.productsService.delete(Number(id));
     }
 
-    @MessagePattern('increaseStock')
-    async increaseStock(@Payload() items: { productId: number; quantity: number }[]) {
-        return this.productsService.increaseStock(items);
+    @MessagePattern('stockAvailable')
+    async stockAvailable(@Payload() items: { productId: number; quantity: number }[]) {
+        return this.productsService.stockAvailable(items);
     }
 
-    @MessagePattern('decreaseStock')
-    async decreaseStock(@Payload() items: { productId: number; quantity: number }[]) {
-        return this.productsService.decreaseStock(items);
+    @EventPattern('orderCreated')
+    async handleOrderCreated(@Payload() data: { items: { productId: number; quantity: number }[] }, @Ctx() context: RmqContext) {
+        const channel = context.getChannelRef();
+        const message = context.getMessage();
+
+        try {
+            this.productsService.decreaseStock(data.items);
+            channel.ack(message);
+        } catch (error) {
+            channel.nack(message);
+        }
+    }
+
+    @EventPattern('orderCanceled')
+    async handleOrderCanceled(@Payload() data: { items: { productId: number; quantity: number }[] }, @Ctx() context: RmqContext) {
+        const channel = context.getChannelRef();
+        const message = context.getMessage();
+
+        try {
+            this.productsService.increaseStock(data.items);
+            channel.ack(message);
+        } catch (error) {
+            channel.nack(message);
+        }
     }
 }

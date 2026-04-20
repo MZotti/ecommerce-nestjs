@@ -6,15 +6,16 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
     providers: [BackofficeUsersModule],
     controllers: [BackofficeUsersController],
     imports: [
-        ClientsModule.register([
-            {
-                name: 'AUTH_SERVICE',
-                transport: Transport.TCP,
-                options: {
-                    port: 3001,
-                },
-            },
-        ])
+		ClientsModule.register([
+			{
+				name: 'AUTH_SERVICE',
+				transport: Transport.TCP,
+				options: {
+					host: 'auth-service',
+					port: 3001,
+				},
+			}
+		]),
     ]
 })
 export class BackofficeUsersModule { }

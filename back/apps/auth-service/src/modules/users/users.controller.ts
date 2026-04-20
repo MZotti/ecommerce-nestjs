@@ -22,19 +22,19 @@ export class UsersController {
         return this.usersService.find(Number(id));
     }
 
-    @MessagePattern('create')
+    @MessagePattern('createUser')
     async create(@Payload() dto: CreateUserDto) {
         return this.usersService.create(dto);
     }
 
-    @MessagePattern('update')
+    @MessagePattern('updateUser')
     async update(@Payload() payload: { id: string; data: UpdateUserDto }) {
         const { id, data } = payload;
 
         return this.usersService.update(Number(id), data);
     }
 
-    @MessagePattern('delete')
+    @MessagePattern('deleteUser')
     async delete(@Payload() payload: { id: string; }) {
         const { id } = payload;
 

@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 services:
   db:
     image: postgres:17
@@ -8,9 +8,107 @@ services:
       POSTGRES_PASSWORD: qwe123
       POSTGRES_DB: ecommerce_db
     ports:
-      - '5432:5432'
+      - "5432:5432"
+    networks:
+      - app-network
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+  prisma-studio:
+    image: node:lts-alpine
+    working_dir: /usr/src/app
+    volumes:
+      - .:/usr/src/app
+    environment:
+      DATABASE_URL: "postgresql://admin:qwe123@db:5432/ecommerce_db"
+    ports:
+      - "5555:5555"
+    command: npx prisma studio --port 5555 --browser none
+    depends_on:
+      - db
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "check_port_connectivity"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app-network
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    restart: unless-stopped
+
+  api-gateway:
+    build: .
+    container_name: api-gateway
+    command: yarn start:api
+    ports:
+      - "3000:3000"
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - app-network
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - rabbitmq_data:/var/lib/rabbitmq
+
+  auth-service:
+    build: .
+    container_name: auth-service
+    command: yarn start:auth
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - app-network
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - rabbitmq_data:/var/lib/rabbitmq
+
+  products-service:
+    build: .
+    container_name: products-service
+    command: yarn start:products
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - app-network
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - rabbitmq_data:/var/lib/rabbitmq
+      
+  orders-service:
+    build: .
+    container_name: orders-service
+    command: yarn start:orders
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - app-network
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - rabbitmq_data:/var/lib/rabbitmq
+
 volumes:
   postgres_data:
+  rabbitmq_data:
+
+networks:
+  app-network:
+    driver: bridge

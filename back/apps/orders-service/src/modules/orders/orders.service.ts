@@ -12,6 +12,7 @@ export class OrdersService {
     constructor(
         private prisma: PrismaService,
         @Inject('PRODUCTS_SERVICE') private productsClient: ClientProxy,
+        @Inject('EVENT_BUS') private eventBus: ClientProxy
     ) { }
 
     async findAll({ page, limit }: { page: number, limit: number }) {
@@ -87,16 +88,17 @@ export class OrdersService {
 
         try {
             await lastValueFrom(
-                this.productsClient.send('decreaseStock', orderItems),
+                this.productsClient.send('stockAvailable', orderItems),
             );
         } catch (error: any) {
+            console.log(error);
             throw new RpcException({
                 statusCode: 403,
                 message: error.message,
             });
         }
 
-        return this.prisma.order.create({
+        const order = this.prisma.order.create({
             data: {
                 userId,
                 total,
@@ -110,6 +112,10 @@ export class OrdersService {
                 items: true,
             },
         });
+
+        this.eventBus.emit('orderCreated', { items: orderItems });
+
+        return order;
     }
 
     async cancelOrder(id: number) {
@@ -124,7 +130,7 @@ export class OrdersService {
             });
         }
 
-        if(existingOrder.status == OrderStatusEnum.CANCELED) {
+        if (existingOrder.status == OrderStatusEnum.CANCELED) {
             throw new RpcException({
                 statusCode: 403,
                 message: 'Order already canceled',
@@ -135,21 +141,13 @@ export class OrdersService {
             where: { orderId: id },
         });
 
-        try {
-            await lastValueFrom(
-                this.productsClient.send('increaseStock', orderItems),
-            );
-        } catch (error: any) {
-            throw new RpcException({
-                statusCode: 403,
-                message: error.message,
-            });
-        }
-
-        return await this.prisma.order.update({
+        const order = await this.prisma.order.update({
             where: { id },
             data: { status: OrderStatusEnum.CANCELED }
         });
-    }
 
+        this.eventBus.emit('orderCanceled', { items: orderItems });
+
+        return order;
+    }
 }

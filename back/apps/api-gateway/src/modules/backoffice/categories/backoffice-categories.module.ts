@@ -11,10 +11,11 @@ import { BackofficeCategoriesController } from './backoffice-categories.controll
 				name: 'PRODUCTS_SERVICE',
 				transport: Transport.TCP,
 				options: {
+					host: 'products-service',
 					port: 3002,
 				},
-			},
-		])
+			}
+		]),
 	]
 })
 export class BackofficeCategoriesModule { }

@@ -36,7 +36,7 @@ export class BackofficeProductsController {
             }
 
             throw new HttpException(
-                'Internal server error',
+                error,
                 500,
             );
         }
@@ -45,7 +45,7 @@ export class BackofficeProductsController {
     @UseGuards(JwtAuthGuard)
     @Post()
     async create(@Body() dto: CreateProductDto) {
-        return this.client.send('create', dto);
+        return this.client.send('createProduct', dto);
     }
 
     @UseGuards(JwtAuthGuard)
@@ -53,7 +53,7 @@ export class BackofficeProductsController {
     async update(@Param('id') id: number, @Body() dto: UpdateProductDto) {
         try {
             return await lastValueFrom(
-                this.client.send('update', { id, data: dto })
+                this.client.send('updateProcuct', { id, data: dto })
             );
         } catch (error: any) {
             if (error?.statusCode) {
@@ -61,7 +61,7 @@ export class BackofficeProductsController {
             }
 
             throw new HttpException(
-                'Internal server error',
+                error,
                 500,
             );
         }
@@ -72,7 +72,7 @@ export class BackofficeProductsController {
     async delete(@Param('id') id: number) {
         try {
             return await lastValueFrom(
-                this.client.send('delete', { id })
+                this.client.send('deleteProduct', { id })
             );
         } catch (error: any) {
             if (error?.statusCode) {
@@ -80,7 +80,7 @@ export class BackofficeProductsController {
             }
 
             throw new HttpException(
-                'Internal server error',
+                error,
                 500,
             );
         }

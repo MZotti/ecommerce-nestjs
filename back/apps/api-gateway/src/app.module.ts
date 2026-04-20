@@ -20,6 +20,7 @@ import { BackofficeOrdersModule } from './modules/backoffice/orders/backoffice-o
 				name: 'AUTH_SERVICE',
 				transport: Transport.TCP,
 				options: {
+					host: 'auth-service',
 					port: 3001,
 				},
 			},
@@ -27,6 +28,7 @@ import { BackofficeOrdersModule } from './modules/backoffice/orders/backoffice-o
 				name: 'PRODUCTS_SERVICE',
 				transport: Transport.TCP,
 				options: {
+					host: 'products-service',
 					port: 3002,
 				},
 			},
@@ -34,6 +36,7 @@ import { BackofficeOrdersModule } from './modules/backoffice/orders/backoffice-o
 				name: 'ORDERS_SERVICE',
 				transport: Transport.TCP,
 				options: {
+					host: 'orders-service',
 					port: 3003,
 				},
 			},
