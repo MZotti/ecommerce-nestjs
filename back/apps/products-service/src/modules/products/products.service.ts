@@ -64,7 +64,9 @@ export class ProductsService {
     async create(dto: CreateProductDto) {
         const { name, categoryId, description, price, stock } = dto;
 
-        const slug = slugfy(name);
+        const slug = slugfy(name, {
+            lower: true
+        });
 
         return this.prisma.product.create({
             data: {
