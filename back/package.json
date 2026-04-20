@@ -20,6 +20,8 @@
     "prisma:generate": "npx dotenv-cli -e .env -- prisma generate --schema=libs/database/prisma/schema.prisma --config=libs/database/prisma/prisma.config.ts",
     "prisma:migrate": "npx dotenv-cli -e .env -- prisma migrate dev --schema=libs/database/prisma/schema.prisma --config=libs/database/prisma/prisma.config.ts",
     "prisma:studio": "npx dotenv-cli -e .env -- prisma studio dev  --schema=libs/database/prisma/schema.prisma --config=libs/database/prisma/prisma.config.ts",
+    "prisma:seed": "npx dotenv-cli -e .env -- prisma db seed dev  --schema=libs/database/prisma/schema.prisma --config=libs/database/prisma/prisma.config.ts",
+    "prisma:reset": "npx dotenv-cli -e .env -- prisma migrate reset dev  --schema=libs/database/prisma/schema.prisma --config=libs/database/prisma/prisma.config.ts",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
