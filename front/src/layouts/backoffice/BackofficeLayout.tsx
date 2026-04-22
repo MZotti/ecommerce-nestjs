@@ -1,7 +1,14 @@
+import type { ReactNode } from "react"
+import Header from "./Header"
+import NavBar from "./NavBar"
 
-const BackofficeLayout = () => {
+const BackofficeLayout = ({ children }: { children: ReactNode }) => {
     return (
-        <div>BackofficeLayout</div>
+        <>
+            <Header />
+            <NavBar />
+            {children}
+        </>
     )
 }
 

@@ -6,10 +6,15 @@ import { RouterProvider } from 'react-router-dom'
 import { Provider as ChakraProvider } from './components/chakra-ui/provider.tsx'
 import { router } from './routes.tsx'
 
+import './assets/styles/app.css';
+import QueryClientProvider from './providers/QueryClientProvider.tsx'
+
 createRoot(document.getElementById('root')!).render(
 	<StrictMode>
-		<ChakraProvider>
-			<RouterProvider router={router} />
-		</ChakraProvider>
+		<QueryClientProvider>
+			<ChakraProvider>
+				<RouterProvider router={router} />
+			</ChakraProvider>
+		</QueryClientProvider>
 	</StrictMode>,
 )
