@@ -7,6 +7,11 @@ import StoreHome from './pages/store/Home';
 
 import Login from './pages/backoffice/Login';
 import BackofficeHome from './pages/backoffice/Home';
+import Account from './pages/backoffice/Account';
+import Settings from './pages/backoffice/Settings';
+
+import Users from './pages/backoffice/Users';
+import Createuser from './pages/backoffice/Users/CreateUser';
 
 export const router = createBrowserRouter([
     {
@@ -25,6 +30,13 @@ export const router = createBrowserRouter([
         element: <BackofficeLayout />,
         children: [
             { index: true, element: <BackofficeHome /> },
+            { path: 'account', element: <Account /> },
+            { path: 'settings', element: <Settings /> },
+            {
+                path: 'users', element: <Users />
+            },
+            { path: 'users/create', element: <Createuser /> },
+            { path: '*', element: <BackofficeHome /> },
         ],
     },
 ]);

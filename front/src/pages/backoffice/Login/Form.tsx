@@ -50,7 +50,7 @@ const Form = () => {
                     <TextInput id='email' label='E-mail' />
                     <PasswordInput id='password' label='Password' />
                     <Text fontSize="sm" color="red.500">{credentialsError}</Text>
-                    <Button w="full" type='submit' colorPalette="green" disabled={isPending} >Entrar</Button>
+                    <Button w="full" type='submit' colorPalette="green" disabled={isPending} >Login</Button>
                 </FormProvider>
             </FormContainer >
         </form>

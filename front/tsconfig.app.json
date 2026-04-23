@@ -10,8 +10,17 @@
     "paths": {
       "@/*": ["./src/*"],
       "assets/*": ["./src/assets/*"],
+      "components/*": ["./src/components/*"],
+      "contexts/*": ["./src/contexts/*"],
+      "enums/*": ["./src/enums/*"],
+      "functions/*": ["./src/functions/*"],
+      "hooks/*": ["./src/hooks/*"],
+      "interfaces/*": ["./src/interfaces/*"],
       "layouts/*": ["./src/layouts/*"],
       "pages/*": ["./src/pages/*"],
+      "providers/*": ["./src/providers/*"],
+      "services/*": ["./src/services/*"],
+      "state/*": ["./src/state/*"],
     },
 
     /* Bundler mode */

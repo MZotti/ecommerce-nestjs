@@ -1,9 +1,13 @@
+import { getAccessToken } from '@/functions/auth';
 import axios from 'axios'
 
 const instance = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
     timeout: 1000,
-    headers: { 'X-Custom-Header': 'foobar' }
+    headers: { 
+        'X-Custom-Header': 'foobar',
+        'Authorization': `Bearer ${getAccessToken()}`
+    }
 });
 
 export default instance
