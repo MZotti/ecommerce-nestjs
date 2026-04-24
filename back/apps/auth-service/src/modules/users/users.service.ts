@@ -10,13 +10,13 @@ import * as bcrypt from 'bcrypt';
 export class UsersService {
     constructor(private prisma: PrismaService) { }
 
-    async findAll({ page, limit }: { page: number, limit: number }) {
-        const skip = (page - 1) * limit;
+    async findAll({ page, perPage }: { page: number, perPage: number }) {
+        const skip = (page - 1) * perPage;
 
         const [data, total] = await Promise.all([
             this.prisma.user.findMany({
                 skip,
-                take: limit,
+                take: perPage,
                 orderBy: { createdAt: 'desc' },
                 select: {
                     id: true,
@@ -34,7 +34,8 @@ export class UsersService {
             meta: {
                 total,
                 page,
-                lastPage: Math.ceil(total / limit),
+                perPage,
+                lastPage: Math.ceil(total / perPage),
             },
         };
     }
@@ -62,7 +63,7 @@ export class UsersService {
     }
 
     async create(dto: CreateUserDto) {
-        const { name, email, password, roleId } = dto;
+        const { name, email, roleId } = dto;
 
         const existingUser = await this.prisma.user.findUnique({ where: { email } });
 
@@ -73,6 +74,7 @@ export class UsersService {
             });
         }
 
+        const password = Math.random().toString(36).substring(2);
         const hashedPassword = await bcrypt.hash(password, 10);
 
         return this.prisma.user.create({
