@@ -18,6 +18,7 @@ export interface TableContextProps<T = unknown> {
     setPerPage: (args1: number) => void
     setSearch: (args1: string) => void
     setFilters: (args1: string) => void
+    linkRow?: boolean
     canUpdate: boolean
     canDelete: boolean
     customRowActions?: RowAction[]

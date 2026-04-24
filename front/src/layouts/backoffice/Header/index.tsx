@@ -6,7 +6,8 @@ import HomeButton from "./HomeButton"
 import { useColorModeValue } from "@/components/chakra-ui/color-mode"
 
 const Header = () => {
-    const backgroundColor = useColorModeValue("gray.200", "gray.700");
+    const backgroundColor = useColorModeValue("gray.200", "gray.950");
+    const borderColor = useColorModeValue("gray.400", "gray.800");
 
     return (
         <Flex
@@ -17,6 +18,8 @@ const Header = () => {
             alignItems="center"
             justifyContent="space-between"
             backgroundColor={backgroundColor}
+            borderBottom="1px solid"
+            borderColor={borderColor}
             position="absolute"
             zIndex={0}
         >

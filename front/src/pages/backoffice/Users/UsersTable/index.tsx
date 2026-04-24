@@ -67,6 +67,7 @@ const UsersTable = () => {
                     setPerPage,
                     setSearch,
                     setFilters,
+                    linkRow: true,
                     canUpdate: true,
                     canDelete: true,
                     rowsSelected: rows,

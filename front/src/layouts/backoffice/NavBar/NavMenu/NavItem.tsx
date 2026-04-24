@@ -12,8 +12,8 @@ interface Props {
 }
 
 const NavItem = ({ id, label, link, icon, subItems }: Props) => {
-    const backgroundHoverColor = useColorModeValue('gray.400', 'gray.600');
-    const backgroundActiveColor = useColorModeValue('gray.400', 'gray.600');
+    const backgroundHoverColor = useColorModeValue('gray.300', 'gray.600');
+    const backgroundActiveColor = useColorModeValue('gray.300', 'gray.600');
 
     if (subItems.length == 0)
         return (

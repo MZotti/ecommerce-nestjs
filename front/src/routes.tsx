@@ -11,6 +11,7 @@ import Account from './pages/backoffice/Account';
 import Settings from './pages/backoffice/Settings';
 
 import Users from './pages/backoffice/Users';
+import ViewUser from './pages/backoffice/Users/ViewUser';
 import CreateUser from './pages/backoffice/Users/CreateUser';
 import UpdateUser from './pages/backoffice/Users/UpdateUser';
 
@@ -35,7 +36,7 @@ export const router = createBrowserRouter([
             { path: 'settings', element: <Settings /> },
             { path: 'users', element: <Users /> },
             { path: 'users/create', element: <CreateUser /> },
-            { path: 'users/:id', element: <CreateUser /> },
+            { path: 'users/:id', element: <ViewUser /> },
             { path: 'users/:id/update', element: <UpdateUser /> },
             { path: '*', element: <BackofficeHome /> },
         ],

@@ -9,7 +9,7 @@ const RowActions = ({ id }: { id: number }) => {
     return (
         <Menu.Root>
             <Menu.Trigger>
-                <IconButton size="xs" variant="surface" colorPalette="blue">
+                <IconButton zIndex={2} size="xs" variant="surface" colorPalette="blue" pointerEvents="auto">
                     <ListIcon size="16px" />
                 </IconButton>
             </Menu.Trigger>

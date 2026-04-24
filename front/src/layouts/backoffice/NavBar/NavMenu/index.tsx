@@ -4,7 +4,7 @@ import NavItem from "./NavItem"
 
 const NavMenu = () => {
     return (
-        <Accordion.Root w="full" px={4}>
+        <Accordion.Root w="full" px={4} variant="plain">
             {
                 menu.map(m => <NavItem key={m.id} {...m} />)
             }
