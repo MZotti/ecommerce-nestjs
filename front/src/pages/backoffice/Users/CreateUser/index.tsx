@@ -1,20 +1,17 @@
 import { Card, Text } from "@chakra-ui/react"
-import Form from "./Form"
+import UserForm from "../UserForm"
 
-const Createuser = () => {
+const CreateUser = () => {
     return (
         <Card.Root m="auto" size="lg">
             <Card.Header>
                 <Text fontSize="md">Create User</Text>
             </Card.Header>
             <Card.Body >
-                <Form />
+                <UserForm />
             </Card.Body>
-            <Card.Footer >
-
-            </Card.Footer>
         </Card.Root>
     )
 }
 
-export default Createuser
+export default CreateUser

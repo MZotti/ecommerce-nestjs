@@ -1,5 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 // TableContext.tsx
+import type RowAction from '@/interfaces/rowAction'
 import type Filter from 'interfaces/filter'
 import type TableColumn from 'interfaces/table'
 import { createContext, useContext } from 'react'
@@ -10,14 +11,17 @@ export interface TableContextProps<T = unknown> {
     isLoading: boolean
     currentPage: number
     perPage: number
-    totalPages: number
+    lastPage: number
     totalItems: number
     filterFields: Filter[]
     setCurrentPage: (args1: number) => void
     setPerPage: (args1: number) => void
     setSearch: (args1: string) => void
     setFilters: (args1: string) => void
-    withRowActions?: boolean
+    canUpdate: boolean
+    canDelete: boolean
+    customRowActions?: RowAction[]
+    multiRowActions?: React.ReactNode[]
     rowsSelected: number[]
     setRowsSelected: (args1: number) => void
     clearRowsSelected: () => void
@@ -28,7 +32,7 @@ export const TableContext = createContext<TableContextProps<unknown> | undefined
 export const useTableContext = <T,>() => {
     const context = useContext(TableContext) as TableContextProps<T> | undefined
     if (!context) {
-        throw new Error('useTableContext deve ser usado dentro de um <TableProvider>')
+        throw new Error('useTableContext must be inside of <TableProvider>')
     }
     return context
 }

@@ -1,5 +1,5 @@
 export default interface User {
-    id: string
+    id: number
     name: string
     email: string
     role: Role
@@ -7,6 +7,6 @@ export default interface User {
 }
 
 export interface Role {
-    id: string
+    id: number
     name: string
 }

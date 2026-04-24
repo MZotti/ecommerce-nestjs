@@ -20,3 +20,12 @@ export const createUser = (user: User) => {
         })
     }
 }
+
+export const updateUser = (user: User) => {
+    return (dispatch: Dispatch<Action>) => {
+        dispatch({
+            type: UserActionType.UPDATE_USER,
+            payload: user,
+        })
+    }
+}

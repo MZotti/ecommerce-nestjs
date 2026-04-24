@@ -1,4 +1,4 @@
-import { Checkbox, Table } from '@chakra-ui/react'
+import { Table } from '@chakra-ui/react'
 import LoadingTable from './LoadingTable'
 import { useTableContext } from 'contexts/TableContext'
 import TableRow from './TableRow'

@@ -24,7 +24,6 @@ const reducer = (state: Auth = initialState, action: Action) => {
                 user: null,
             }
         case AuthActionType.UPDATE_ME:
-            console.log(action.payload)
             return {
                 ...state,
                 user: action.payload

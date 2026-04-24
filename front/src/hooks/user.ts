@@ -1,4 +1,4 @@
-import { getUsers, postUser } from '@/services/backoffice/user'
+import { getUser, getUsers, postUser, putUser } from '@/services/backoffice/user'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
@@ -23,6 +23,21 @@ const useGetUsers = (currentPage: number, perPage: number, search?: string, filt
     return query
 }
 
+const useGetUser = (id: number) => {
+    return useQuery({
+        queryKey: ['users'],
+        queryFn: () => getUser(id),
+    })
+}
+
+const useLazyGetUser = (id: number) => {
+    return useQuery({
+        queryKey: ['users'],
+        queryFn: () => getUser(id),
+        enabled: false
+    })
+}
+
 const useCreateUser = () => {
     const dispatch = useDispatch()
     const { createUser } = bindActionCreators(userCreator, dispatch)
@@ -42,4 +57,23 @@ const useCreateUser = () => {
     return query;
 }
 
-export { useGetUsers, useCreateUser }
+const useUpdateUser = () => {
+    const dispatch = useDispatch()
+    const { updateUser } = bindActionCreators(userCreator, dispatch)
+
+    const query = useMutation({
+        mutationFn: ({ id, formData }: { id: number, formData: any }) => {
+            return putUser(id, formData)
+        },
+    })
+
+    useEffect(() => {
+        if (query.data) {
+            updateUser(query.data)
+        }
+    }, [query.data])
+
+    return query;
+}
+
+export { useGetUsers, useGetUser, useLazyGetUser, useCreateUser, useUpdateUser }

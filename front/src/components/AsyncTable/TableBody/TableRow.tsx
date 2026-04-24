@@ -1,18 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Checkbox, Table } from '@chakra-ui/react'
 import { useTableContext } from 'contexts/TableContext'
+import RowActions from './RowActions'
 
 interface Props {
     data: any
 }
 
 const TableRow = ({ data }: Props) => {
-    const { columns, withRowActions, rowsSelected, setRowsSelected } = useTableContext()
+    const { columns, canUpdate, canDelete, customRowActions, multiRowActions, rowsSelected, setRowsSelected } = useTableContext()
+    const hasActions = canUpdate || canDelete || customRowActions;
+
+    const rowId = data['id'] || 0;
 
     return (
         <Table.Row>
             {
-                withRowActions &&
+                multiRowActions &&
                 <Table.Cell w="20px">
                     <Checkbox.Root
                         checked={rowsSelected.includes(data.id)}
@@ -30,6 +34,9 @@ const TableRow = ({ data }: Props) => {
                     <Table.Cell key={key}>{data[column.acessor]}</Table.Cell>
                 ),
             )}
+            {
+                hasActions && <Table.Cell w="20px" key={columns.length}><RowActions id={rowId} /></Table.Cell>
+            }
         </Table.Row>
     )
 }

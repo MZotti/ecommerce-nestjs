@@ -11,7 +11,7 @@ import { useTableContext } from 'contexts/TableContext'
 import { useEffect, useState } from 'react'
 
 const Paginator = () => {
-    const { currentPage, perPage, totalPages, totalItems, setCurrentPage } = useTableContext()
+    const { currentPage, perPage, lastPage, totalItems, setCurrentPage } = useTableContext()
 
     const [memTotalItems, setMemTotalItems] = useState<number>(0);
 
@@ -25,7 +25,8 @@ const Paginator = () => {
     const fontSize = 15
 
     const arrowPagination = (page: number) => {
-        if (page < 1 || page > totalPages) return
+        console.log("entrou arrow pagination", page, lastPage);
+        if (page < 1 || page > lastPage) return
 
         setCurrentPage(page)
     }
@@ -88,7 +89,7 @@ const Paginator = () => {
             />
             <PageButton
                 changePage={setCurrentPage}
-                page={totalPages}
+                page={lastPage}
                 item={
                     <Box>
                         <CaretDoubleRightIcon size={fontSize} />

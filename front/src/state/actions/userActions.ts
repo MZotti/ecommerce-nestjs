@@ -11,4 +11,9 @@ interface CreateUserAction {
     payload: User
 }
 
-export type Action = PaginateUsersAction | CreateUserAction
+interface UpdateUserAction {
+    type: UserActionType.UPDATE_USER,
+    payload: User
+}
+
+export type Action = PaginateUsersAction | CreateUserAction | UpdateUserAction

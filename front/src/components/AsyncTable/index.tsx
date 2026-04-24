@@ -7,9 +7,9 @@ import TableFooter from './TableFooter'
 
 const AsyncTable = () => {
     return (
-        <Box>
+        <Box mb="auto">
             <TableHeader />
-            <Table.Root size="md" interactive>
+            <Table.Root size="md" interactive striped>
                 <TableColumns />
                 <TableBody />
             </Table.Root>

@@ -1,3 +1,4 @@
+import ActiveDisplay from '@/components/ActiveDisplay'
 import { Text } from '@chakra-ui/react'
 import { FilterField } from 'enums/filter'
 import { dateFormat } from "functions/date"
@@ -14,8 +15,14 @@ const columns: TableColumn[] = [
         acessor: 'email',
     },
     {
+        label: 'Active',
+        acessor: 'isActive',
+        customCell: value => <ActiveDisplay isActive={true} />,
+    },
+    {
         label: 'Role',
-        acessor: 'role.name',
+        acessor: 'role',
+        customCell: value => <Text>{value.name}</Text>,
     },
     {
         label: 'Created at',
