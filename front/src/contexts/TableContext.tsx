@@ -20,7 +20,7 @@ export interface TableContextProps<T = unknown> {
     setFilters: (args1: string) => void
     linkRow?: boolean
     canUpdate: boolean
-    canDelete: boolean
+    deleteAction?: any
     customRowActions?: RowAction[]
     multiRowActions?: React.ReactNode[]
     rowsSelected: number[]

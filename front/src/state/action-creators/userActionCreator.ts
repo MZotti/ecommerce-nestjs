@@ -3,7 +3,7 @@ import { UserActionType } from '../action-types/userTypes'
 import { type Action } from '../actions/userActions'
 import type User from 'interfaces/user'
 
-export const paginateUsers = (users: User[]) => {
+export const paginateUsersAction = (users: User[]) => {
     return (dispatch: Dispatch<Action>) => {
         dispatch({
             type: UserActionType.PAGINATE_USERS,
@@ -12,7 +12,7 @@ export const paginateUsers = (users: User[]) => {
     }
 }
 
-export const createUser = (user: User) => {
+export const createUserAction = (user: User) => {
     return (dispatch: Dispatch<Action>) => {
         dispatch({
             type: UserActionType.CREATE_USER,
@@ -21,11 +21,29 @@ export const createUser = (user: User) => {
     }
 }
 
-export const updateUser = (user: User) => {
+export const updateUserAction = (user: User) => {
     return (dispatch: Dispatch<Action>) => {
         dispatch({
             type: UserActionType.UPDATE_USER,
             payload: user,
+        })
+    }
+}
+
+export const inactiveUserAction = (id: number) => {
+    return (dispatch: Dispatch<Action>) => {
+        dispatch({
+            type: UserActionType.INACTIVE_USER,
+            payload: id,
+        })
+    }
+}
+
+export const deleteUserAction = (id: number) => {
+    return (dispatch: Dispatch<Action>) => {
+        dispatch({
+            type: UserActionType.DELETE_USER,
+            payload: id,
         })
     }
 }

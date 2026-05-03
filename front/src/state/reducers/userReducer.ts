@@ -17,6 +17,15 @@ const reducer = (state: User[] = initialState, action: Action) => {
                 }
                 return user;
             })
+        case UserActionType.INACTIVE_USER:
+            return state.map(user => {
+                if (user.id === action.payload) {
+                    user.isActive = false
+                }
+                return user;
+            })
+        case UserActionType.DELETE_USER:
+            return state.filter(user => user.id !== action.payload)
         default:
             return state
     }

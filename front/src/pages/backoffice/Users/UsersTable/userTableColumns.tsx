@@ -17,7 +17,7 @@ const columns: TableColumn[] = [
     {
         label: 'Active',
         acessor: 'isActive',
-        customCell: value => <ActiveDisplay isActive={true} />,
+        customCell: value => <ActiveDisplay isActive={value} />,
     },
     {
         label: 'Role',

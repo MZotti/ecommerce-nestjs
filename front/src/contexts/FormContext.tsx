@@ -3,9 +3,10 @@ import { createContext, useContext } from 'react'
 export interface FormContextProps {
     submitLabel: string
     cancelLabel: string
-    onSubmit: () => void
-    onCancel: () => void
-    isLoading: boolean
+    onSubmit: (args1: any) => void
+    onCancel?: () => void
+    isLoading?: boolean
+    isLoadingSubmit: boolean
 }
 
 export const FormContext = createContext<FormContextProps | undefined>(undefined)

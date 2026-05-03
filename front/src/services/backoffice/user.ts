@@ -41,9 +41,20 @@ const putUser = async (id: number, payload: any) => {
     }
 }
 
+const deleteUser = async (id: number) => {
+    try {
+        const { data } = await AXIOS.delete(`${BACKOFFICE_URL}/users/${id}`)
+
+        return data;
+    } catch (error) {
+
+    }
+}
+
 export {
     getUsers,
     getUser,
     postUser,
-    putUser
+    putUser,
+    deleteUser
 }

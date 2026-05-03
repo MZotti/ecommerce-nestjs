@@ -3,12 +3,8 @@ import { AuthActionType } from 'state/action-types/authTypes'
 import { type Action } from 'state/actions/authActions'
 
 const initialState: Auth = {
-    token: '1234',
-    user: {
-        id: "1",
-        name: "Marcos Zotti",
-        email: "marcos@email.com"
-    },
+    token: '',
+    user: {},
 }
 
 const reducer = (state: Auth = initialState, action: Action) => {

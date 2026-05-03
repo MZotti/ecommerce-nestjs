@@ -16,4 +16,14 @@ interface UpdateUserAction {
     payload: User
 }
 
-export type Action = PaginateUsersAction | CreateUserAction | UpdateUserAction
+interface InactiveUserAction {
+    type: UserActionType.INACTIVE_USER,
+    payload: number
+}
+
+interface DeleteUserAction {
+    type: UserActionType.DELETE_USER,
+    payload: number
+}
+
+export type Action = PaginateUsersAction | CreateUserAction | UpdateUserAction | InactiveUserAction | DeleteUserAction

@@ -1,18 +1,46 @@
-import { Card, Text } from "@chakra-ui/react"
 import { useSelector } from "react-redux"
 import type { State } from "@/state/reducers"
 import UserForm from "../UserForm"
-import { useParams } from "react-router-dom"
-import { useLazyGetUser } from "@/hooks/user"
-import { useEffect } from "react"
+import { useNavigate, useParams } from "react-router-dom"
+import { useLazyGetUser, useUpdateUser } from "@/hooks/user"
+import { useEffect, useState } from "react"
+import FormContainer from "@/components/Form/FormContainer"
+import { useForm, type SubmitHandler } from "react-hook-form"
+import Modal from "./Modal"
+import type UserFormData from "../UserForm/UserFormData"
 
 const UpdateUser = () => {
     const { id } = useParams();
+    const navigate = useNavigate();
+
     const { data, refetch: getUser, isFetching } = useLazyGetUser(Number(id));
 
     const users = useSelector(({ users }: State) => users)
     const storedUser = users.find(user => user.id == Number(id)) || null;
     const user = storedUser || data;
+
+    const methods = useForm<UserFormData>({
+        values: {
+            name: user?.name,
+            email: user?.email,
+            roleId: user?.role.id
+        },
+        defaultValues: user
+    })
+
+    const { mutateAsync: updateUser, isPending } = useUpdateUser();
+
+    const onSubmit: SubmitHandler<UserFormData> = async (data) => {
+        await updateUser({ id: Number(id), formData: data })
+
+        setModalOpen(true);
+    }
+
+    const backToList = () => {
+        navigate('../users')
+    }
+
+    const [modalOpen, setModalOpen] = useState<boolean>(false);
 
     useEffect(() => {
         if (storedUser === null) {
@@ -21,21 +49,20 @@ const UpdateUser = () => {
     }, [])
 
     return (
-        <Card.Root m="auto" size="lg">
-            <Card.Header>
-                <Text fontSize="md">Update User</Text>
-            </Card.Header>
-            <Card.Body>
-                {
-                    !isFetching &&
-                    <UserForm update defaultValues={{
-                        name: user?.name || '',
-                        email: user?.email || '',
-                        roleId: user?.role.id || 1
-                    }} />
-                }
-            </Card.Body>
-        </Card.Root>
+        <>
+            <FormContainer
+                title="Update User"
+                submitLabel="Update"
+                methods={methods}
+                isLoading={isFetching}
+                isLoadingSubmit={isPending}
+                onSubmit={onSubmit}
+                onCancel={backToList}
+            >
+                <UserForm />
+            </FormContainer>
+            <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
+        </>
     )
 }
 

@@ -1,4 +1,4 @@
-import { getUser, getUsers, postUser, putUser } from '@/services/backoffice/user'
+import { deleteUser, getUser, getUsers, postUser, putUser } from '@/services/backoffice/user'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
@@ -7,7 +7,7 @@ import { userCreator } from 'state/index'
 
 const useGetUsers = (currentPage: number, perPage: number, search?: string, filters?: string) => {
     const dispatch = useDispatch()
-    const { paginateUsers } = bindActionCreators(userCreator, dispatch)
+    const { paginateUsersAction } = bindActionCreators(userCreator, dispatch)
 
     const query = useQuery({
         queryKey: ['users', currentPage, perPage, search, filters],
@@ -16,9 +16,9 @@ const useGetUsers = (currentPage: number, perPage: number, search?: string, filt
 
     useEffect(() => {
         if (query.data) {
-            paginateUsers(query.data.data)
+            paginateUsersAction(query.data.data)
         }
-    }, [query.data, paginateUsers])
+    }, [query.data])
 
     return query
 }
@@ -40,7 +40,7 @@ const useLazyGetUser = (id: number) => {
 
 const useCreateUser = () => {
     const dispatch = useDispatch()
-    const { createUser } = bindActionCreators(userCreator, dispatch)
+    const { createUserAction } = bindActionCreators(userCreator, dispatch)
 
     const query = useMutation({
         mutationFn: (formData: any) => {
@@ -50,7 +50,7 @@ const useCreateUser = () => {
 
     useEffect(() => {
         if (query.data) {
-            createUser(query.data)
+            createUserAction(query.data)
         }
     }, [query.data])
 
@@ -59,7 +59,7 @@ const useCreateUser = () => {
 
 const useUpdateUser = () => {
     const dispatch = useDispatch()
-    const { updateUser } = bindActionCreators(userCreator, dispatch)
+    const { updateUserAction } = bindActionCreators(userCreator, dispatch)
 
     const query = useMutation({
         mutationFn: ({ id, formData }: { id: number, formData: any }) => {
@@ -69,11 +69,30 @@ const useUpdateUser = () => {
 
     useEffect(() => {
         if (query.data) {
-            updateUser(query.data)
+            updateUserAction(query.data)
         }
     }, [query.data])
 
     return query;
 }
 
-export { useGetUsers, useGetUser, useLazyGetUser, useCreateUser, useUpdateUser }
+const useDeleteUser = () => {
+    const dispatch = useDispatch()
+    const { deleteUserAction } = bindActionCreators(userCreator, dispatch)
+
+    const query = useMutation({
+        mutationFn: (id: number) => {
+            return deleteUser(id)
+        },
+    })
+
+    useEffect(() => {
+        if (query.data) {
+            deleteUserAction(query.data.id)
+        }
+    }, [query.data])
+
+    return query;
+}
+
+export { useGetUsers, useGetUser, useLazyGetUser, useCreateUser, useUpdateUser, useDeleteUser }

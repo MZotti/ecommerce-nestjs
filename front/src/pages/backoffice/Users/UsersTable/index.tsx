@@ -2,7 +2,7 @@ import AsyncTable from "@/components/AsyncTable"
 import TableContainer from "@/components/TableContainer"
 import { TableProvider } from "@/contexts/TableContext"
 import { usePagination } from "@/hooks/pagination"
-import { useGetUsers } from "@/hooks/user"
+import { useDeleteUser, useGetUsers } from "@/hooks/user"
 import type { State } from "@/state/reducers"
 import { useSelector } from "react-redux"
 
@@ -39,6 +39,8 @@ const UsersTable = () => {
     const { data: fetchData, isFetching } = useGetUsers(currentPage, perPage, search, filters)
     const { meta } = fetchData || {};
 
+    const deleteAction = useDeleteUser();
+
     const [rows, setRows] = useState<number[]>([])
 
     const setRowsSelected = (id: number) => {
@@ -69,7 +71,7 @@ const UsersTable = () => {
                     setFilters,
                     linkRow: true,
                     canUpdate: true,
-                    canDelete: true,
+                    deleteAction: deleteAction,
                     rowsSelected: rows,
                     setRowsSelected,
                     clearRowsSelected

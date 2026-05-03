@@ -6,6 +6,7 @@ import { useLogin } from '@/hooks/auth'
 import { Button, Text } from '@chakra-ui/react'
 import { useState } from 'react'
 import { FormProvider, useForm, type SubmitHandler } from "react-hook-form"
+import { useNavigate } from 'react-router-dom'
 
 interface FormData {
     email: string
@@ -18,14 +19,12 @@ const formInitialState: FormData = {
 }
 
 const Form = () => {
+    const navigate = useNavigate();
     const { mutateAsync: login, isPending } = useLogin();
 
     const methods = useForm<FormData>({
         defaultValues: formInitialState
     })
-    const {
-        handleSubmit,
-    } = methods;
 
     const [credentialsError, setCredentialsError] = useState<string>("");
 
@@ -40,20 +39,26 @@ const Form = () => {
 
         storeAccessToken(response.access_token);
 
-        // TODO: redirect
+        navigate("../backoffice")
     }
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <FormContainer>
-                <FormProvider {...methods}>
-                    <TextInput id='email' label='E-mail' />
-                    <PasswordInput id='password' label='Password' />
-                    <Text fontSize="sm" color="red.500">{credentialsError}</Text>
-                    <Button w="full" type='submit' colorPalette="green" disabled={isPending} >Login</Button>
-                </FormProvider>
-            </FormContainer >
-        </form>
+        <FormContainer
+            title=""
+            submitLabel="Login"
+            methods={methods}
+            isLoadingSubmit={isPending}
+            onSubmit={onSubmit}
+            cardLess
+        >
+            <FormProvider {...methods}>
+                <TextInput id="email" label="E-mail" />
+                <PasswordInput id="password" label="Password" />
+                <Text fontSize="sm" color="red.500">{credentialsError}</Text>
+                {/* <Button w="full" type='submit' colorPalette="green" disabled={isPending} >Login</Button> */}
+                <Text>Forgot password</Text>
+            </FormProvider>
+        </FormContainer>
     )
 }
 

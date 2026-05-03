@@ -3,7 +3,7 @@ import { ActionBar, Button, CloseButton, Portal } from "@chakra-ui/react"
 import { TrashIcon } from "@phosphor-icons/react"
 
 const TableActions = () => {
-    const { rowsSelected, clearRowsSelected } = useTableContext();
+    const { onDelete, rowsSelected, clearRowsSelected } = useTableContext();
     const onClose = () => clearRowsSelected();
 
     return (
@@ -18,10 +18,13 @@ const TableActions = () => {
                             {rowsSelected.length} selected
                         </ActionBar.SelectionTrigger>
                         <ActionBar.Separator />
-                        <Button variant="outline" size="sm" colorPalette="red">
-                            <TrashIcon size="18px" />
-                            Delete
-                        </Button>
+                        {
+                            onDelete !== undefined &&
+                            <Button variant="outline" size="sm" colorPalette="red">
+                                <TrashIcon size="18px" />
+                                Delete
+                            </Button>
+                        }
                         <ActionBar.CloseTrigger asChild>
                             <CloseButton size="sm" onClick={onClose} />
                         </ActionBar.CloseTrigger>

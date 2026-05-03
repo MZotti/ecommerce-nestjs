@@ -10,8 +10,8 @@ interface Props {
 
 const TableRow = ({ data }: Props) => {
     const navigate = useNavigate();
-    const { columns, linkRow, canUpdate, canDelete, customRowActions, multiRowActions, rowsSelected, setRowsSelected } = useTableContext()
-    const hasActions = canUpdate || canDelete || customRowActions;
+    const { columns, linkRow, canUpdate, deleteAction, customRowActions, multiRowActions, rowsSelected, setRowsSelected } = useTableContext()
+    const hasActions = canUpdate || deleteAction || customRowActions;
 
     const rowId = data['id'] || 0;
 
@@ -37,7 +37,7 @@ const TableRow = ({ data }: Props) => {
             }
             {columns.map((column, key) =>
                 column.customCell !== undefined ? (
-                    <Table.Cell key={key}>{column?.customCell(data[column.acessor])}</Table.Cell>
+                    <Table.Cell onClick={onClick} key={key}>{column?.customCell(data[column.acessor])}</Table.Cell>
                 ) : (
                     <Table.Cell onClick={onClick} key={key}>{data[column.acessor]}</Table.Cell>
                 ),
