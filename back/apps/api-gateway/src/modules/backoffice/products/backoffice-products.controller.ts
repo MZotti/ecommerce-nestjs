@@ -53,7 +53,7 @@ export class BackofficeProductsController {
     async update(@Param('id') id: number, @Body() dto: UpdateProductDto) {
         try {
             return await lastValueFrom(
-                this.client.send('updateProcuct', { id, data: dto })
+                this.client.send('updateProduct', { id, data: dto })
             );
         } catch (error: any) {
             if (error?.statusCode) {

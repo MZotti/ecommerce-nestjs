@@ -17,6 +17,16 @@ export class ProductsService {
                 skip,
                 take: limit,
                 orderBy: { createdAt: 'desc' },
+                select: {
+                    id: true,
+                    category: true,
+                    name: true,
+                    slug: true,
+                    description: true,
+                    price: true,
+                    stock: true,
+                    createdAt: true,
+                }
             }),
             this.prisma.product.count(),
         ]);
@@ -132,7 +142,7 @@ export class ProductsService {
             where: { id }
         });
 
-        return {};
+        return { id };
     }
 
     async stockAvailable(items: { productId: number; quantity: number }[]) {
