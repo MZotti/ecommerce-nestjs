@@ -1,4 +1,4 @@
-import { deleteUser, getUser, getUsers, postUser, putUser } from '@/services/backoffice/user'
+import { deleteUser, getUser, getUsers, postUser, putUser } from '@/services/backoffice/users'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
@@ -25,14 +25,14 @@ const useGetUsers = (currentPage: number, perPage: number, search?: string, filt
 
 const useGetUser = (id: number) => {
     return useQuery({
-        queryKey: ['users'],
+        queryKey: ['user'],
         queryFn: () => getUser(id),
     })
 }
 
 const useLazyGetUser = (id: number) => {
     return useQuery({
-        queryKey: ['users'],
+        queryKey: ['user'],
         queryFn: () => getUser(id),
         enabled: false
     })

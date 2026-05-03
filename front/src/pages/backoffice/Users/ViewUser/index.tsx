@@ -1,6 +1,6 @@
 import CardContainer from "@/components/CardContainer";
 import TextDisplay from "@/components/TextDisplay";
-import { useLazyGetUser } from "@/hooks/user";
+import { useLazyGetUser } from "@/hooks/users";
 import type { State } from "@/state/reducers";
 import { Card, Container, Text, VStack } from "@chakra-ui/react";
 import { useEffect } from "react";

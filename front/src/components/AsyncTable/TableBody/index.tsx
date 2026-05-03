@@ -10,7 +10,7 @@ const TableBody = () => {
     return (
         <Table.Body>
             {isLoading ? (
-                <LoadingTable label="users" />
+                <LoadingTable />
             ) : data.length === 0 ? (
                 <EmptyData />
             ) : (

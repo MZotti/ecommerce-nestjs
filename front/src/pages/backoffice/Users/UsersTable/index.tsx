@@ -2,7 +2,7 @@ import AsyncTable from "@/components/AsyncTable"
 import TableContainer from "@/components/TableContainer"
 import { TableProvider } from "@/contexts/TableContext"
 import { usePagination } from "@/hooks/pagination"
-import { useDeleteUser, useGetUsers } from "@/hooks/user"
+import { useDeleteUser, useGetUsers } from "@/hooks/users"
 import type { State } from "@/state/reducers"
 import { useSelector } from "react-redux"
 

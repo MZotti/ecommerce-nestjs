@@ -1,10 +1,9 @@
+import { useTableContext } from '@/contexts/TableContext'
 import { Center, Progress, Table, Text, VStack } from '@chakra-ui/react'
 
-interface Props {
-    label: string
-}
+const LoadingTable = () => {
+    const { label } = useTableContext()
 
-const LoadingTable = ({ label }: Props) => {
     return (
         <Table.Row>
             <Table.Cell colSpan={99}>

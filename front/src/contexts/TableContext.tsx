@@ -7,6 +7,7 @@ import { createContext, useContext } from 'react'
 
 export interface TableContextProps<T = unknown> {
     data: T[]
+    label: string
     columns: TableColumn[]
     isLoading: boolean
     currentPage: number
