@@ -23,6 +23,15 @@ export class OrdersService {
                 skip,
                 take: limit,
                 orderBy: { createdAt: 'desc' },
+                select: {
+                    id: true,
+                    userId: true,
+                    paymentMethod: true,
+                    status: true,
+                    total: true,
+                    items: true,
+                    createdAt: true
+                }
             }),
             this.prisma.order.count(),
         ]);
@@ -40,6 +49,15 @@ export class OrdersService {
     async find(id: number) {
         const existingOrder = await this.prisma.order.findUnique({
             where: { id },
+            select: {
+                id: true,
+                userId: true,
+                paymentMethod: true,
+                status: true,
+                total: true,
+                items: true,
+                createdAt: true
+            }
         });
 
         if (!existingOrder) {
@@ -79,8 +97,11 @@ export class OrdersService {
 
             total += subtotal;
 
+            console.log("??", product.name);
+
             return {
                 productId: product.id,
+                productName: product.name,
                 quantity: item.quantity,
                 price,
             };

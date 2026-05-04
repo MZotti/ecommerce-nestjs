@@ -79,11 +79,12 @@ enum OrderStatus {
 }
 
 model OrderItem {
-  id        Int     @id @default(autoincrement())
-  order     Order   @relation(fields: [orderId], references: [id])
-  orderId   Int
+  id          Int     @id @default(autoincrement())
+  order       Order   @relation(fields: [orderId], references: [id])
+  orderId     Int
   
-  productId Int
-  quantity  Int
-  price     Float
+  productId   Int
+  productName String
+  price       Float
+  quantity    Int
 }

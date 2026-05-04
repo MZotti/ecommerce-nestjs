@@ -48,6 +48,7 @@ export class UsersService {
                 id: true,
                 name: true,
                 email: true,
+                isActive: true,
                 roleId: true,
                 role: true,
                 createdAt: true,
@@ -90,6 +91,7 @@ export class UsersService {
                 id: true,
                 name: true,
                 email: true,
+                isActive: true,
                 roleId: true,
                 role: true,
                 createdAt: true
@@ -125,6 +127,7 @@ export class UsersService {
                 id: true,
                 name: true,
                 email: true,
+                isActive: true,
                 roleId: true,
                 role: true,
                 createdAt: true
