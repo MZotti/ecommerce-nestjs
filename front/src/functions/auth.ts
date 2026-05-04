@@ -1,3 +1,5 @@
+import { me } from "@/services/backoffice/auth";
+
 const ACCESS_TOKEN = "access_token"
 
 const storeAccessToken = (accessToken: string) => {
@@ -8,7 +10,18 @@ const getAccessToken = () => {
     return window.localStorage.getItem(ACCESS_TOKEN);
 }
 
+const userIsLogged = async (): Promise<boolean> => {
+    try {
+        await me();
+
+        return true;
+    } catch (error) {
+        return false;
+    }
+}
+
 export {
     storeAccessToken,
-    getAccessToken
+    getAccessToken,
+    userIsLogged
 }

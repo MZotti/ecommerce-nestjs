@@ -3,7 +3,7 @@ import PasswordInput from '@/components/Inputs/PasswordInput'
 import TextInput from '@/components/Inputs/TextInput'
 import { storeAccessToken } from '@/functions/auth'
 import { useLogin } from '@/hooks/auth'
-import { Button, Text } from '@chakra-ui/react'
+import { Text } from '@chakra-ui/react'
 import { useState } from 'react'
 import { FormProvider, useForm, type SubmitHandler } from "react-hook-form"
 import { useNavigate } from 'react-router-dom'
