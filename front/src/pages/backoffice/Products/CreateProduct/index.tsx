@@ -5,7 +5,7 @@ import { useForm, type SubmitHandler } from "react-hook-form"
 import Modal from "./Modal"
 import ProductForm from "../ProcuctForm"
 import type ProductFormData from "../ProcuctForm/ProductFormData"
-import { useCreateProcuct } from "@/hooks/products"
+import { useCreateProduct } from "@/hooks/products"
 
 const formInitialState: ProductFormData = {
     name: "",
@@ -22,7 +22,7 @@ const CreateProduct = () => {
         defaultValues: formInitialState
     })
 
-    const { mutateAsync: createProduct, isPending } = useCreateProcuct();
+    const { mutateAsync: createProduct, isPending } = useCreateProduct();
 
     const onSubmit: SubmitHandler<ProductFormData> = async (data) => {
         data.price = Number(data.price);

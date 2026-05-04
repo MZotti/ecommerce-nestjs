@@ -38,7 +38,7 @@ const useLazyGetProduct = (id: number) => {
     })
 }
 
-const useCreateProcuct = () => {
+const useCreateProduct = () => {
     const dispatch = useDispatch()
     const { createProductAction } = bindActionCreators(productCreator, dispatch)
 
@@ -95,4 +95,4 @@ const useDeleteProduct = () => {
     return query;
 }
 
-export { useGetProducts, useGetProduct, useLazyGetProduct, useCreateProcuct, useUpdateProduct, useDeleteProduct }
+export { useGetProducts, useGetProduct, useLazyGetProduct, useCreateProduct, useUpdateProduct, useDeleteProduct }

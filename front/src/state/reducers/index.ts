@@ -3,6 +3,7 @@ import { combineReducers } from '@reduxjs/toolkit'
 import authReducer from './authReducer'
 import userReducer from './userReducer'
 import productReducer from './productReducer'
+import orderReducer from './orderReducer'
 import notificationReducer from './notificationReducer'
 import reportReducer from './reportReducer'
 
@@ -10,6 +11,7 @@ const rootReducer = combineReducers({
     auth: authReducer,
     users: userReducer,
     products: productReducer,
+    orders: orderReducer,
     notifications: notificationReducer,
     reports: reportReducer,
 })

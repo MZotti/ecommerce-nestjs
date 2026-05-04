@@ -58,6 +58,7 @@ const UsersTable = () => {
             <TableProvider
                 value={{
                     data: users,
+                    label: "Users",
                     columns,
                     currentPage: meta?.page || 1,
                     perPage: meta?.perPage || 30,

@@ -30,7 +30,7 @@ const RowActions = ({ id }: { id: number }) => {
                         }
                     </Menu.Content>
                 </Menu.Positioner>
-                <DeleteAction rowId={id} isOpen={deleteIsOpen} onClose={() => setDeleteIsOpen(false)} />
+                {deleteAction !== undefined && <DeleteAction rowId={id} isOpen={deleteIsOpen} onClose={() => setDeleteIsOpen(false)} />}
             </Portal>
         </Menu.Root>
     )

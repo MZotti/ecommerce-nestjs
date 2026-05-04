@@ -1,0 +1,19 @@
+import type { OrderStatus, PaymentMethods } from "@/enums/order"
+import type Product from "./product"
+import type User from "./user"
+
+export default interface Order {
+    id: number
+    user: User
+    total: number
+    paymentMethod: PaymentMethods
+    status: OrderStatus
+    items: OrderItem[]
+    createdAt: Date
+}
+
+export interface OrderItem {
+    product: Product
+    quantity: number
+    price: number
+}

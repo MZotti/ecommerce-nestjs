@@ -5,7 +5,7 @@ import { usePagination } from "@/hooks/pagination"
 import type { State } from "@/state/reducers"
 import { useSelector } from "react-redux"
 
-import { columns, filterFields } from './userTableColumns'
+import { columns, filterFields } from './productTableColumns'
 import { Button, Flex } from "@chakra-ui/react"
 import { PlusIcon } from "@phosphor-icons/react"
 import { Link } from "react-router-dom"
@@ -58,6 +58,7 @@ const UsersTable = () => {
             <TableProvider
                 value={{
                     data: products,
+                    label: "Products",
                     columns,
                     currentPage: meta?.page || 1,
                     perPage: meta?.perPage || 30,

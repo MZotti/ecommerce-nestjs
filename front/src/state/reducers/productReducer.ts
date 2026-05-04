@@ -17,7 +17,7 @@ const reducer = (state: Product[] = initialState, action: Action) => {
                 }
                 return product;
             })
-        case ProductActionType.INCREASE_STOCK:
+        case ProductActionType.UPDATE_STOCK:
             return state.map(product => {
                 if (product.id === action.payload.id) {
                     product.stock = action.payload.newStock

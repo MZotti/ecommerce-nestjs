@@ -15,10 +15,14 @@ import CreateProduct from './pages/backoffice/Products/CreateProduct';
 import ViewProduct from './pages/backoffice/Products/ViewProduct';
 import UpdateProduct from './pages/backoffice/Products/UpdateProduct';
 
+import Orders from './pages/backoffice/Products copy';
+import ViewOrder from './pages/backoffice/Products copy/ViewOrder';
+
 import Users from './pages/backoffice/Users';
 import ViewUser from './pages/backoffice/Users/ViewUser';
 import CreateUser from './pages/backoffice/Users/CreateUser';
 import UpdateUser from './pages/backoffice/Users/UpdateUser';
+import CreateOrder from './pages/backoffice/Products copy/CreateOrder';
 
 export const router = createBrowserRouter([
     {
@@ -44,6 +48,10 @@ export const router = createBrowserRouter([
             { path: 'products/create', element: <CreateProduct /> },
             { path: 'products/:id', element: <ViewProduct /> },
             { path: 'products/:id/update', element: <UpdateProduct /> },
+
+            { path: 'orders', element: <Orders /> },
+            { path: 'orders/create', element: <CreateOrder /> },
+            { path: 'orders/:id', element: <ViewOrder /> },
 
             { path: 'users', element: <Users /> },
             { path: 'users/create', element: <CreateUser /> },
