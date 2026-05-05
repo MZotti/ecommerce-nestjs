@@ -13,7 +13,8 @@ export default interface Order {
 }
 
 export interface OrderItem {
-    product: Product
+    productId: number
+    productName: string
     quantity: number
     price: number
 }
