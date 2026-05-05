@@ -14,11 +14,11 @@ export class BackofficeOrdersController {
     @Get()
     async findAll(
         @Query('page') page = 1,
-        @Query('limit') limit = 10
+        @Query('perPage') perPage = 10
     ) {
         return this.client.send('findAllOrders', {
             page: Number(page),
-            limit: Number(limit)
+            perPage: Number(perPage)
         });
     }
 

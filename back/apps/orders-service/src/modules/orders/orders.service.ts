@@ -15,13 +15,13 @@ export class OrdersService {
         @Inject('EVENT_BUS') private eventBus: ClientProxy
     ) { }
 
-    async findAll({ page, limit }: { page: number, limit: number }) {
-        const skip = (page - 1) * limit;
+    async findAll({ page, perPage }: { page: number, perPage: number }) {
+        const skip = (page - 1) * perPage;
 
         const [data, total] = await Promise.all([
             this.prisma.order.findMany({
                 skip,
-                take: limit,
+                take: perPage,
                 orderBy: { createdAt: 'desc' },
                 select: {
                     id: true,
@@ -41,7 +41,8 @@ export class OrdersService {
             meta: {
                 total,
                 page,
-                lastPage: Math.ceil(total / limit),
+                perPage,
+                lastPage: Math.ceil(total / perPage),
             },
         };
     }

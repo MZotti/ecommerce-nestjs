@@ -12,7 +12,7 @@ export class ProductsController {
     ) { }
 
     @MessagePattern('findAllProducts')
-    async findAll(@Payload() payload: { page: number; limit: number }) {
+    async findAll(@Payload() payload: { page: number; perPage: number }) {
         return this.productsService.findAll(payload);
     }
 

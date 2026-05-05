@@ -10,7 +10,7 @@ export class OrdersController {
     ) { }
 
     @MessagePattern('findAllOrders')
-    async findAll(@Payload() payload: { page: number; limit: number }) {
+    async findAll(@Payload() payload: { page: number; perPage: number }) {
         return this.ordersService.findAll(payload);
     }
 
