@@ -4,6 +4,7 @@ import NavBar from "./NavBar"
 import { Box, Flex } from "@chakra-ui/react"
 import LoadingScreen from "./LoadingScreen"
 import { useMe } from "@/hooks/auth"
+import { Toaster } from "@/components/chakra-ui/toaster"
 
 const BackofficeLayout = () => {
     const { data, error, isFetching } = useMe();
@@ -33,6 +34,7 @@ const BackofficeLayout = () => {
             >
                 <Outlet />
             </Flex>
+            <Toaster />
         </Box>
     )
 }

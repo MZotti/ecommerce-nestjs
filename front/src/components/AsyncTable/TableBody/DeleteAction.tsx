@@ -20,7 +20,7 @@ const DeleteAction = ({ rowId, isOpen, onClose }: Props) => {
         onClose();
 
         toaster.create({
-            description: "Deleted",
+            description: "Product deleted",
             type: "success",
         })
     }
