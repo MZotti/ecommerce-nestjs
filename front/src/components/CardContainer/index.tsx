@@ -11,8 +11,9 @@ const CardContainer = ({ title = "", full = false, margin = "auto", children }: 
     return (
         <Card.Root
             m={margin}
+            mt={0}
             size="lg"
-            w={full ? "full" : "auto"}
+            w={full ? "full" : "376px"}
             h={full ? "full" : "auto"}
         >
             <Card.Header hidden={title == ""}>

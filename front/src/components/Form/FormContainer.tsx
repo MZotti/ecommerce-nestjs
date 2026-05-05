@@ -22,7 +22,7 @@ const FormContainer = <T extends FieldValues,>({ title, methods, columns = 1, su
     const { handleSubmit } = methods
 
     return (
-        <Card.Root m="auto" size="lg">
+        <Card.Root m="auto" mt={0} size="lg">
             <FormContext.Provider value={{
                 submitLabel,
                 cancelLabel,
