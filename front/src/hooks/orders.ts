@@ -1,3 +1,4 @@
+import type Order from '@/interfaces/order'
 import { getOrder, getOrders, postOrder } from '@/services/backoffice/orders'
 import { orderCreator } from '@/state'
 import { useMutation, useQuery } from '@tanstack/react-query'
@@ -23,10 +24,11 @@ const useGetOrders = (currentPage: number, perPage: number, search?: string, fil
     return query
 }
 
-const useGetOrder = (id: number) => {
+const useGetOrder = (id: number, storedOrder?: Order | null) => {
     return useQuery({
         queryKey: ['order'],
         queryFn: () => getOrder(id),
+        enabled: storedOrder == null
     })
 }
 

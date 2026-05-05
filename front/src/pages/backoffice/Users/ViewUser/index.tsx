@@ -1,33 +1,43 @@
+import ActiveDisplay from "@/components/ActiveDisplay";
 import CardContainer from "@/components/CardContainer";
-import TextDisplay from "@/components/TextDisplay";
-import { useLazyGetUser } from "@/hooks/users";
+import DataDisplay from "@/components/DataDisplay";
+import { FetchDataContext } from "@/contexts/FetchDataContext";
+import { useGetUser } from "@/hooks/users";
 import type { State } from "@/state/reducers";
-import { Card, Container, Text, VStack } from "@chakra-ui/react";
-import { useEffect } from "react";
+import { Text, VStack } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
 const ViewUser = () => {
     const { id } = useParams();
-    const { data, refetch: getUser, isFetching } = useLazyGetUser(Number(id));
 
     const users = useSelector(({ users }: State) => users)
     const storedUser = users.find(user => user.id == Number(id)) || null;
-    const user = storedUser || data;
+    const { data, isFetching } = useGetUser(Number(id), storedUser);
 
-    useEffect(() => {
-        if (storedUser === null) {
-            getUser();
-        }
-    }, [])
+    const user = storedUser ?? data;
 
     return (
         <CardContainer title="User">
-            <VStack gap={4}>
-                <TextDisplay label="Name" value={user?.name} />
-                <TextDisplay label="E-mail" value={user?.email} />
-                <TextDisplay label="Role" value={user?.role.name} />
-            </VStack>
+            <FetchDataContext value={{
+                data: user,
+                isLoading: isFetching
+            }}>
+                <VStack gap={4}>
+                    <DataDisplay label="Name">
+                        <Text fontSize="md">{user?.name}</Text>
+                    </DataDisplay>
+                    <DataDisplay label="E-mail">
+                        <Text fontSize="md">{user?.email}</Text>
+                    </DataDisplay>
+                    <DataDisplay label="Role">
+                        <Text fontSize="md">{user?.role.name}</Text>
+                    </DataDisplay>
+                    <DataDisplay label="Is Active">
+                        <ActiveDisplay isActive={user?.isActive} />
+                    </DataDisplay>
+                </VStack>
+            </FetchDataContext>
         </CardContainer>
     )
 }

@@ -1,8 +1,7 @@
 import { FetchDataContext } from "@/contexts/FetchDataContext";
-import { useLazyGetOrder } from "@/hooks/orders";
+import { useGetOrder } from "@/hooks/orders";
 import type { State } from "@/state/reducers";
 import { Grid } from "@chakra-ui/react";
-import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import OrderDetails from "./OrderDetails";
@@ -11,17 +10,12 @@ import OrderTimeline from "./OrderTimeline";
 
 const ViewOrder = () => {
     const { id } = useParams();
-    const { data, refetch: getOrder, isFetching } = useLazyGetOrder(Number(id));
 
     const orders = useSelector(({ orders }: State) => orders)
     const storedOrder = orders.find(order => order.id == Number(id)) || null;
-    const order = storedOrder || data;
+    const { data, isFetching } = useGetOrder(Number(id), storedOrder);
 
-    useEffect(() => {
-        if (storedOrder === null) {
-            getOrder();
-        }
-    }, [])
+    const order = storedOrder || data;
 
     return (
         <FetchDataContext value={{

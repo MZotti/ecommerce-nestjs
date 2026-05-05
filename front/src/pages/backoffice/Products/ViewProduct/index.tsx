@@ -1,35 +1,45 @@
 import CardContainer from "@/components/CardContainer";
-import TextDisplay from "@/components/TextDisplay";
-import { useLazyGetProduct } from "@/hooks/products";
+import DataDisplay from "@/components/DataDisplay";
+import { FetchDataContext } from "@/contexts/FetchDataContext";
+import { useGetProduct } from "@/hooks/products";
 import type { State } from "@/state/reducers";
-import { VStack } from "@chakra-ui/react";
-import { useEffect } from "react";
+import { Text, VStack } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
 const ViewProduct = () => {
     const { id } = useParams();
-    const { data, refetch: getProduct, isFetching } = useLazyGetProduct(Number(id));
 
     const products = useSelector(({ products }: State) => products)
-    const storeProduct = products.find(product => product.id == Number(id)) || null;
-    const product = storeProduct || data;
+    const storedProduct = products.find(product => product.id == Number(id)) || null;
+    const { data, isFetching } = useGetProduct(Number(id), storedProduct);
 
-    useEffect(() => {
-        if (storeProduct === null) {
-            getProduct();
-        }
-    }, [])
+    const product = storedProduct || data;
 
     return (
         <CardContainer title="Product">
-            <VStack gap={4}>
-                <TextDisplay label="Name" value={product?.name} />
-                <TextDisplay label="Category" value={product?.category.name} />
-                <TextDisplay label="Description" value={product?.description} />
-                <TextDisplay label="Price" value={product?.price} />
-                <TextDisplay label="Stock" value={product?.stock} />
-            </VStack>
+            <FetchDataContext value={{
+                data: product,
+                isLoading: isFetching
+            }}>
+                <VStack gap={4}>
+                    <DataDisplay label="Name">
+                        <Text fontSize="md">{product?.name}</Text>
+                    </DataDisplay>
+                    <DataDisplay label="Name">
+                        <Text fontSize="md">{product?.category.name}</Text>
+                    </DataDisplay>
+                    <DataDisplay label="Name">
+                        <Text fontSize="md">{product?.description}</Text>
+                    </DataDisplay>
+                    <DataDisplay label="Name">
+                        <Text fontSize="md">{product?.price}</Text>
+                    </DataDisplay>
+                    <DataDisplay label="Name">
+                        <Text fontSize="md">{product?.stock}</Text>
+                    </DataDisplay>
+                </VStack>
+            </FetchDataContext>
         </CardContainer>
     )
 }

@@ -1,3 +1,4 @@
+import type Product from '@/interfaces/product'
 import { deleteProduct, getProduct, getProducts, postProduct, putProduct } from '@/services/backoffice/products'
 import { productCreator } from '@/state'
 import { useMutation, useQuery } from '@tanstack/react-query'
@@ -23,10 +24,11 @@ const useGetProducts = (currentPage: number, perPage: number, search?: string, f
     return query
 }
 
-const useGetProduct = (id: number) => {
+const useGetProduct = (id: number, storedProduct?: Product | null) => {
     return useQuery({
         queryKey: ['product'],
         queryFn: () => getProduct(id),
+        enabled: storedProduct == null
     })
 }
 

@@ -1,3 +1,4 @@
+import type User from '@/interfaces/user'
 import { deleteUser, getUser, getUsers, postUser, putUser } from '@/services/backoffice/users'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useEffect } from 'react'
@@ -23,10 +24,11 @@ const useGetUsers = (currentPage: number, perPage: number, search?: string, filt
     return query
 }
 
-const useGetUser = (id: number) => {
+const useGetUser = (id: number, storedUser?: User | null) => {
     return useQuery({
         queryKey: ['user'],
         queryFn: () => getUser(id),
+        enabled: storedUser == null
     })
 }
 
