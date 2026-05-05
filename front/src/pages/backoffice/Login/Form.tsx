@@ -55,7 +55,6 @@ const Form = () => {
                 <TextInput id="email" label="E-mail" />
                 <PasswordInput id="password" label="Password" />
                 <Text fontSize="sm" color="red.500">{credentialsError}</Text>
-                {/* <Button w="full" type='submit' colorPalette="green" disabled={isPending} >Login</Button> */}
                 <Text>Forgot password</Text>
             </FormProvider>
         </FormContainer>

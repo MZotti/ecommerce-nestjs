@@ -8,6 +8,8 @@ const queryClient = new QueryClient({
         queries: {
             refetchOnWindowFocus: false,
             refetchOnReconnect: false,
+            refetchOnMount: false,
+            refetchIntervalInBackground: false,
             refetchInterval: false,
             staleTime: Infinity
         }
