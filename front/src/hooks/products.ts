@@ -1,12 +1,13 @@
 import type Product from '@/interfaces/product'
 import { deleteProduct, getProduct, getProducts, postProduct, putProduct } from '@/services/backoffice/products'
 import { productCreator } from '@/state'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 const useGetProducts = (currentPage: number, perPage: number, search?: string, filters?: string) => {
+    const queryClient = useQueryClient();
     const dispatch = useDispatch()
     const { paginateProductsAction } = bindActionCreators(productCreator, dispatch)
 
@@ -18,6 +19,7 @@ const useGetProducts = (currentPage: number, perPage: number, search?: string, f
     useEffect(() => {
         if (query.data) {
             paginateProductsAction(query.data.data)
+            queryClient.invalidateQueries({ queryKey: ['products'] })
         }
     }, [query.data])
 

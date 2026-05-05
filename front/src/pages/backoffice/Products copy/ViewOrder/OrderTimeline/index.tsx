@@ -9,7 +9,7 @@ const OrderTimeline = () => {
 
     return (
         <GridItem>
-            <CardContainer title="Timeline">
+            <CardContainer fullW title="Timeline">
                 <Timeline.Root>
                     {
                         isLoading ? <LoadingItem />

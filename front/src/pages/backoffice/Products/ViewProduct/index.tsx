@@ -1,12 +1,12 @@
-import CardContainer from "@/components/CardContainer";
-import DataDisplay from "@/components/DataDisplay";
-import StockStatusDisplay from "@/components/StockStatusDisplay";
+
 import { FetchDataContext } from "@/contexts/FetchDataContext";
 import { useGetProduct } from "@/hooks/products";
 import type { State } from "@/state/reducers";
-import { Text, VStack } from "@chakra-ui/react";
+import { Grid } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import ProductDetails from "./ProductDetails";
+import ProductInsights from "./ProductInsights";
 
 const ViewProduct = () => {
     const { id } = useParams();
@@ -18,30 +18,19 @@ const ViewProduct = () => {
     const product = storedProduct || data;
 
     return (
-        <CardContainer title="Product">
-            <FetchDataContext value={{
-                data: product,
-                isLoading: isFetching
-            }}>
-                <VStack gap={4}>
-                    <DataDisplay label="Name">
-                        <Text fontSize="md">{product?.name}</Text>
-                    </DataDisplay>
-                    <DataDisplay label="Category">
-                        <Text fontSize="md">{product?.category.name}</Text>
-                    </DataDisplay>
-                    <DataDisplay label="Description">
-                        <Text fontSize="md">{product?.description}</Text>
-                    </DataDisplay>
-                    <DataDisplay label="Price">
-                        <Text fontSize="md">{product?.price}</Text>
-                    </DataDisplay>
-                    <DataDisplay label="Stock">
-                        <StockStatusDisplay stock={product?.stock} />
-                    </DataDisplay>
-                </VStack>
-            </FetchDataContext>
-        </CardContainer>
+        <FetchDataContext value={{
+            data: product,
+            isLoading: isFetching
+        }}>
+            <Grid
+                w="full"
+                h="full"
+                templateColumns="repeat(1, 1fr 3fr)" gap={2}
+            >
+                <ProductDetails />
+                <ProductInsights />
+            </Grid>
+        </FetchDataContext>
     )
 }
 

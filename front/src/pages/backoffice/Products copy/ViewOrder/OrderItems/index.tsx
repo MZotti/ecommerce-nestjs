@@ -9,7 +9,7 @@ const OrderItems = () => {
 
     return (
         <GridItem>
-            <CardContainer title="Items">
+            <CardContainer fullW title="Items">
                 <VStack gap={2} justifyContent="start">
                     {
                         isLoading ? <LoadingItem />

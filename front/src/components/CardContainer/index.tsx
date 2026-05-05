@@ -2,19 +2,20 @@ import { Card, Text } from "@chakra-ui/react"
 
 interface Props {
     title?: string
-    full?: boolean
+    fullW?: boolean
+    fullH?: boolean
     margin?: string
     children: React.ReactNode
 }
 
-const CardContainer = ({ title = "", full = false, margin = "auto", children }: Props) => {
+const CardContainer = ({ title = "", fullW = false, fullH = false, margin = "auto", children }: Props) => {
     return (
         <Card.Root
             m={margin}
             mt={0}
             size="lg"
-            w={full ? "full" : "376px"}
-            h={full ? "full" : "auto"}
+            w={fullW ? "full" : "376px"}
+            h={fullH ? "full" : "auto"}
         >
             <Card.Header hidden={title == ""}>
                 <Text fontSize="lg" fontWeight="bold">{title}</Text>

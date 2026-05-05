@@ -11,7 +11,7 @@ const OrderDetails = () => {
 
     return (
         <GridItem>
-            <CardContainer>
+            <CardContainer fullW>
                 <VStack gap={4} position="relative">
                     <OrderActions />
                     <DataDisplay label="Customer">
