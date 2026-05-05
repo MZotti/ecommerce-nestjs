@@ -1,4 +1,4 @@
-import ActiveDisplay from '@/components/ActiveDisplay'
+import StockStatusDisplay from '@/components/StockStatusDisplay'
 import { Text } from '@chakra-ui/react'
 import { FilterField } from 'enums/filter'
 import { dateFormat } from "functions/date"
@@ -22,6 +22,7 @@ const columns: TableColumn[] = [
     {
         label: 'Stock',
         acessor: 'stock',
+        customCell: value => <StockStatusDisplay stock={value} />
     },
     {
         label: 'Created at',

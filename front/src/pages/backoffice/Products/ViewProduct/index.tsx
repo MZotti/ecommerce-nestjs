@@ -1,5 +1,6 @@
 import CardContainer from "@/components/CardContainer";
 import DataDisplay from "@/components/DataDisplay";
+import StockStatusDisplay from "@/components/StockStatusDisplay";
 import { FetchDataContext } from "@/contexts/FetchDataContext";
 import { useGetProduct } from "@/hooks/products";
 import type { State } from "@/state/reducers";
@@ -26,17 +27,17 @@ const ViewProduct = () => {
                     <DataDisplay label="Name">
                         <Text fontSize="md">{product?.name}</Text>
                     </DataDisplay>
-                    <DataDisplay label="Name">
+                    <DataDisplay label="Category">
                         <Text fontSize="md">{product?.category.name}</Text>
                     </DataDisplay>
-                    <DataDisplay label="Name">
+                    <DataDisplay label="Description">
                         <Text fontSize="md">{product?.description}</Text>
                     </DataDisplay>
-                    <DataDisplay label="Name">
+                    <DataDisplay label="Price">
                         <Text fontSize="md">{product?.price}</Text>
                     </DataDisplay>
-                    <DataDisplay label="Name">
-                        <Text fontSize="md">{product?.stock}</Text>
+                    <DataDisplay label="Stock">
+                        <StockStatusDisplay stock={product?.stock} />
                     </DataDisplay>
                 </VStack>
             </FetchDataContext>
