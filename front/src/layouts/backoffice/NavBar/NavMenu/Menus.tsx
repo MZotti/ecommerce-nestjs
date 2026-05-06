@@ -1,4 +1,4 @@
-import { BasketIcon, MonitorIcon, UserIcon, UserListIcon } from "@phosphor-icons/react"
+import { BasketIcon, ChartBarIcon, UserListIcon } from "@phosphor-icons/react"
 
 export interface MenuItem {
     id: string
@@ -12,7 +12,7 @@ const menu: MenuItem[] = [
     {
         id: 'dashboards',
         label: 'Dashboards',
-        icon: <MonitorIcon size="18px" />,
+        icon: <ChartBarIcon size="18px" />,
         subItems: [
             {
                 id: 'products',

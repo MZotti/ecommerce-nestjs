@@ -5,10 +5,11 @@ import { Box, Flex } from "@chakra-ui/react"
 import LoadingScreen from "./LoadingScreen"
 import { useMe } from "@/hooks/auth"
 import { Toaster } from "@/components/chakra-ui/toaster"
+import { useColorModeValue } from "@/components/chakra-ui/color-mode"
 
 const BackofficeLayout = () => {
+    const backgroundColor = useColorModeValue("gray.200", "bg");
     const { data, error, isFetching } = useMe();
-    console.log(data, error);
 
     if (isFetching)
         return <LoadingScreen />
@@ -21,6 +22,7 @@ const BackofficeLayout = () => {
             w="full"
             h="full"
             position="relative"
+            backgroundColor={backgroundColor}
         >
             <Header />
             <NavBar />

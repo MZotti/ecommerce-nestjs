@@ -13,7 +13,7 @@ const useLogin = () => {
 const useMe = () => {
     return useQuery({
         queryKey: ['me'],
-        queryFn: me,
+        queryFn: () => me(),
     })
 }
 
