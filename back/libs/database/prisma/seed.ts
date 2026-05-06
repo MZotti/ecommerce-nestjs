@@ -49,6 +49,7 @@ async function main() {
     }
 
     const categories = await prisma.category.createMany({
+        skipDuplicates: true,
         data: [
             {
                 name: 'Graphic Card',
@@ -56,10 +57,37 @@ async function main() {
             },
             {
                 name: 'CPU',
-                slug: 'cpus'
+                slug: 'cpu'
             },
+            {
+                name: 'Mother Board',
+                slug: 'mother-board'
+            },
+            {
+                name: 'RAM',
+                slug: 'ram'
+            },
+            {
+                name: 'Storage',
+                slug: 'storage'
+            },
+            {
+                name: 'Power Supply',
+                slug: 'power-supply'
+            },
+            {
+                name: 'CPU Cooler',
+                slug: 'cpu-cooler'
+            },
+            {
+                name: 'Case',
+                slug: 'case'
+            },
+            {
+                name: 'Case Fan',
+                slug: 'case-fan'
+            }
         ],
-        skipDuplicates: true,
     });
 
     console.log("Categories created!");
