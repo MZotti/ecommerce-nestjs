@@ -10,7 +10,7 @@ import * as bcrypt from 'bcrypt';
 export class UsersService {
     constructor(private prisma: PrismaService) { }
 
-    async findAll({ page, perPage }: { page: number, perPage: number }) {
+    async findAll({ page, perPage, search }: { page: number, perPage: number, search?: string }) {
         const skip = (page - 1) * perPage;
 
         const [data, total] = await Promise.all([
@@ -25,6 +25,22 @@ export class UsersService {
                     isActive: true,
                     role: true,
                     createdAt: true,
+                },
+                where: {
+                    OR: [
+                        {
+                            name: {
+                                contains: search,
+                                mode: 'insensitive'
+                            },
+                        },
+                        {
+                            email: {
+                                contains: search,
+                                mode: 'insensitive'
+                            },
+                        }
+                    ]
                 },
             }),
             this.prisma.user.count(),

@@ -11,7 +11,7 @@ export class UsersController {
     ) { }
 
     @MessagePattern('findAllUsers')
-    async findAll(@Payload() payload: { page: number; perPage: number }) {
+    async findAll(@Payload() payload: { page: number; perPage: number; search: string }) {
         return this.usersService.findAll(payload);
     }
 
