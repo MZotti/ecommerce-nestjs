@@ -9,7 +9,7 @@ import { useCreateProduct } from "@/hooks/products"
 
 const formInitialState: ProductFormData = {
     name: "",
-    categoryId: 1,
+    categoryId: 0,
     description: "",
     price: 0,
     stock: 1

@@ -1,15 +1,23 @@
 import NumberInput from '@/components/Inputs/NumberInput'
 import SelectInput from '@/components/Inputs/SelectInput'
 import TextInput from '@/components/Inputs/TextInput'
+import { useGetCategories } from '@/hooks/categories'
+import { Skeleton } from '@chakra-ui/react'
 
 const ProductForm = () => {
+    const { data: categories = [], isFetching } = useGetCategories();
+
+    const categoriesOptions = categories.map((category: any) => ({
+        value: category.id,
+        label: category.name
+    }))
+
     return (
         <>
             <TextInput id='name' label='Name' />
-            <SelectInput id='categoryId' label='Category' options={[
-                { value: 1, label: 'Graphic Card' },
-                { value: 2, label: 'CPU' },
-            ]} />
+            <Skeleton loading={isFetching}>
+                <SelectInput id='categoryId' label='Category' options={categoriesOptions} />
+            </Skeleton>
             <TextInput id='description' label='Description' />
             <NumberInput id='price' label='Price' />
             <NumberInput id='stock' label='Stock' />
