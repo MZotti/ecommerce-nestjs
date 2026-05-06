@@ -9,7 +9,7 @@ import slugfy from 'slugify';
 export class ProductsService {
     constructor(private prisma: PrismaService) { }
 
-    async findAll({ page, perPage }: { page: number, perPage: number }) {
+    async findAll({ page, perPage, search }: { page: number, perPage: number, search?: string }) {
         const skip = (page - 1) * perPage;
 
         const [data, total] = await Promise.all([
@@ -26,6 +26,12 @@ export class ProductsService {
                     price: true,
                     stock: true,
                     createdAt: true,
+                },
+                where: {
+                    name: { 
+                        contains: search,
+                        mode: 'insensitive'
+                    }
                 }
             }),
             this.prisma.product.count(),

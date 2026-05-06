@@ -15,11 +15,13 @@ export class BackofficeProductsController {
     @Get()
     async findAll(
         @Query('page') page = 1,
-        @Query('perPage') perPage = 10
+        @Query('perPage') perPage = 10,
+        @Query('search') search = "",
     ) {
         return this.client.send('findAllProducts', {
             page: Number(page),
-            perPage: Number(perPage)
+            perPage: Number(perPage),
+            search: search
         });
     }
 
