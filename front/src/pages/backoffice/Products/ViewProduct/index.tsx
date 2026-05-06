@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import ProductDetails from "./ProductDetails";
 import ProductInsights from "./ProductInsights";
+import ProductRating from "./ProductRating";
 
 const ViewProduct = () => {
     const { id } = useParams();
@@ -25,10 +26,11 @@ const ViewProduct = () => {
             <Grid
                 w="full"
                 h="full"
-                templateColumns="repeat(1, 1fr 3fr)" gap={2}
+                templateColumns="repeat(1, 1fr 3fr 2fr)" gap={2}
             >
                 <ProductDetails />
                 <ProductInsights />
+                <ProductRating />
             </Grid>
         </FetchDataContext>
     )
