@@ -23,6 +23,8 @@ import ViewUser from './pages/backoffice/Users/ViewUser';
 import CreateUser from './pages/backoffice/Users/CreateUser';
 import UpdateUser from './pages/backoffice/Users/UpdateUser';
 import CreateOrder from './pages/backoffice/Products copy/CreateOrder';
+import DashboardProducts from './pages/backoffice/Dashboards/DashboardProducts';
+import DashboardOrders from './pages/backoffice/Dashboards/DashboardOrders';
 
 export const router = createBrowserRouter([
     {
@@ -43,6 +45,9 @@ export const router = createBrowserRouter([
             { index: true, element: <BackofficeHome /> },
             { path: 'account', element: <Account /> },
             { path: 'settings', element: <Settings /> },
+            
+            { path: 'dashboards/products', element: <DashboardProducts /> },
+            { path: 'dashboards/orders', element: <DashboardOrders /> },
 
             { path: 'products', element: <Products /> },
             { path: 'products/create', element: <CreateProduct /> },

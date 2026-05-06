@@ -17,11 +17,13 @@ const menu: MenuItem[] = [
             {
                 id: 'products',
                 label: 'Products',
+                link: 'dashboards/products',
                 subItems: []
             },
             {
                 id: 'orders',
                 label: 'Orders',
+                link: 'dashboards/orders',
                 subItems: []
             },
         ]
