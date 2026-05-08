@@ -72,7 +72,7 @@ export class OrdersService {
     }
 
     async create(dto: CreateOrderDto) {
-        const { userId, items } = dto;
+        const { userId, items, paymentMethod } = dto;
 
         const productIds = items.map(i => i.productId);
 
@@ -98,8 +98,6 @@ export class OrdersService {
 
             total += subtotal;
 
-            console.log("??", product.name);
-
             return {
                 productId: product.id,
                 productName: product.name,
@@ -124,7 +122,7 @@ export class OrdersService {
             data: {
                 userId,
                 total,
-                paymentMethod: PaymentMethodEnum.PIX,
+                paymentMethod,
                 status: OrderStatusEnum.PENDING,
                 items: {
                     create: orderItems,
