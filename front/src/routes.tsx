@@ -10,21 +10,22 @@ import BackofficeHome from './pages/backoffice/Home';
 import Account from './pages/backoffice/Account';
 import Settings from './pages/backoffice/Settings';
 
+import DashboardProducts from './pages/backoffice/Dashboards/DashboardProducts';
+import DashboardOrders from './pages/backoffice/Dashboards/DashboardOrders';
+
 import Products from './pages/backoffice/Products';
 import CreateProduct from './pages/backoffice/Products/CreateProduct';
 import ViewProduct from './pages/backoffice/Products/ViewProduct';
 import UpdateProduct from './pages/backoffice/Products/UpdateProduct';
 
-import Orders from './pages/backoffice/Products copy';
-import ViewOrder from './pages/backoffice/Products copy/ViewOrder';
+import Orders from './pages/backoffice/Orders';
+import ViewOrder from './pages/backoffice/Orders/ViewOrder';
+import CreateOrder from './pages/backoffice/Orders/CreateOrder';
 
 import Users from './pages/backoffice/Users';
 import ViewUser from './pages/backoffice/Users/ViewUser';
 import CreateUser from './pages/backoffice/Users/CreateUser';
 import UpdateUser from './pages/backoffice/Users/UpdateUser';
-import CreateOrder from './pages/backoffice/Products copy/CreateOrder';
-import DashboardProducts from './pages/backoffice/Dashboards/DashboardProducts';
-import DashboardOrders from './pages/backoffice/Dashboards/DashboardOrders';
 
 export const router = createBrowserRouter([
     {
