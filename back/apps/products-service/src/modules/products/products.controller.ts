@@ -3,7 +3,6 @@ import { ProductsService } from './products.service';
 import { Ctx, EventPattern, MessagePattern, Payload, RmqContext } from '@nestjs/microservices';
 import { CreateProductDto } from '@app/common/dto/products/create-product.dto';
 import { UpdateProductDto } from '@app/common/dto/products/update-product.dto';
-import { Product } from '@prisma/client';
 
 @Controller('products')
 export class ProductsController {
@@ -19,6 +18,13 @@ export class ProductsController {
     @MessagePattern('findManyByIds')
     async findManyByIds(@Body() ids: number[]) {
         return this.productsService.findManyByIds(ids);
+    }
+
+    @MessagePattern('findManyByName')
+    async findManyByName(@Payload() payload: { search?: string }) {
+        const { search } = payload
+        
+        return this.productsService.findManyByName(search);
     }
 
     @MessagePattern('findProduct')

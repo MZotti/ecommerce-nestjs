@@ -28,7 +28,7 @@ export class ProductsService {
                     createdAt: true,
                 },
                 where: {
-                    name: { 
+                    name: {
                         contains: search,
                         mode: 'insensitive'
                     }
@@ -51,6 +51,20 @@ export class ProductsService {
     async findManyByIds(ids: number[]) {
         return await this.prisma.product.findMany({
             where: { id: { in: ids } }
+        });
+    }
+
+    async findManyByName(search?: string) {
+        if (!search || search === "")
+            return []
+
+        return await this.prisma.product.findMany({
+            where: {
+                name: {
+                    contains: search,
+                    mode: 'insensitive'
+                }
+            }
         });
     }
 

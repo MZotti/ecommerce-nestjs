@@ -26,6 +26,16 @@ export class BackofficeProductsController {
     }
 
     @UseGuards(JwtAuthGuard)
+    @Get('/search')
+    async findManyByName(
+        @Query('search') search = "",
+    ) {
+        return this.client.send('findManyByName', {
+            search
+        });
+    }
+
+    @UseGuards(JwtAuthGuard)
     @Get(':id')
     async find(@Param('id') id: number) {
         try {
