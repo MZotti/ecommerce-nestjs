@@ -11,6 +11,16 @@ const getProducts = async (page = 1, perPage = 10, search = "", filters = "") =>
     }
 }
 
+const getProductsByName = async (search = "") => {
+    try {
+        const { data } = await AXIOS.get(`${BACKOFFICE_URL}/products/search?search=${search}`)
+
+        return data;
+    } catch (error) {
+
+    }
+}
+
 const getProduct = async (id: number) => {
     try {
         const { data } = await AXIOS.get(`${BACKOFFICE_URL}/products/${id}`)
@@ -53,6 +63,7 @@ const deleteProduct = async (id: number) => {
 
 export {
     getProducts,
+    getProductsByName,
     getProduct,
     postProduct,
     putProduct,

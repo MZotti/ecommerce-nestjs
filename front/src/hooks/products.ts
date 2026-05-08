@@ -1,5 +1,5 @@
 import type Product from '@/interfaces/product'
-import { deleteProduct, getProduct, getProducts, postProduct, putProduct } from '@/services/backoffice/products'
+import { deleteProduct, getProduct, getProductsByName, getProducts, postProduct, putProduct } from '@/services/backoffice/products'
 import { productCreator } from '@/state'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useEffect } from 'react'
@@ -31,6 +31,14 @@ const useGetProduct = (id: number, storedProduct?: Product | null) => {
         queryKey: ['product'],
         queryFn: () => getProduct(id),
         enabled: storedProduct == null
+    })
+}
+
+const useLazyGetProductsByName = (search: string) => {
+    return useQuery({
+        queryKey: ['product'],
+        queryFn: () => getProductsByName(search),
+        enabled: false
     })
 }
 
@@ -99,4 +107,4 @@ const useDeleteProduct = () => {
     return query;
 }
 
-export { useGetProducts, useGetProduct, useLazyGetProduct, useCreateProduct, useUpdateProduct, useDeleteProduct }
+export { useGetProducts, useLazyGetProductsByName, useGetProduct, useLazyGetProduct, useCreateProduct, useUpdateProduct, useDeleteProduct }

@@ -6,9 +6,12 @@ import Modal from "./Modal"
 import OrderForm from "../OrderForm"
 import type OrderFormData from "../OrderForm/OrderFormData"
 import { useCreateOrder } from "@/hooks/orders"
+import { PaymentMethods } from "@/enums/order"
 
 const formInitialState: OrderFormData = {
-    userId: 1
+    userId: 1,
+    paymentMethod: 0,
+    items: []
 }
 
 const CreateOrder = () => {
@@ -21,14 +24,34 @@ const CreateOrder = () => {
     const { mutateAsync: createOrder, isPending } = useCreateOrder();
 
     const onSubmit: SubmitHandler<OrderFormData> = async (data) => {
+        let paymentMethod = "";
+
+        switch (data.paymentMethod) {
+            case 1:
+                paymentMethod = PaymentMethods.PIX;
+                break;
+            case 2:
+                paymentMethod = PaymentMethods.PAYMENT_ORDER;
+                break;
+            case 3:
+                paymentMethod = PaymentMethods.CREDIT;
+                break;
+            case 4:
+                paymentMethod = PaymentMethods.DEBIT;
+                break;
+            default:
+                paymentMethod = PaymentMethods.PIX;
+                break;
+        }
+
         const orderData = {
             userId: 1,
-            items: [
-                {
-                    productId: 1,
-                    quantity: 2
-                }
-            ]
+            paymentMethod,
+            items: data.items.map(item => {
+                item.quantity = Number(item.quantity);
+
+                return item;
+            })
         }
 
         await createOrder(orderData)

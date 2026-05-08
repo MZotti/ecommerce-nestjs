@@ -1,5 +1,4 @@
 import type { OrderStatus, PaymentMethods } from "@/enums/order"
-import type Product from "./product"
 import type User from "./user"
 
 export default interface Order {
