@@ -1,7 +1,7 @@
 import AsyncTable from "@/components/AsyncTable"
 import TableContainer from "@/components/TableContainer"
 import { TableProvider } from "@/contexts/TableContext"
-import { usePagination } from "@/hooks/pagination"
+import { usePagination } from "@/hooks/backoffice/pagination"
 import type { State } from "@/state/reducers"
 import { useSelector } from "react-redux"
 
@@ -11,7 +11,7 @@ import { PlusIcon } from "@phosphor-icons/react"
 import { Link } from "react-router-dom"
 import { useState } from "react"
 import TableActions from "./TableActions"
-import { useGetOrders } from "@/hooks/orders"
+import { useGetOrders } from "@/hooks/backoffice/orders"
 
 const Actions = <Flex>
     <Button colorPalette="green" asChild size="sm">

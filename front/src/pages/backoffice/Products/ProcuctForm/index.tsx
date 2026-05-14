@@ -1,7 +1,7 @@
 import NumberInput from '@/components/Inputs/NumberInput'
 import SelectInput from '@/components/Inputs/SelectInput'
 import TextInput from '@/components/Inputs/TextInput'
-import { useGetCategories } from '@/hooks/categories'
+import { useGetCategories } from '@/hooks/backoffice/categories'
 import { Skeleton } from '@chakra-ui/react'
 
 const ProductForm = () => {

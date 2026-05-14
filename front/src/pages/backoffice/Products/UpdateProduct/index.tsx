@@ -6,7 +6,7 @@ import FormContainer from "@/components/Form/FormContainer"
 import { useForm, type SubmitHandler } from "react-hook-form"
 import Modal from "./Modal"
 import ProductForm from "../ProcuctForm"
-import { useLazyGetProduct, useUpdateProduct } from "@/hooks/products"
+import { useLazyGetProduct, useUpdateProduct } from "@/hooks/backoffice/products"
 import type ProductFormData from "../ProcuctForm/ProductFormData"
 
 const UpdateProduct = () => {

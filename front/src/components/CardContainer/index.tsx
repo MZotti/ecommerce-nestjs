@@ -13,6 +13,7 @@ const CardContainer = ({ title = "", fullW = false, fullH = false, height = "aut
     return (
         <Card.Root
             m={margin}
+            mt="0"
             size="lg"
             w={fullW ? "full" : "376px"}
             h={fullH ? "full" : height}

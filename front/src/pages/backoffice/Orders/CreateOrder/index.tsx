@@ -5,7 +5,7 @@ import { useForm, type SubmitHandler } from "react-hook-form"
 import Modal from "./Modal"
 import OrderForm from "../OrderForm"
 import type OrderFormData from "../OrderForm/OrderFormData"
-import { useCreateOrder } from "@/hooks/orders"
+import { useCreateOrder } from "@/hooks/backoffice/orders"
 import { PaymentMethods } from "@/enums/order"
 
 const formInitialState: OrderFormData = {

@@ -1,5 +1,5 @@
 import { FetchDataContext } from "@/contexts/FetchDataContext";
-import { useGetOrder } from "@/hooks/orders";
+import { useGetOrder } from "@/hooks/backoffice/orders";
 import type { State } from "@/state/reducers";
 import { Grid } from "@chakra-ui/react";
 import { useSelector } from "react-redux";

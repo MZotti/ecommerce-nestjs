@@ -19,10 +19,10 @@ const ProductsPriceAreaChart = () => {
                         <XAxis
                             dataKey="from"
                             ticks={ticks}
-                            label={{ value: "Products", position: "insideBottom", offset: -5 }}
+                            label={{ value: "Price", position: "insideBottom", offset: -5 }}
                         />
                         <YAxis
-                            label={{ value: "Price", angle: -90, position: "insideLeft" }}
+                            label={{ value: "Products", angle: -90, position: "insideLeft" }}
                         />
                         {/* <Tooltip
                             formatter={(value) => [`${value}`, "Frequency"]}

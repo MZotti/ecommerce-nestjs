@@ -1,6 +1,6 @@
 
 import { FetchDataContext } from "@/contexts/FetchDataContext";
-import { useGetProduct } from "@/hooks/products";
+import { useGetProduct } from "@/hooks/backoffice/products";
 import type { State } from "@/state/reducers";
 import { Grid } from "@chakra-ui/react";
 import { useSelector } from "react-redux";

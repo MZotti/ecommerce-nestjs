@@ -2,7 +2,7 @@ import ActiveDisplay from "@/components/ActiveDisplay";
 import CardContainer from "@/components/CardContainer";
 import DataDisplay from "@/components/DataDisplay";
 import { FetchDataContext } from "@/contexts/FetchDataContext";
-import { useGetUser } from "@/hooks/users";
+import { useGetUser } from "@/hooks/backoffice/users";
 import type { State } from "@/state/reducers";
 import { Text, VStack } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
@@ -18,7 +18,7 @@ const ViewUser = () => {
     const user = storedUser ?? data;
 
     return (
-        <CardContainer title="User">
+        <CardContainer title="User" >
             <FetchDataContext value={{
                 data: user,
                 isLoading: isFetching

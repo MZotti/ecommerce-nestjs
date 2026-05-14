@@ -5,7 +5,7 @@ import { useForm, type SubmitHandler } from "react-hook-form"
 import Modal from "./Modal"
 import ProductForm from "../ProcuctForm"
 import type ProductFormData from "../ProcuctForm/ProductFormData"
-import { useCreateProduct } from "@/hooks/products"
+import { useCreateProduct } from "@/hooks/backoffice/products"
 
 const formInitialState: ProductFormData = {
     name: "",

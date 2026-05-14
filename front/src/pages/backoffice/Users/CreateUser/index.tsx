@@ -1,7 +1,7 @@
 import UserForm from "../UserForm"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { useCreateUser } from "@/hooks/users"
+import { useCreateUser } from "@/hooks/backoffice/users"
 import FormContainer from "@/components/Form/FormContainer"
 import { useForm, type SubmitHandler } from "react-hook-form"
 import Modal from "./Modal"
