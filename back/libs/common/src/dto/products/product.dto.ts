@@ -4,4 +4,5 @@ export class ProductDto {
     description!: string;
     price!: number;
     stock!: number;
+    imageUrl?: string;
 }

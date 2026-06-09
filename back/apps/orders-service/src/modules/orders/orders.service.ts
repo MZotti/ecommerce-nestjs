@@ -164,6 +164,7 @@ export class OrdersService {
             return {
                 productId: product.id,
                 productName: product.name,
+                productImageUrl: product.imageUrl,
                 quantity: item.quantity,
                 price,
             };

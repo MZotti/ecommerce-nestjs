@@ -26,6 +26,7 @@ const ProductCard = ({ product }: { product: Product }) => {
         addToCartAction({
             productId: product.id,
             productName: product.name,
+            productImageUrl: product.imageUrl,
             price: product.price,
             quantity: 1
         })
