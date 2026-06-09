@@ -30,7 +30,7 @@ const ProductDetails = () => {
                         <StockStatusDisplay stock={product?.stock} />
                     </DataDisplay>
                     <Image
-                        src={product.imageUrl}
+                        src={product?.imageUrl}
                     />
                 </VStack>
             </CardContainer>

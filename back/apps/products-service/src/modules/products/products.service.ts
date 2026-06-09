@@ -128,7 +128,8 @@ export class ProductsService {
                 slug: true,
                 description: true,
                 price: true,
-                stock: true
+                stock: true,
+                imageUrl: true,
             },
         });
 
