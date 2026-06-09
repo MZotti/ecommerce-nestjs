@@ -2,11 +2,12 @@ import CardContainer from '@/components/CardContainer';
 import DataDisplay from '@/components/DataDisplay';
 import StockStatusDisplay from '@/components/StockStatusDisplay';
 import { useFetchDataContext } from '@/contexts/FetchDataContext'
-import { GridItem, Text, VStack } from '@chakra-ui/react'
+import { GridItem, Image, Text, VStack } from '@chakra-ui/react'
 import ProductActions from './ProductActions';
+import type Product from '@/interfaces/product';
 
 const ProductDetails = () => {
-    const { data: product } = useFetchDataContext();
+    const { data: product } = useFetchDataContext<Product>();
 
     return (
         <GridItem>
@@ -28,6 +29,9 @@ const ProductDetails = () => {
                     <DataDisplay label="Stock">
                         <StockStatusDisplay stock={product?.stock} />
                     </DataDisplay>
+                    <Image
+                        src={product.imageUrl}
+                    />
                 </VStack>
             </CardContainer>
         </GridItem>

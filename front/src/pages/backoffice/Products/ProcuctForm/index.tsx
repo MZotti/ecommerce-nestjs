@@ -21,6 +21,7 @@ const ProductForm = () => {
             <TextInput id='description' label='Description' />
             <NumberInput id='price' label='Price' />
             <NumberInput id='stock' label='Stock' />
+            <TextInput id='imageUrl' label='Image URL' />
         </>
     )
 }

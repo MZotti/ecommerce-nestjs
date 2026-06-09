@@ -1,6 +1,6 @@
 import { Controller, Get, Inject, UseGuards } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { JwtAuthGuard } from '../../jwt/jwt-auth.guard';
+import { JwtAuthGuard } from '../../../common/jwt/jwt-auth.guard';
 
 @Controller('backoffice/categories')
 export class BackofficeCategoriesController {

@@ -3,7 +3,7 @@ import { UpdateProductDto } from '@app/common/dto/products/update-product.dto';
 import { Body, Controller, Delete, Get, HttpException, Inject, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
-import { JwtAuthGuard } from '../../jwt/jwt-auth.guard';
+import { JwtAuthGuard } from '../../../common/jwt/jwt-auth.guard';
 
 @Controller('backoffice/products')
 export class BackofficeProductsController {

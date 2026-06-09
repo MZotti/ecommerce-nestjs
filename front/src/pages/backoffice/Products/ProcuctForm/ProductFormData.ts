@@ -4,4 +4,5 @@ export default interface ProductFormData {
     description: string
     price: number
     stock: number
+    imageUrl?: string
 }

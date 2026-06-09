@@ -38,6 +38,7 @@ const UsersTable = () => {
 
     const { data: fetchData, isFetching } = useGetProducts(currentPage, perPage, search, filters)
     const { meta } = fetchData || {};
+    console.log(fetchData);
 
     const deleteAction = useDeleteProduct();
 

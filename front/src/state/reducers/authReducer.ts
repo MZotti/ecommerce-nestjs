@@ -3,8 +3,6 @@ import { AuthActionType } from 'state/action-types/authTypes'
 import { type Action } from 'state/actions/authActions'
 
 const initialState: Auth = {
-    token: '',
-    user: {},
 }
 
 const reducer = (state: Auth = initialState, action: Action) => {
@@ -23,6 +21,16 @@ const reducer = (state: Auth = initialState, action: Action) => {
             return {
                 ...state,
                 user: action.payload
+            }
+        case AuthActionType.CREATE_ADDRESS:
+            const currentAddresses = state.user?.addresses || [];
+            
+            return {
+                ...state,
+                user: {
+                    ...state.user,
+                    addresses: [...currentAddresses, action.payload]
+                }
             }
         default:
             return state

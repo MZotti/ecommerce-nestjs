@@ -11,6 +11,7 @@ const reducer = (state: Product[] = initialState, action: Action) => {
         case ProductActionType.CREATE_PRODUCT:
             return [action.payload, ...state]
         case ProductActionType.UPDATE_PRODUCT:
+            console.log(action.payload);
             return state.map(product => {
                 if (product.id === action.payload.id) {
                     product = action.payload

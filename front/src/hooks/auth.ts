@@ -1,4 +1,4 @@
-import { login, me } from "@/services/backoffice/auth"
+import { login, me } from "@/services/auth"
 import { useMutation, useQuery } from "@tanstack/react-query"
 
 

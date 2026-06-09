@@ -1,3 +1,4 @@
+import { formatPriceToCurrency } from '@/functions/textFormat'
 import type { OrderItem as TOrderType } from '@/interfaces/order'
 import { Flex, Text, VStack } from '@chakra-ui/react'
 
@@ -6,7 +7,7 @@ const OrderItem = ({ item }: { item: TOrderType }) => {
         <Flex w="full">
             <VStack gap={4} w="full" alignItems="start">
                 <Text fontSize="md">{item.quantity} x {item.productName}</Text>
-                <Text fontSize="md">USD$ {item.price}</Text>
+                <Text fontSize="md">USD {formatPriceToCurrency(item.price)}</Text>
             </VStack>
         </Flex>
     )

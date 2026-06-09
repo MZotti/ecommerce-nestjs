@@ -12,7 +12,7 @@ import QueryClientProvider from './providers/QueryClientProvider.tsx'
 import { store } from 'state/store'
 
 createRoot(document.getElementById('root')!).render(
-	<StrictMode>
+	// <StrictMode>
 		<QueryClientProvider>
 			<ReduxProvider store={store}>
 				<ChakraProvider>
@@ -20,5 +20,5 @@ createRoot(document.getElementById('root')!).render(
 				</ChakraProvider>
 			</ReduxProvider>
 		</QueryClientProvider>
-	</StrictMode>,
+	// </StrictMode>,
 )

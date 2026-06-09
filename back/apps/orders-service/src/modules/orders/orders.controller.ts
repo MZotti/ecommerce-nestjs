@@ -2,6 +2,7 @@ import { Controller } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { CreateOrderDto } from '@app/common/dto/orders/create-order.dto';
+import { CreateCustomerOrderDto } from '@app/common/dto/orders/create-customer-order.dto';
 
 @Controller('orders')
 export class OrdersController {
@@ -12,6 +13,10 @@ export class OrdersController {
     @MessagePattern('findAllOrders')
     async findAll(@Payload() payload: { page: number; perPage: number }) {
         return this.ordersService.findAll(payload);
+    }
+    @MessagePattern('findCustomerOrders')
+    async findCustomerOrders(@Payload() payload: { userId: number, page: number; perPage: number }) {
+        return this.ordersService.findCustomerOrders(payload);
     }
 
     @MessagePattern('findOrder')
@@ -24,6 +29,17 @@ export class OrdersController {
     @MessagePattern('createOrder')
     async create(@Payload() dto: CreateOrderDto) {
         return this.ordersService.create(dto);
+    }
+
+    @MessagePattern('createCustomerOrder')
+    async createCustomerOrder(@Payload() payload: { userId: number, dto: CreateCustomerOrderDto }) {
+        const { userId, dto } = payload;
+        const orderDto = {
+            userId,
+            ...dto
+        }
+
+        return this.ordersService.create(orderDto);
     }
 
     @MessagePattern('cancelOrder')

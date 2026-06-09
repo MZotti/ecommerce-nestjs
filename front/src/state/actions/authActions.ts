@@ -1,3 +1,4 @@
+import type Address from '@/interfaces/address'
 import type Auth from 'interfaces/auth'
 import type User from 'interfaces/user'
 import { AuthActionType } from 'state/action-types/authTypes'
@@ -17,4 +18,9 @@ interface AuthUpdateMeAction {
     payload: User
 }
 
-export type Action = AuthLoginAction | AuthLogoutAction | AuthUpdateMeAction
+interface AuthCreateAddressAction {
+    type: AuthActionType.CREATE_ADDRESS,
+    payload: Address
+}
+
+export type Action = AuthLoginAction | AuthLogoutAction | AuthUpdateMeAction | AuthCreateAddressAction

@@ -6,6 +6,7 @@ export default interface Product {
     description: string
     price: number
     stock: number
+    imageUrl?: string
 }
 
 export interface Category {

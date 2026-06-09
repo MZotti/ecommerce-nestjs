@@ -1,20 +1,30 @@
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 
-import { JwtStrategy } from './modules/jwt/jwt.strategy';
+import { JwtStrategy } from './common/jwt/jwt.strategy';
 import { AuthModule } from './modules/auth/auth.module';
+
+import { BackofficeUsersModule } from './modules/backoffice/users/backoffice-users.module';
+import { BackofficeCustomersModule } from './modules/backoffice/customers/backoffice-customers.module';
 import { BackofficeProductsModule } from './modules/backoffice/products/backoffice-products.module';
 import { BackofficeCategoriesModule } from './modules/backoffice/categories/backoffice-categories.module';
-import { BackofficeUsersModule } from './modules/backoffice/users/backoffice-users.module';
 import { BackofficeOrdersModule } from './modules/backoffice/orders/backoffice-orders.module';
+
+import { StoreProductsModule } from './modules/store/products/store-products.module';
+import { StoreOrdersModule } from './modules/store/orders/store-orders.module';
+import { StoreAddressesModule } from './modules/store/addresses/store-addresses.module';
 
 @Module({
 	imports: [
 		AuthModule,
 		BackofficeUsersModule,
+		BackofficeCustomersModule,
 		BackofficeProductsModule,
 		BackofficeCategoriesModule,
 		BackofficeOrdersModule,
+		StoreProductsModule,
+		StoreOrdersModule,
+		StoreAddressesModule,
 		ClientsModule.register([
 			{
 				name: 'AUTH_SERVICE',

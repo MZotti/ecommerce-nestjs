@@ -68,6 +68,7 @@ export class UsersService {
                 roleId: true,
                 role: true,
                 createdAt: true,
+                customer: true,
             },
         });
 

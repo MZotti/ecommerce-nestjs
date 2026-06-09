@@ -24,16 +24,18 @@ const UpdateProduct = () => {
             name: product?.name,
             categoryId: product?.category.id,
             description: product?.description,
-            price: product?.price,
-            stock: product?.stock
+            price: Number(product?.price),
+            stock: product?.stock,
+            imageUrl: product?.imageUrl
         },
         defaultValues: product
     })
 
-    const { mutateAsync: updateUser, isPending } = useUpdateProduct();
+    const { mutateAsync: updateProduct, isPending } = useUpdateProduct();
 
     const onSubmit: SubmitHandler<ProductFormData> = async (data) => {
-        await updateUser({ id: Number(id), formData: data })
+        data.price = Number(data.price);
+        await updateProduct({ id: Number(id), formData: data })
 
         setModalOpen(true);
     }

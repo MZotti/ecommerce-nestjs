@@ -45,6 +45,12 @@ const menu: MenuItem[] = [
                 link: 'orders',
                 subItems: []
             },
+            {
+                id: 'customers',
+                label: 'Customers',
+                link: 'customers',
+                subItems: []
+            },
         ]
     },
     {

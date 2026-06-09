@@ -1,4 +1,4 @@
-import { me } from "@/services/backoffice/auth";
+import { me } from "@/services/auth";
 
 const ACCESS_TOKEN = "access_token"
 

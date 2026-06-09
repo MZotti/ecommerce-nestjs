@@ -1,3 +1,6 @@
+import type Address from "./address"
+import type Customer from "./customer"
+
 export default interface User {
     id: number
     name: string
@@ -5,6 +8,9 @@ export default interface User {
     isActive: boolean
     role: Role
     avatarUrl?: string
+
+    customer?: Customer
+    addresses?: Address[]
 }
 
 export interface Role {

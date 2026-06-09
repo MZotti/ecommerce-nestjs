@@ -24,6 +24,9 @@ import CreateUser from '@/pages/backoffice/Users/CreateUser';
 import UpdateUser from '@/pages/backoffice/Users/UpdateUser';
 import ViewUser from '@/pages/backoffice/Users/ViewUser';
 
+import Customers from '@/pages/backoffice/Customers';
+import ViewCustomer from '@/pages/backoffice/Customers/ViewCustomer';
+
 export const backofficeRoutes = [
     {
         path: '/backoffice/login',
@@ -48,6 +51,9 @@ export const backofficeRoutes = [
             { path: 'orders', element: <Orders /> },
             { path: 'orders/create', element: <CreateOrder /> },
             { path: 'orders/:id', element: <ViewOrder /> },
+
+            { path: 'customers', element: <Customers /> },
+            { path: 'customers/:id', element: <ViewCustomer /> },
 
             { path: 'users', element: <Users /> },
             { path: 'users/create', element: <CreateUser /> },

@@ -5,6 +5,8 @@ import { JwtService } from '@nestjs/jwt';
 import { RegisterDto } from '@app/common/dto/auth/register.dto';
 import { LoginDto } from '@app/common/dto/auth/login.dto';
 import { RpcException } from '@nestjs/microservices';
+import { RegisterCustomerDto } from '@app/common/dto/auth/register-customer.dto';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
@@ -31,12 +33,60 @@ export class AuthService {
                 password: hashedPassword,
                 roleId
             },
-            select: { 
-                id: true, 
+            select: {
+                id: true,
                 name: true,
-                email: true, 
+                email: true,
                 role: true,
-                createdAt: true },
+                createdAt: true
+            },
+        });
+    }
+
+    async registerCustomer(registerDto: RegisterCustomerDto) {
+        const { name, email, document, phone, password } = registerDto;
+
+        const existingUser = await this.prisma.user.findUnique({ where: { email } });
+
+        if (existingUser) {
+            throw new RpcException({
+                statusCode: 409,
+                message: 'Email already in use',
+            });
+        }
+
+        const existingCustomer = await this.prisma.customer.findFirst({ where: { document } });
+
+        if (existingCustomer) {
+            throw new RpcException({
+                statusCode: 409,
+                message: 'Document already in use',
+            });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        return this.prisma.user.create({
+            data: {
+                name,
+                email,
+                password: hashedPassword,
+                roleId: 5,
+                customer: {
+                    create: {
+                        document,
+                        phone
+                    }
+                }
+            },
+            select: {
+                id: true,
+                name: true,
+                email: true,
+                role: true,
+                customer: true,
+                createdAt: true
+            },
         });
     }
 
@@ -61,8 +111,37 @@ export class AuthService {
             });
         }
 
+        const loggedUser = await this.prisma.user.findUnique({
+            where: { email },
+            select: {
+                id: true,
+                name: true,
+                email: true,
+                role: true,
+                password: false,
+                createdAt: true,
+                customer: true,
+                addresses: true
+            },
+        });
+
         return {
+            user: loggedUser,
             access_token: this.jwtService.sign(user),
         };
+    }
+
+    async me(user: User) {
+        return this.prisma.user.findUnique({
+            where: { id: user.id },
+            select: {
+                id: true,
+                name: true,
+                email: true,
+                role: true,
+                customer: true,
+                addresses: true,
+            }
+        })
     }
 }

@@ -25,12 +25,62 @@ export class ProductsService {
                     description: true,
                     price: true,
                     stock: true,
+                    imageUrl: true,
                     createdAt: true,
                 },
                 where: {
                     name: {
                         contains: search,
                         mode: 'insensitive'
+                    }
+                }
+            }),
+            this.prisma.product.count(),
+        ]);
+
+        return {
+            data,
+            meta: {
+                total,
+                page,
+                perPage,
+                lastPage: Math.ceil(total / perPage),
+            },
+        };
+    }
+
+    async findAllStore({ page, perPage, search, filters }: { page: number, perPage: number, search?: string, filters?: string }) {
+        const skip = (page - 1) * perPage;
+
+        const [data, total] = await Promise.all([
+            this.prisma.product.findMany({
+                skip,
+                take: perPage,
+                orderBy: { createdAt: 'desc' },
+                select: {
+                    id: true,
+                    category: true,
+                    name: true,
+                    slug: true,
+                    description: true,
+                    price: true,
+                    stock: true,
+                    imageUrl: true,
+                    createdAt: true,
+                },
+                where: {
+                    name: {
+                        contains: search,
+                        mode: 'insensitive'
+                    },
+                    stock: {
+                        gt: 0
+                    },
+                    category: {
+                        slug: {
+                            contains: filters,
+                            mode: 'insensitive'
+                        }
                     }
                 }
             }),
@@ -92,6 +142,31 @@ export class ProductsService {
         return existingProduct;
     }
 
+    async findBySlug(slug: string) {
+        const existingProduct = await this.prisma.product.findFirst({
+            where: { slug },
+            select: {
+                id: true,
+                category: true,
+                name: true,
+                slug: true,
+                description: true,
+                price: true,
+                imageUrl: true,
+                stock: true
+            },
+        });
+
+        if (!existingProduct) {
+            throw new RpcException({
+                statusCode: 404,
+                message: 'Product not found',
+            });
+        }
+
+        return existingProduct;
+    }
+
     async create(dto: CreateProductDto) {
         const { name, categoryId, description, price, stock } = dto;
 
@@ -106,7 +181,7 @@ export class ProductsService {
                 slug,
                 description,
                 price,
-                stock
+                stock,
             },
             select: {
                 id: true,
@@ -115,7 +190,8 @@ export class ProductsService {
                 slug: true,
                 description: true,
                 price: true,
-                stock: true
+                stock: true,
+                imageUrl: true
             },
         });
     }
@@ -132,7 +208,11 @@ export class ProductsService {
             });
         }
 
-        const slug = slugfy(name);
+        const slug = slugfy(name, {
+            lower: true
+        });
+
+        console.log(dto);
 
         return this.prisma.product.update({
             where: { id },
@@ -144,7 +224,8 @@ export class ProductsService {
                 slug: true,
                 description: true,
                 price: true,
-                stock: true
+                stock: true,
+                imageUrl: true
             },
         });
     }

@@ -1,4 +1,5 @@
 import StockStatusDisplay from '@/components/StockStatusDisplay'
+import { formatPriceToCurrency } from '@/functions/textFormat'
 import { Text } from '@chakra-ui/react'
 import { FilterField } from 'enums/filter'
 import { dateFormat } from "functions/date"
@@ -18,6 +19,7 @@ const columns: TableColumn[] = [
     {
         label: 'Price (USD$)',
         acessor: 'price',
+        customCell: value => <Text>{formatPriceToCurrency(value)}</Text>
     },
     {
         label: 'Stock',

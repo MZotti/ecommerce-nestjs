@@ -15,6 +15,11 @@ export class ProductsController {
         return this.productsService.findAll(payload);
     }
 
+    @MessagePattern('findAllStoreProducts')
+    async findAllStore(@Payload() payload: { page: number; perPage: number; search?: string; filter?: string; }) {
+        return this.productsService.findAllStore(payload);
+    }
+
     @MessagePattern('findManyByIds')
     async findManyByIds(@Body() ids: number[]) {
         return this.productsService.findManyByIds(ids);
@@ -23,7 +28,7 @@ export class ProductsController {
     @MessagePattern('findManyByName')
     async findManyByName(@Payload() payload: { search?: string }) {
         const { search } = payload
-        
+
         return this.productsService.findManyByName(search);
     }
 
@@ -32,6 +37,13 @@ export class ProductsController {
         const { id } = payload;
 
         return this.productsService.find(Number(id));
+    }
+
+    @MessagePattern('findBySlug')
+    async findBySlug(@Payload() payload: { slug: string; }) {
+        const { slug } = payload;
+
+        return this.productsService.findBySlug(slug);
     }
 
     @MessagePattern('createProduct')

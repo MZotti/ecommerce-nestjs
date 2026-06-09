@@ -28,7 +28,7 @@ const useGetProducts = (currentPage: number, perPage: number, search?: string, f
 
 const useGetProduct = (id: number, storedProduct?: Product | null) => {
     return useQuery({
-        queryKey: ['product'],
+        queryKey: ['product', id],
         queryFn: () => getProduct(id),
         enabled: storedProduct == null
     })

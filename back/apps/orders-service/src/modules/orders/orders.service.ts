@@ -1,7 +1,6 @@
 import { CreateOrderDto } from '@app/common/dto/orders/create-order.dto';
 import { ProductDto } from '@app/common/dto/products/product.dto';
 import { OrderStatusEnum } from '@app/common/enums/order-status.enum';
-import { PaymentMethodEnum } from '@app/common/enums/payment-method.enum';
 import { PrismaService } from '@app/database/prisma.service';
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy, RpcException } from '@nestjs/microservices';
@@ -30,10 +29,65 @@ export class OrdersService {
                     status: true,
                     total: true,
                     items: true,
+                    shippingCity: true,
+                    shippingComplement: true,
+                    shippingCountry: true,
+                    shippingNeighborhood: true,
+                    shippingNumber: true,
+                    shippingState: true,
+                    shippingStreet: true,
+                    shippingZipCode: true,
                     createdAt: true
                 }
             }),
             this.prisma.order.count(),
+        ]);
+
+        return {
+            data,
+            meta: {
+                total,
+                page,
+                perPage,
+                lastPage: Math.ceil(total / perPage),
+            },
+        };
+    }
+
+    async findCustomerOrders({ userId, page = 1, perPage = 30 }: { userId: number, page: number, perPage: number }) {
+        const skip = (page - 1) * perPage;
+
+        const [data, total] = await Promise.all([
+            this.prisma.order.findMany({
+                skip,
+                take: perPage,
+                orderBy: { createdAt: 'desc' },
+                select: {
+                    id: true,
+                    userId: true,
+                    paymentMethod: true,
+                    status: true,
+                    total: true,
+                    items: true,
+                    shippingCity: true,
+                    shippingComplement: true,
+                    shippingCountry: true,
+                    shippingNeighborhood: true,
+                    shippingNumber: true,
+                    shippingState: true,
+                    shippingStreet: true,
+                    shippingZipCode: true,
+                    createdAt: true
+                },
+                where: {
+                    userId
+                }
+            }),
+            this.prisma.order.count({
+                where: {
+                    userId
+                }
+            }),
         ]);
 
         return {
@@ -57,6 +111,14 @@ export class OrdersService {
                 status: true,
                 total: true,
                 items: true,
+                shippingCity: true,
+                shippingComplement: true,
+                shippingCountry: true,
+                shippingNeighborhood: true,
+                shippingNumber: true,
+                shippingState: true,
+                shippingStreet: true,
+                shippingZipCode: true,
                 createdAt: true
             }
         });
@@ -73,6 +135,7 @@ export class OrdersService {
 
     async create(dto: CreateOrderDto) {
         const { userId, items, paymentMethod } = dto;
+        const { shippingCity, shippingCountry, shippingNeighborhood, shippingNumber, shippingState, shippingStreet, shippingZipCode, shippingComplement } = dto;
 
         const productIds = items.map(i => i.productId);
 
@@ -127,6 +190,14 @@ export class OrdersService {
                 items: {
                     create: orderItems,
                 },
+                shippingCity,
+                shippingComplement,
+                shippingCountry,
+                shippingNeighborhood,
+                shippingNumber,
+                shippingState,
+                shippingStreet,
+                shippingZipCode
             },
             include: {
                 items: true,
@@ -167,6 +238,36 @@ export class OrdersService {
         });
 
         this.eventBus.emit('orderCanceled', { items: orderItems });
+
+        return order;
+    }
+
+
+    async updateStatus(id: number, status: string) {
+        const existingOrder = await this.prisma.order.findUnique({
+            where: { id },
+        });
+
+        if (!existingOrder) {
+            throw new RpcException({
+                statusCode: 404,
+                message: 'Order not found',
+            });
+        }
+
+        const statusEnum = OrderStatusEnum[status]
+
+        const order = await this.prisma.order.update({
+            where: { id },
+            data: { status: statusEnum }
+        });
+
+        if (status == 'cancelled') {
+            const orderItems = await this.prisma.orderItem.findMany({
+                where: { orderId: id },
+            });
+            this.eventBus.emit('orderCanceled', { items: orderItems });
+        }
 
         return order;
     }

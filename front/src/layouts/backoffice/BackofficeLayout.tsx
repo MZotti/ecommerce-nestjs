@@ -1,4 +1,4 @@
-import { Navigate, Outlet } from "react-router-dom"
+import { Navigate, Outlet, useNavigate } from "react-router-dom"
 import Header from "./Header"
 import NavBar from "./NavBar"
 import { Box, Flex } from "@chakra-ui/react"
@@ -6,16 +6,30 @@ import LoadingScreen from "./LoadingScreen"
 import { useMe } from "@/hooks/auth"
 import { Toaster } from "@/components/chakra-ui/toaster"
 import { useColorModeValue } from "@/components/chakra-ui/color-mode"
+import { useEffect } from "react"
+import { useDispatch } from "react-redux"
+import { bindActionCreators } from "redux"
+import { authCreator } from "@/state"
 
 const BackofficeLayout = () => {
+    const navigate = useNavigate();
+
     const backgroundColor = useColorModeValue("gray.200", "bg");
-    const { data, error, isFetching } = useMe();
+    const { data, error, isFetching, isFetched } = useMe();
+
+    const dispatch = useDispatch()
+    const { updateMeAction } = bindActionCreators(authCreator, dispatch)
+
+    useEffect(() => {
+        if (error) {
+            navigate("/backoffice/login")
+        } else {
+            updateMeAction(data)
+        }
+    }, [data, error, isFetched])
 
     if (isFetching)
         return <LoadingScreen />
-
-    if(error)
-        return <Navigate to="/backoffice/login" />
 
     return (
         <Box

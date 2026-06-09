@@ -51,10 +51,21 @@ const deleteOrder = async (id: number) => {
     }
 }
 
+const getCustomerOrders = async (userId: number, page = 1, perPage = 10) => {
+    try {
+        const { data } = await AXIOS.get(`${BACKOFFICE_URL}/orders/customer/${userId}?page=${page}&perPage=${perPage}`)
+
+        return data;
+    } catch (error) {
+
+    }
+}
+
 export {
     getOrders,
     getOrder,
     postOrder,
     putOrder,
-    deleteOrder
+    deleteOrder,
+    getCustomerOrders
 }

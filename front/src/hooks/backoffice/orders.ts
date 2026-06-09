@@ -1,5 +1,5 @@
 import type Order from '@/interfaces/order'
-import { getOrder, getOrders, postOrder } from '@/services/backoffice/orders'
+import { getCustomerOrders, getOrder, getOrders, postOrder } from '@/services/backoffice/orders'
 import { orderCreator } from '@/state'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useEffect } from 'react'
@@ -13,6 +13,25 @@ const useGetOrders = (currentPage: number, perPage: number, search?: string, fil
     const query = useQuery({
         queryKey: ['orders', currentPage, perPage, search, filters],
         queryFn: () => getOrders(currentPage, perPage, search, filters),
+    })
+
+    useEffect(() => {
+        if (query.data) {
+            paginateOrdersAction(query.data.data)
+        }
+    }, [query.data])
+
+    return query
+}
+
+const useGetCustomerOrders = (userId: number, currentPage: number, perPage: number) => {
+    const dispatch = useDispatch()
+    const { paginateOrdersAction } = bindActionCreators(orderCreator, dispatch)
+
+    const query = useQuery({
+        queryKey: ['orders', userId, currentPage, perPage],
+        queryFn: () => getCustomerOrders(userId, currentPage, perPage),
+        enabled: userId != null
     })
 
     useEffect(() => {
@@ -59,4 +78,4 @@ const useCreateOrder = () => {
     return query;
 }
 
-export { useGetOrders, useGetOrder, useLazyGetOrder, useCreateOrder }
+export { useGetOrders, useGetCustomerOrders, useGetOrder, useLazyGetOrder, useCreateOrder }

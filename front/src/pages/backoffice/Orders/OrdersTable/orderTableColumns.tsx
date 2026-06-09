@@ -1,5 +1,6 @@
 import ActiveDisplay from '@/components/ActiveDisplay'
 import OrderStatusDisplay from '@/components/OrderStatusDisplay'
+import { formatPriceToCurrency } from '@/functions/textFormat'
 import { Text } from '@chakra-ui/react'
 import { FilterField } from 'enums/filter'
 import { dateFormat } from "functions/date"
@@ -14,6 +15,7 @@ const columns: TableColumn[] = [
     {
         label: 'Total (USD)',
         acessor: 'total',
+        customCell: value => <Text>{formatPriceToCurrency(value)}</Text>
     },
     {
         label: 'Items Quant.',

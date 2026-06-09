@@ -26,7 +26,7 @@ const useGetUsers = (currentPage: number, perPage: number, search?: string, filt
 
 const useGetUser = (id: number, storedUser?: User | null) => {
     return useQuery({
-        queryKey: ['user'],
+        queryKey: ['user', id],
         queryFn: () => getUser(id),
         enabled: storedUser == null
     })
