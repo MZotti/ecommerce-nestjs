@@ -27,6 +27,9 @@ export class UsersService {
                     createdAt: true,
                 },
                 where: {
+                    roleId: {
+                        not: 5
+                    },
                     OR: [
                         {
                             name: {

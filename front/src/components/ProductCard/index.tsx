@@ -1,7 +1,7 @@
 import { formatPriceToCurrency } from "@/functions/textFormat";
 import type Product from "@/interfaces/product";
 import { cartCreator } from "@/state";
-import { Box, Button, Card, HStack, Image, LinkBox, LinkOverlay, Text } from "@chakra-ui/react"
+import { Box, Button, Card, Center, HStack, Image, LinkBox, LinkOverlay, Text } from "@chakra-ui/react"
 import { ShoppingCartIcon } from "@phosphor-icons/react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
@@ -37,13 +37,13 @@ const ProductCard = ({ product }: { product: Product }) => {
             <Card.Root minH="500px" cursor="pointer" size="md" variant={"elevated"} backgroundColor="gray.100" onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} transition="0.2s ease all">
                 <Image
                     src={product?.imageUrl}
-                    m="4"
+                    p="4"
                 />
                 <Card.Body color="fg.muted">
                     <LinkOverlay asChild>
                         <Link to={`/product/${product.slug}`}></Link>
                     </LinkOverlay>
-                    <Text color="black" fontSize="md">5.0</Text>
+                    <Text color="black" fontSize="md" mt="auto">5.0</Text>
                     <Text color="black" fontSize="md">{product.name}</Text>
                     <Text color="black" fontSize="lg" fontWeight="bold" >USD {formatPriceToCurrency(product.price)}</Text>
                 </Card.Body>

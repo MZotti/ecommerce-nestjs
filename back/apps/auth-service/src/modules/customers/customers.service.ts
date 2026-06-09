@@ -39,21 +39,25 @@ export class CustomersService {
                 where: {
                     user: {
                         roleId: 5
-                    }
-                    // OR: [
-                    //     {
-                    //         name: {
-                    //             contains: search,
-                    //             mode: 'insensitive'
-                    //         },
-                    //     },
-                    //     {
-                    //         email: {
-                    //             contains: search,
-                    //             mode: 'insensitive'
-                    //         },
-                    //     }
-                    // ]
+                    },
+                    OR: [
+                        {
+                            user: {
+                                name: {
+                                    contains: search,
+                                    mode: 'insensitive'
+                                },
+                            }
+                        },
+                        {
+                            user: {
+                                email: {
+                                    contains: search,
+                                    mode: 'insensitive'
+                                },
+                            }
+                        }
+                    ]
                 },
             }),
             this.prisma.customer.count(),
