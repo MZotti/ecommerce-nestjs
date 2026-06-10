@@ -50,15 +50,28 @@ const Categories = () => {
             <Portal>
                 <LightMode>
                     <Menu.Positioner>
-                        <Menu.Content>
-                            {
-                                categoriesOptions.map(cat => <Menu.Item value="rename"><Link to={cat.link}>{cat.label}</Link></Menu.Item>)
-                            }
+                        <Menu.Content backgroundColor="orange.500">
+                            <Menu.ItemGroup>
+                                {
+                                    categoriesOptions.map(cat =>
+                                        <Link to={cat.link}>
+                                            <Menu.Item
+                                                _hover={{
+                                                    backgroundColor: "orange.600"
+                                                }}
+                                                color="white"
+                                                value={cat.label}
+                                                cursor="pointer">
+                                                {cat.label}
+                                            </Menu.Item>
+                                        </Link>)
+                                }
+                            </Menu.ItemGroup>
                         </Menu.Content>
                     </Menu.Positioner>
                 </LightMode>
             </Portal>
-        </Menu.Root>
+        </Menu.Root >
     )
 }
 

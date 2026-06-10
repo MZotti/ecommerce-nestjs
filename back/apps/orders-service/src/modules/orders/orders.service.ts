@@ -222,6 +222,13 @@ export class OrdersService {
             });
         }
 
+        if (existingOrder.status == OrderStatusEnum.FINISHED) {
+            throw new RpcException({
+                statusCode: 403,
+                message: 'Order already finished',
+            });
+        }
+
         if (existingOrder.status == OrderStatusEnum.CANCELED) {
             throw new RpcException({
                 statusCode: 403,
