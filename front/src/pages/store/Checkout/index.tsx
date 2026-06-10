@@ -2,40 +2,70 @@ import { toaster } from '@/components/chakra-ui/toaster';
 import OrderResume from '@/components/OrderResume'
 import SimpleCard from '@/components/SimpleCard'
 import { useCreateOrder } from '@/hooks/store/orders';
+import type { OrderItem } from '@/interfaces/order';
 import { cartCreator } from '@/state';
 import type { State } from '@/state/reducers';
-import { Box, Button, createListCollection, Flex, HStack, RadioGroup, Select, Text, VStack } from '@chakra-ui/react'
-import { useEffect, useState } from 'react';
+import { Button, Flex, VStack } from '@chakra-ui/react'
+import { FormProvider, useForm, type SubmitHandler } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { bindActionCreators } from 'redux';
+import CheckoutPaymentMethod from './CheckoutPaymentMethod';
+import CheckoutAddress from './CheckoutAddress';
+import { schema } from './checkoutSchema';
+
+interface CheckoutFormData {
+    items?: OrderItem[]
+    paymentMethod: string
+    shippingZipCode: string
+    shippingStreet: string
+    shippingNumber: string
+    shippingComplement: string
+    shippingNeighborhood?: string
+    shippingCity: string
+    shippingState: string
+    shippingCountry: string
+}
+
+const formInitialState: CheckoutFormData = {
+    paymentMethod: "",
+    shippingCity: "",
+    shippingCountry: "",
+    shippingNeighborhood: "",
+    shippingNumber: "",
+    shippingState: "",
+    shippingStreet: "",
+    shippingZipCode: "",
+    shippingComplement: ""
+}
 
 const Checkout = () => {
     const navigate = useNavigate();
     const cart = useSelector(({ cart }: State) => cart)
     const auth = useSelector(({ auth }: State) => auth)
-    const addresses = auth.user?.addresses || []
-
-    const [paymentMethod, setPaymentMethod] = useState<string>("");
-    const [addressId, setAddressId] = useState<number>(0);
 
     const dispatch = useDispatch()
     const { clearCartAction } = bindActionCreators(cartCreator, dispatch)
 
-    const { mutateAsync: createOrder, isPending, isSuccess } = useCreateOrder();
-
-    const collection = createListCollection({
-        items: [
-            { value: "PIX", label: "PIX" },
-            { value: "PAYMENT_ORDER", label: "PAYMENT ORDER" },
-            { value: "CREDIT", label: "CREDIT" },
-            { value: "DEBIT", label: "DEBIT" }
-        ]
+    const methods = useForm<CheckoutFormData>({
+        defaultValues: formInitialState,
+        resolver: yupResolver(schema)
     })
 
-    const onChange = (value: string[]) => setPaymentMethod(value[0])
+    const {
+        handleSubmit,
+        reset,
+        formState: { errors }
+    } = methods
 
-    const onFinish = async () => {
+    console.log("errors", errors);
+
+    const { mutateAsync: createOrder, isPending } = useCreateOrder();
+
+    const onSubmit: SubmitHandler<CheckoutFormData> = async (data) => {
+        console.log("entrou submit");
+
         if (!auth.user) {
             toaster.create({
                 description: "Login first",
@@ -44,100 +74,52 @@ const Checkout = () => {
             return;
         }
 
-        const selectedAddress = addresses.find(add => add.id === addressId);
-
-        if (addressId === 0 || selectedAddress == undefined) {
+        if (cart.length === 0) {
             toaster.create({
-                description: "Select address",
+                description: "Cart is empty",
                 type: "warning",
             })
             return;
         }
 
-        if (paymentMethod === "") {
+        data.items = cart;
+
+        const response = await createOrder(data);
+
+        if (!response) {
             toaster.create({
-                description: "Select payment method",
-                type: "warning",
+                description: "Error",
+                type: "error",
             })
             return;
         }
 
-        const formData = {
-            items: cart,
-            paymentMethod,
-            shippingZipCode: selectedAddress.zipCode,
-            shippingStreet: selectedAddress.street,
-            shippingNumber: selectedAddress.number,
-            shippingComplement: selectedAddress.complement,
-            shippingNeighborhood: selectedAddress.neighborhood,
-            shippingCity: selectedAddress.city,
-            shippingState: selectedAddress.state,
-            shippingCountry: selectedAddress.country,
-        }
+        toaster.create({
+            description: "Order created",
+            type: "success",
+        })
 
-        createOrder(formData);
+        reset();
+        clearCartAction();
+        navigate("/")
     }
 
-    useEffect(() => {
-        if (isSuccess) {
-            toaster.create({
-                description: "Order created",
-                type: "success",
-            })
-
-            clearCartAction();
-            navigate("/")
-        }
-    }, [isSuccess])
-
     return (
-        <Flex w="full" px="400px" gap={2}>
-            <Flex flexGrow={2}>
-                <SimpleCard title='Finish order'>
-                    <VStack alignItems="start">
-                        <Text>
-                            Select payment method
-                        </Text>
-                        <Select.Root name="Payment method" value={[paymentMethod]} collection={collection} onValueChange={({ value }) => onChange(value)} size="sm" width="320px"  >
-                            <Select.HiddenSelect />
-                            <Select.Control>
-                                <Select.Trigger>
-                                    <Select.ValueText placeholder={`Select`} />
-                                </Select.Trigger>
-                                <Select.IndicatorGroup>
-                                    <Select.Indicator />
-                                </Select.IndicatorGroup>
-                            </Select.Control>
-                            <Select.Positioner>
-                                <Select.Content>
-                                    {collection.items.map((item) => (
-                                        <Select.Item item={item} key={item.value}>
-                                            {item.label}
-                                            <Select.ItemIndicator />
-                                        </Select.Item>
-                                    ))}
-                                </Select.Content>
-                            </Select.Positioner>
-                        </Select.Root>
-                    </VStack>
-                    <Box>
-                        <Text>Select shipping address</Text>
-                        <RadioGroup.Root defaultValue="1" value={String(addressId)} onValueChange={(e) => setAddressId(Number(e.value))}>
-                            <HStack gap="6">
-                                {addresses.map((address) => (
-                                    <RadioGroup.Item key={address.id} value={String(address.id)} >
-                                        <RadioGroup.ItemHiddenInput />
-                                        <RadioGroup.ItemIndicator />
-                                        <RadioGroup.ItemText>{address.name}</RadioGroup.ItemText>
-                                    </RadioGroup.Item>
-                                ))}
-                            </HStack>
-                        </RadioGroup.Root>
-                    </Box>
-                </SimpleCard>
-            </Flex>
-            <OrderResume actionButton={<Button w="full" colorPalette="orange" onClick={onFinish} disabled={isPending} loading={isPending}>Finish</Button>} />
-        </Flex>
+        <FormProvider {...methods}>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <Flex w="full" px="400px" gap={2}>
+                    <Flex flexGrow={2}>
+                        <SimpleCard title='Finish order'>
+                            <VStack gap={6} alignItems="start">
+                                <CheckoutPaymentMethod />
+                                <CheckoutAddress />
+                            </VStack>
+                        </SimpleCard>
+                    </Flex>
+                    <OrderResume actionButton={<Button w="full" type='submit' colorPalette="orange" disabled={isPending} loading={isPending}>Finish</Button>} />
+                </Flex>
+            </form>
+        </FormProvider>
     )
 }
 

@@ -1,10 +1,6 @@
 import { createContext, useContext } from 'react'
 
 export interface FormContextProps {
-    submitLabel: string
-    cancelLabel: string
-    onSubmit: (args1: any) => void
-    onCancel?: () => void
     isLoading?: boolean
     isLoadingSubmit: boolean
 }

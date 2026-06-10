@@ -2,7 +2,7 @@ import { LightMode } from '@/components/chakra-ui/color-mode'
 import FormContainer from '@/components/Form/FormContainer'
 import TextInput from '@/components/Inputs/TextInput'
 import { useCreateAddress } from '@/hooks/store/address'
-import { CloseButton, Dialog, Portal } from '@chakra-ui/react'
+import { Button, CloseButton, Dialog, HStack, Portal } from '@chakra-ui/react'
 import { useForm, type SubmitHandler } from 'react-hook-form'
 
 interface AddressFormData {
@@ -36,7 +36,7 @@ const CreateAddressModal = ({ isOpen, onClose }: { isOpen: boolean, onClose: () 
         defaultValues: formInitialState
     })
 
-    const { reset } = methods;
+    const { reset, handleSubmit } = methods;
 
     const onSubmit: SubmitHandler<AddressFormData> = async (data) => {
         await createAddress(data)
@@ -46,7 +46,7 @@ const CreateAddressModal = ({ isOpen, onClose }: { isOpen: boolean, onClose: () 
     }
 
     return (
-        <Dialog.Root placement="center" open={isOpen}>
+        <Dialog.Root placement="center" open={isOpen} size="sm">
             <Portal>
                 <LightMode>
                     <Dialog.Backdrop />
@@ -56,24 +56,26 @@ const CreateAddressModal = ({ isOpen, onClose }: { isOpen: boolean, onClose: () 
                                 <Dialog.Title>Create New Address</Dialog.Title>
                             </Dialog.Header>
                             <Dialog.Body>
-                                <FormContainer
-                                    title=""
-                                    submitLabel="Create"
-                                    methods={methods}
-                                    isLoadingSubmit={isPending}
-                                    onSubmit={onSubmit}
-                                    onCancel={onClose}
-                                >
-                                    <TextInput id='name' label='Address Name'  />
-                                    <TextInput id='zipCode' label='Zip Code'  />
-                                    <TextInput id='street' label='Street'  />
-                                    <TextInput id='number' label='Number'  />
-                                    <TextInput id='complement' label='Complement'  />
-                                    <TextInput id='neighborhood' label='Neighborhood'  />
-                                    <TextInput id='city' label='City'  />
-                                    <TextInput id='state' label='State'  />
-                                    <TextInput id='country' label='Country'  />
-                                </FormContainer>
+                                <form onSubmit={handleSubmit(onSubmit)}>
+                                    <FormContainer
+                                        methods={methods}
+                                        columns={2}
+                                        isLoadingSubmit={isPending}
+                                    >
+                                        <TextInput id='name' label='Address Name' />
+                                        <TextInput id='zipCode' label='Zip Code' />
+                                        <TextInput id='street' label='Street' />
+                                        <TextInput id='number' label='Number' />
+                                        <TextInput id='complement' label='Complement' />
+                                        <TextInput id='neighborhood' label='Neighborhood' />
+                                        <TextInput id='city' label='City' />
+                                        <TextInput id='state' label='State' />
+                                        <TextInput id='country' label='Country' />
+                                    </FormContainer>
+                                    <HStack justifyContent="end">
+                                        <Button colorPalette="green" type="submit">Register</Button>
+                                    </HStack>
+                                </form>
                             </Dialog.Body>
                             <Dialog.CloseTrigger asChild>
                                 <CloseButton size="sm" onClick={onClose} disabled={isPending} />
