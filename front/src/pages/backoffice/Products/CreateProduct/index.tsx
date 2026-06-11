@@ -6,6 +6,7 @@ import Modal from "./Modal"
 import ProductForm from "../ProcuctForm"
 import type ProductFormData from "../ProcuctForm/ProductFormData"
 import { useCreateProduct } from "@/hooks/backoffice/products"
+import FormCard from "@/components/FormCard"
 
 const formInitialState: ProductFormData = {
     name: "",
@@ -21,6 +22,8 @@ const CreateProduct = () => {
     const methods = useForm<ProductFormData>({
         defaultValues: formInitialState
     })
+
+    const { handleSubmit } = methods;
 
     const { mutateAsync: createProduct, isPending } = useCreateProduct();
 
@@ -41,16 +44,15 @@ const CreateProduct = () => {
 
     return (
         <>
-            <FormContainer
+            <FormCard
                 title="Create Product"
-                submitLabel="Create"
                 methods={methods}
-                isLoadingSubmit={isPending}
-                onSubmit={onSubmit}
+                onSubmit={handleSubmit(onSubmit)}
                 onCancel={backToList}
+                isLoadingSubmit={isPending}
             >
                 <ProductForm />
-            </FormContainer>
+            </FormCard>
             <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
         </>
     )

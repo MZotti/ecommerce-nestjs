@@ -1,6 +1,7 @@
 import { createListCollection, Portal, Select } from "@chakra-ui/react"
 import InputContainer from "./InputContainer"
-import { Controller, useFormContext } from "react-hook-form"
+import { useFormContext } from "@/contexts/FormContext"
+import { Controller, useFormContext as useHookFormContext } from "react-hook-form"
 
 interface Props {
     id: string
@@ -14,7 +15,8 @@ interface Option {
 }
 
 const SelectInput = (props: Props) => {
-    const { setValue, control } = useFormContext();
+    const { isLoadingSubmit } = useFormContext();
+    const { setValue, control } = useHookFormContext();
     const { options } = props;
 
     const collections = createListCollection({
@@ -29,7 +31,7 @@ const SelectInput = (props: Props) => {
                 control={control}
                 name={props.id}
                 render={({ field }) => (
-                    <Select.Root name={field.name} value={[field.value]} collection={collections} onValueChange={({ value }) => onChange(value)} size="sm" width="320px"  >
+                    <Select.Root disabled={isLoadingSubmit} name={field.name} value={[field.value]} collection={collections} onValueChange={({ value }) => onChange(value)} size="sm" width="320px"  >
                         <Select.HiddenSelect />
                         <Select.Control>
                             <Select.Trigger>

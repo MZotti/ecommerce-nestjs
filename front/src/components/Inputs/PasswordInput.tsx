@@ -1,7 +1,8 @@
 import { Input } from '@chakra-ui/react'
 import InputContainer from './InputContainer'
 import { useState } from 'react'
-import { useFormContext } from 'react-hook-form'
+import { useFormContext } from "@/contexts/FormContext"
+import { useFormContext as useHookFormContext } from 'react-hook-form'
 
 interface Props {
     id: string
@@ -10,12 +11,13 @@ interface Props {
 
 const PasswordInput = (props: Props) => {
     const { id } = props
-    const { register } = useFormContext();
+    const { isLoadingSubmit } = useFormContext();
+    const { register } = useHookFormContext();
     const [hidden] = useState<boolean>(true);
 
     return (
         <InputContainer {...props}>
-            <Input {...register(id)} type={hidden ? 'password' : 'text'} />
+            <Input {...register(id)} type={hidden ? 'password' : 'text'} disabled={isLoadingSubmit} />
         </InputContainer>
     )
 }

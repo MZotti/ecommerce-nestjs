@@ -3,9 +3,9 @@ import PasswordInput from '@/components/Inputs/PasswordInput'
 import TextInput from '@/components/Inputs/TextInput'
 import { storeAccessToken } from '@/functions/auth'
 import { useLogin } from '@/hooks/auth'
-import { Text } from '@chakra-ui/react'
+import { Button, Text } from '@chakra-ui/react'
 import { useState } from 'react'
-import { FormProvider, useForm, type SubmitHandler } from "react-hook-form"
+import { useForm, type SubmitHandler } from "react-hook-form"
 import { useNavigate } from 'react-router-dom'
 
 interface FormData {
@@ -26,6 +26,8 @@ const Form = () => {
         defaultValues: formInitialState
     })
 
+    const { handleSubmit } = methods
+
     const [credentialsError, setCredentialsError] = useState<string>("");
 
     const onSubmit: SubmitHandler<FormData> = async (data) => {
@@ -43,21 +45,19 @@ const Form = () => {
     }
 
     return (
-        <FormContainer
-            title=""
-            submitLabel="Login"
-            methods={methods}
-            isLoadingSubmit={isPending}
-            onSubmit={onSubmit}
-            cardLess
-        >
-            <FormProvider {...methods}>
+        <form onSubmit={handleSubmit(onSubmit)}>
+            <FormContainer
+                methods={methods}
+                columns={1}
+                isLoadingSubmit={isPending}
+            >
                 <TextInput id="email" label="E-mail" />
                 <PasswordInput id="password" label="Password" />
                 <Text fontSize="sm" color="red.500">{credentialsError}</Text>
+                <Button colorPalette="green" type="submit">Login</Button>
                 <Text>Forgot password</Text>
-            </FormProvider>
-        </FormContainer>
+            </FormContainer>
+        </form>
     )
 }
 

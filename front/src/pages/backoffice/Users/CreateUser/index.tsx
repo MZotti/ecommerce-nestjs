@@ -6,6 +6,7 @@ import FormContainer from "@/components/Form/FormContainer"
 import { useForm, type SubmitHandler } from "react-hook-form"
 import Modal from "./Modal"
 import type UserFormData from "../UserForm/UserFormData"
+import FormCard from "@/components/FormCard"
 
 const formInitialState: UserFormData = {
     name: "",
@@ -19,6 +20,8 @@ const CreateUser = () => {
     const methods = useForm<UserFormData>({
         defaultValues: formInitialState
     })
+
+    const { handleSubmit } = methods
 
     const { mutateAsync: createUser, isPending } = useCreateUser();
 
@@ -36,16 +39,15 @@ const CreateUser = () => {
 
     return (
         <>
-            <FormContainer
+            <FormCard
                 title="Create User"
-                submitLabel="Create"
                 methods={methods}
-                isLoadingSubmit={isPending}
-                onSubmit={onSubmit}
+                onSubmit={handleSubmit(onSubmit)}
                 onCancel={backToList}
+                isLoadingSubmit={isPending}
             >
                 <UserForm />
-            </FormContainer>
+            </FormCard>
             <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
         </>
     )

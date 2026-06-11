@@ -1,6 +1,7 @@
 import { Input } from '@chakra-ui/react'
 import InputContainer from './InputContainer'
-import { useFormContext } from 'react-hook-form'
+import { useFormContext } from "@/contexts/FormContext"
+import { useFormContext as useHookFormContext } from 'react-hook-form'
 
 interface Props {
     id: string
@@ -9,11 +10,12 @@ interface Props {
 
 const TextInput = (props: Props) => {
     const { id } = props
-    const { register } = useFormContext();
+    const { isLoadingSubmit } = useFormContext();
+    const { register } = useHookFormContext();
 
     return (
         <InputContainer {...props}>
-            <Input {...register(id)} />
+            <Input {...register(id)} disabled={isLoadingSubmit} />
         </InputContainer>
     )
 }

@@ -7,6 +7,7 @@ import OrderForm from "../OrderForm"
 import type OrderFormData from "../OrderForm/OrderFormData"
 import { useCreateOrder } from "@/hooks/backoffice/orders"
 import { PaymentMethods } from "@/enums/order"
+import FormCard from "@/components/FormCard"
 
 const formInitialState: OrderFormData = {
     userId: 1,
@@ -20,6 +21,8 @@ const CreateOrder = () => {
     const methods = useForm<OrderFormData>({
         defaultValues: formInitialState
     })
+
+    const { handleSubmit } = methods;
 
     const { mutateAsync: createOrder, isPending } = useCreateOrder();
 
@@ -67,16 +70,15 @@ const CreateOrder = () => {
 
     return (
         <>
-            <FormContainer
+            <FormCard
                 title="Create Order"
-                submitLabel="Create"
                 methods={methods}
-                isLoadingSubmit={isPending}
-                onSubmit={onSubmit}
+                onSubmit={handleSubmit(onSubmit)}
                 onCancel={backToList}
+                isLoadingSubmit={isPending}
             >
                 <OrderForm />
-            </FormContainer>
+            </FormCard>
             <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
         </>
     )

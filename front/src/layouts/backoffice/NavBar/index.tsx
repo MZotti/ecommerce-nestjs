@@ -3,7 +3,7 @@ import NavMenu from "./NavMenu"
 import { useColorModeValue } from "@/components/chakra-ui/color-mode";
 
 const NavBar = () => {
-    const backgroundColor = useColorModeValue("gray.200", "gray.950");
+    const backgroundColor = useColorModeValue("gray.50", "gray.950");
     const borderColor = useColorModeValue("gray.400", "gray.800");
 
     return (

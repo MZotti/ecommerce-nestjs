@@ -109,7 +109,7 @@ const Checkout = () => {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Flex w="full" px="400px" gap={2}>
                     <Flex flexGrow={2}>
-                        <SimpleCard title='Finish order'>
+                        <SimpleCard title='Checkout'>
                             <VStack gap={6} alignItems="start">
                                 <CheckoutPaymentMethod />
                                 <CheckoutAddress />

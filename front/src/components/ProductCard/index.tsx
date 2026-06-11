@@ -34,7 +34,7 @@ const ProductCard = ({ product }: { product: Product }) => {
 
     return (
         <LinkBox as="article">
-            <Card.Root minH="500px" cursor="pointer" size="md" variant={"elevated"} backgroundColor="gray.100" onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} transition="0.2s ease all">
+            <Card.Root minH="500px" cursor="pointer" size="md" variant={"elevated"} backgroundColor="white" onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} transition="0.2s ease all">
                 <Image
                     src={product?.imageUrl}
                     p="4"
