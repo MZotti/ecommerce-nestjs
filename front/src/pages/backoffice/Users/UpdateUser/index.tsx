@@ -2,18 +2,19 @@ import { useSelector } from "react-redux"
 import type { State } from "@/state/reducers"
 import UserForm from "../UserForm"
 import { useNavigate, useParams } from "react-router-dom"
-import { useLazyGetUser, useUpdateUser } from "@/hooks/backoffice/users"
+import { useGetUser, useLazyGetUser, useUpdateUser } from "@/hooks/backoffice/users"
 import { useEffect, useState } from "react"
 import FormContainer from "@/components/Form/FormContainer"
 import { useForm, type SubmitHandler } from "react-hook-form"
 import Modal from "./Modal"
 import type UserFormData from "../UserForm/UserFormData"
+import FormCard from "@/components/FormCard"
 
 const UpdateUser = () => {
     const { id } = useParams();
     const navigate = useNavigate();
 
-    const { data, refetch: getUser, isFetching } = useLazyGetUser(Number(id));
+    const { data, isFetching } = useGetUser(Number(id));
 
     const users = useSelector(({ users }: State) => users)
     const storedUser = users.find(user => user.id == Number(id)) || null;
@@ -27,6 +28,8 @@ const UpdateUser = () => {
         },
         defaultValues: user
     })
+
+    const { handleSubmit } = methods;
 
     const { mutateAsync: updateUser, isPending } = useUpdateUser();
 
@@ -42,25 +45,19 @@ const UpdateUser = () => {
 
     const [modalOpen, setModalOpen] = useState<boolean>(false);
 
-    useEffect(() => {
-        if (storedUser === null) {
-            getUser();
-        }
-    }, [])
-
     return (
         <>
-            <FormContainer
+            <FormCard
                 title="Update User"
-                submitLabel="Update"
                 methods={methods}
+                onSubmit={handleSubmit(onSubmit)}
+                onCancel={backToList}
                 isLoading={isFetching}
                 isLoadingSubmit={isPending}
-                onSubmit={onSubmit}
-                onCancel={backToList}
+                isUpdate
             >
                 <UserForm />
-            </FormContainer>
+            </FormCard>
             <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
         </>
     )

@@ -10,10 +10,11 @@ interface Props<T extends FieldValues> {
     isLoading?: boolean
     isLoadingSubmit?: boolean
     onCancel: () => void
+    isUpdate?: boolean
     children: React.ReactNode
 }
 
-const FormCard = <T extends FieldValues,>({ title, methods, onSubmit, columns = 1, isLoading = false, isLoadingSubmit = false, onCancel, children }: Props<T>) => {
+const FormCard = <T extends FieldValues,>({ title, methods, onSubmit, columns = 1, isLoading = false, isLoadingSubmit = false, onCancel, isUpdate = false, children }: Props<T>) => {
     return (
         <Card.Root m="auto" mt={0} size="lg">
             <form onSubmit={onSubmit}>
@@ -33,7 +34,7 @@ const FormCard = <T extends FieldValues,>({ title, methods, onSubmit, columns = 
                 <Card.Footer>
                     <HStack w="full" justifyContent="end">
                         <Button colorPalette="gray" onClick={onCancel} disabled={isLoadingSubmit} >Cancel</Button>
-                        <Button type="submit" colorPalette="green" disabled={isLoadingSubmit} loading={isLoadingSubmit} >Create</Button>
+                        <Button type="submit" colorPalette="green" disabled={isLoadingSubmit} loading={isLoadingSubmit} >{isUpdate ? "Update" : "Create"}</Button>
                     </HStack>
                 </Card.Footer>
             </form>

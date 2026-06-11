@@ -8,6 +8,7 @@ import Modal from "./Modal"
 import ProductForm from "../ProcuctForm"
 import { useLazyGetProduct, useUpdateProduct } from "@/hooks/backoffice/products"
 import type ProductFormData from "../ProcuctForm/ProductFormData"
+import FormCard from "@/components/FormCard"
 
 const UpdateProduct = () => {
     const { id } = useParams();
@@ -30,6 +31,8 @@ const UpdateProduct = () => {
         },
         defaultValues: product
     })
+
+    const { handleSubmit } = methods
 
     const { mutateAsync: updateProduct, isPending } = useUpdateProduct();
 
@@ -54,17 +57,17 @@ const UpdateProduct = () => {
 
     return (
         <>
-            <FormContainer
+            <FormCard
                 title="Update Product"
-                submitLabel="Update"
                 methods={methods}
+                onSubmit={handleSubmit(onSubmit)}
+                onCancel={backToList}
                 isLoading={isFetching}
                 isLoadingSubmit={isPending}
-                onSubmit={onSubmit}
-                onCancel={backToList}
+                isUpdate
             >
                 <ProductForm />
-            </FormContainer>
+            </FormCard>
             <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
         </>
     )
