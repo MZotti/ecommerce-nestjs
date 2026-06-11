@@ -2,9 +2,8 @@ import { useSelector } from "react-redux"
 import type { State } from "@/state/reducers"
 import UserForm from "../UserForm"
 import { useNavigate, useParams } from "react-router-dom"
-import { useGetUser, useLazyGetUser, useUpdateUser } from "@/hooks/backoffice/users"
-import { useEffect, useState } from "react"
-import FormContainer from "@/components/Form/FormContainer"
+import { useGetUser, useUpdateUser } from "@/hooks/backoffice/users"
+import { useState } from "react"
 import { useForm, type SubmitHandler } from "react-hook-form"
 import Modal from "./Modal"
 import type UserFormData from "../UserForm/UserFormData"
@@ -14,10 +13,10 @@ const UpdateUser = () => {
     const { id } = useParams();
     const navigate = useNavigate();
 
-    const { data, isFetching } = useGetUser(Number(id));
-
     const users = useSelector(({ users }: State) => users)
     const storedUser = users.find(user => user.id == Number(id)) || null;
+    const { data, isFetching } = useGetUser(Number(id), storedUser);
+
     const user = storedUser || data;
 
     const methods = useForm<UserFormData>({

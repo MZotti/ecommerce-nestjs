@@ -1,12 +1,11 @@
 import { useSelector } from "react-redux"
 import type { State } from "@/state/reducers"
 import { useNavigate, useParams } from "react-router-dom"
-import { useEffect, useState } from "react"
-import FormContainer from "@/components/Form/FormContainer"
+import { useState } from "react"
 import { useForm, type SubmitHandler } from "react-hook-form"
 import Modal from "./Modal"
 import ProductForm from "../ProcuctForm"
-import { useLazyGetProduct, useUpdateProduct } from "@/hooks/backoffice/products"
+import { useGetProduct, useUpdateProduct } from "@/hooks/backoffice/products"
 import type ProductFormData from "../ProcuctForm/ProductFormData"
 import FormCard from "@/components/FormCard"
 
@@ -14,10 +13,11 @@ const UpdateProduct = () => {
     const { id } = useParams();
     const navigate = useNavigate();
 
-    const { data, refetch: getProduct, isFetching } = useLazyGetProduct(Number(id));
 
     const products = useSelector(({ products }: State) => products)
     const storedProduct = products.find(product => product.id == Number(id)) || null;
+    const { data, isFetching } = useGetProduct(Number(id), storedProduct);
+
     const product = storedProduct || data;
 
     const methods = useForm<ProductFormData>({
@@ -48,12 +48,6 @@ const UpdateProduct = () => {
     }
 
     const [modalOpen, setModalOpen] = useState<boolean>(false);
-
-    useEffect(() => {
-        if (storedProduct === null) {
-            getProduct();
-        }
-    }, [])
 
     return (
         <>
