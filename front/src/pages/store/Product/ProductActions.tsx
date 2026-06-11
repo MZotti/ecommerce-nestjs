@@ -1,10 +1,11 @@
+import AddToCartButton from '@/components/AddToCartButton';
 import SimpleCard from '@/components/SimpleCard'
 import { useFetchDataContext } from '@/contexts/FetchDataContext'
 import { formatPriceToCurrency } from '@/functions/textFormat';
 import type Product from '@/interfaces/product';
 import { cartCreator } from '@/state';
-import { Button, Flex, Input, Separator, SkeletonText, Text, VStack } from '@chakra-ui/react'
-import { MinusCircleIcon, PlusCircleIcon, ShoppingCartIcon } from '@phosphor-icons/react';
+import { Button, Flex, Separator, SkeletonText, Text, VStack } from '@chakra-ui/react'
+import { MinusCircleIcon, PlusCircleIcon } from '@phosphor-icons/react';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -63,7 +64,7 @@ const ProductActions = () => {
                             <PlusCircleIcon size="16px" />
                         </Button>
                         <Flex flexGrow="5">
-                            <Button w="full" colorPalette="orange" onClick={addProductToCart}><ShoppingCartIcon size="16px" /> Add to cart</Button>
+                            <AddToCartButton product={product} quantity={quantity} />
                         </Flex>
                     </Flex>
                     <Button w="full" colorPalette="orange" onClick={addProductToCart}>Buy now</Button>

@@ -1,16 +1,11 @@
 import { formatPriceToCurrency } from "@/functions/textFormat";
 import type Product from "@/interfaces/product";
-import { cartCreator } from "@/state";
-import { Box, Button, Card, Center, HStack, Image, LinkBox, LinkOverlay, Text } from "@chakra-ui/react"
-import { ShoppingCartIcon } from "@phosphor-icons/react";
+import { Box, Card, HStack, Image, LinkBox, LinkOverlay, Text } from "@chakra-ui/react"
 import { useState } from "react";
-import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { bindActionCreators } from "redux";
+import AddToCartButton from "../AddToCartButton";
 
 const ProductCard = ({ product }: { product: Product }) => {
-    const dispatch = useDispatch()
-    const { addToCartAction } = bindActionCreators(cartCreator, dispatch)
 
     const [isHovering, setIsHovering] = useState(false);
 
@@ -20,16 +15,6 @@ const ProductCard = ({ product }: { product: Product }) => {
 
     const onMouseLeave = () => {
         setIsHovering(false);
-    }
-
-    const addProductToCart = () => {
-        addToCartAction({
-            productId: product.id,
-            productName: product.name,
-            productImageUrl: product.imageUrl,
-            price: product.price,
-            quantity: 1
-        })
     }
 
     return (
@@ -50,7 +35,7 @@ const ProductCard = ({ product }: { product: Product }) => {
                 <Card.Footer gap="2">
                     <Box w="full">
                         <HStack w="full">
-                            <Button variant="solid" w="full" colorPalette="orange" colorScheme="light" onClick={addProductToCart}><ShoppingCartIcon size="14px" /> Add to cart</Button>
+                            <AddToCartButton product={product} />
                         </HStack>
                     </Box>
                 </Card.Footer>
