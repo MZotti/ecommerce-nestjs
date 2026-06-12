@@ -5,7 +5,7 @@ import { useState } from "react"
 import { useFormContext } from "react-hook-form"
 import { useSelector } from "react-redux"
 
-const CheckoutAddress = () => {
+const CheckoutAddress = ({ openModal }: { openModal: () => void }) => {
     const { setValue, formState: { errors }, clearErrors } = useFormContext()
     const auth = useSelector(({ auth }: State) => auth)
     const addresses = auth.user?.addresses || []
@@ -57,7 +57,7 @@ const CheckoutAddress = () => {
                     }
                 </VStack>
             </RadioCard.Root>
-            <Button colorPalette="orange">Register new address</Button>
+            <Button colorPalette="orange" onClick={openModal}>Register new address</Button>
             <Text fontWeight="bold" fontSize="sm" color="red">{errorMessage}</Text>
         </VStack>
     )

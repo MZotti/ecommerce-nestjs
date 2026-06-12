@@ -3,7 +3,9 @@ import FormContainer from '@/components/Form/FormContainer'
 import TextInput from '@/components/Inputs/TextInput'
 import { useCreateAddress } from '@/hooks/store/address'
 import { Button, CloseButton, Dialog, HStack, Portal } from '@chakra-ui/react'
+import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm, type SubmitHandler } from 'react-hook-form'
+import { schema } from './schema'
 
 interface AddressFormData {
     name: string
@@ -33,7 +35,8 @@ const CreateAddressModal = ({ isOpen, onClose }: { isOpen: boolean, onClose: () 
     const { mutateAsync: createAddress, isPending } = useCreateAddress();
 
     const methods = useForm<AddressFormData>({
-        defaultValues: formInitialState
+        defaultValues: formInitialState,
+        resolver: yupResolver(schema)
     })
 
     const { reset, handleSubmit } = methods;

@@ -14,6 +14,8 @@ import { bindActionCreators } from 'redux';
 import CheckoutPaymentMethod from './CheckoutPaymentMethod';
 import CheckoutAddress from './CheckoutAddress';
 import { schema } from './checkoutSchema';
+import { useState } from 'react';
+import CreateAddressModal from '../Account/Addresses/CreateAddressModal';
 
 interface CheckoutFormData {
     items?: OrderItem[]
@@ -44,6 +46,8 @@ const Checkout = () => {
     const navigate = useNavigate();
     const cart = useSelector(({ cart }: State) => cart)
     const auth = useSelector(({ auth }: State) => auth)
+
+    const [modalOpen, setModalOpen] = useState<boolean>(false);
 
     const dispatch = useDispatch()
     const { clearCartAction } = bindActionCreators(cartCreator, dispatch)
@@ -109,13 +113,14 @@ const Checkout = () => {
                         <SimpleCard title='Checkout'>
                             <VStack gap={6} alignItems="start">
                                 <CheckoutPaymentMethod />
-                                <CheckoutAddress />
+                                <CheckoutAddress openModal={() => setModalOpen(true)} />
                             </VStack>
                         </SimpleCard>
                     </Flex>
                     <OrderResume actionButton={<Button w="full" type='submit' colorPalette="orange" disabled={isPending} loading={isPending}>Finish</Button>} />
                 </Flex>
             </form>
+            <CreateAddressModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
         </FormProvider>
     )
 }
