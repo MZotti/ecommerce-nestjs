@@ -13,19 +13,23 @@ const reducer = (state: OrderItem[] = initialState, action: Action) => {
             return state.filter(product => product.productId !== action.payload)
         case CartActionType.INCREASE_PRODUCT:
             return state.map(product => {
-                if (product.productId === action.payload) {
-                    product.quantity += 1;
+                if (product.productId === action.payload.productId) {
+                    return {
+                        ...product,
+                        quantity: product.quantity + action.payload.quantity,
+                    };
                 }
-
-                return product
+                return product;
             })
         case CartActionType.DECREASE_PRODUCT:
             return state.map(product => {
-                if (product.productId === action.payload) {
-                    product.quantity -= 1;
+                if (product.productId === action.payload.productId) {
+                    return {
+                        ...product,
+                        quantity: product.quantity - action.payload.quantity,
+                    };
                 }
-
-                return product
+                return product;
             })
         case CartActionType.CLEAR_CART:
             return []

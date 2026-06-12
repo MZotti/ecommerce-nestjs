@@ -21,20 +21,20 @@ export const removeFromCartAction = (productId: number) => {
     }
 }
 
-export const increaseProductAction = (productId: number) => {
+export const increaseProductAction = (product: { productId: number, quantity: number }) => {
     return (dispatch: Dispatch<Action>) => {
         dispatch({
             type: CartActionType.INCREASE_PRODUCT,
-            payload: productId,
+            payload: product,
         })
     }
 }
 
-export const decreaseProductAction = (productId: number) => {
+export const decreaseProductAction = (product: { productId: number, quantity: number }) => {
     return (dispatch: Dispatch<Action>) => {
         dispatch({
             type: CartActionType.DECREASE_PRODUCT,
-            payload: productId,
+            payload: product,
         })
     }
 }

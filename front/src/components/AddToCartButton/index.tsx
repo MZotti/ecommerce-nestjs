@@ -1,14 +1,16 @@
 import type Product from '@/interfaces/product'
 import { cartCreator } from '@/state';
+import type { State } from '@/state/reducers';
 import { Button } from '@chakra-ui/react';
 import { CheckCircleIcon, ShoppingCartIcon } from '@phosphor-icons/react';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 const AddToCartButton = ({ product, quantity = 1 }: { product: Product, quantity?: number }) => {
+    const cart = useSelector(({ cart }: State) => cart)
     const dispatch = useDispatch()
-    const { addToCartAction } = bindActionCreators(cartCreator, dispatch)
+    const { addToCartAction, increaseProductAction } = bindActionCreators(cartCreator, dispatch)
 
     const [click, setClick] = useState<boolean>(false);
 
@@ -16,13 +18,21 @@ const AddToCartButton = ({ product, quantity = 1 }: { product: Product, quantity
         if (click)
             return;
 
-        addToCartAction({
-            productId: product.id,
-            productName: product.name,
-            productImageUrl: product.imageUrl,
-            price: product.price,
-            quantity
-        })
+        if (cart.find(item => item.productId === product.id) === undefined) {
+            addToCartAction({
+                productId: product.id,
+                productName: product.name,
+                productImageUrl: product.imageUrl,
+                price: product.price,
+                quantity
+            })
+        } else {
+            increaseProductAction({
+                productId: product.id,
+                quantity
+            })
+
+        }
         setClick(true);
     }
 

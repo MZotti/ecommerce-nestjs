@@ -13,12 +13,12 @@ interface RemoveFromCartAction {
 
 interface IncreaseProductAction {
     type: CartActionType.INCREASE_PRODUCT
-    payload: number
+    payload: { productId: number, quantity: number }
 }
 
 interface DecreaseProductAction {
     type: CartActionType.DECREASE_PRODUCT
-    payload: number
+    payload: { productId: number, quantity: number }
 }
 
 interface ClearCartAction {
