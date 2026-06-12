@@ -2,23 +2,25 @@ import UserForm from "../UserForm"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useCreateUser } from "@/hooks/backoffice/users"
-import FormContainer from "@/components/Form/FormContainer"
 import { useForm, type SubmitHandler } from "react-hook-form"
 import Modal from "./Modal"
 import type UserFormData from "../UserForm/UserFormData"
 import FormCard from "@/components/FormCard"
+import { yupResolver } from "@hookform/resolvers/yup"
+import { schema } from "../UserForm/schema"
 
 const formInitialState: UserFormData = {
     name: "",
     email: "",
-    roleId: 1,
+    roleId: 0,
 }
 
 const CreateUser = () => {
     const navigate = useNavigate();
 
     const methods = useForm<UserFormData>({
-        defaultValues: formInitialState
+        defaultValues: formInitialState,
+        resolver: yupResolver(schema)
     })
 
     const { handleSubmit } = methods

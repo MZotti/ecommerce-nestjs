@@ -8,6 +8,8 @@ import ProductForm from "../ProcuctForm"
 import { useGetProduct, useUpdateProduct } from "@/hooks/backoffice/products"
 import type ProductFormData from "../ProcuctForm/ProductFormData"
 import FormCard from "@/components/FormCard"
+import { yupResolver } from "@hookform/resolvers/yup"
+import { schema } from "../ProcuctForm/schema"
 
 const UpdateProduct = () => {
     const { id } = useParams();
@@ -29,7 +31,8 @@ const UpdateProduct = () => {
             stock: product?.stock,
             imageUrl: product?.imageUrl
         },
-        defaultValues: product
+        defaultValues: product,
+        resolver: yupResolver(schema)
     })
 
     const { handleSubmit } = methods

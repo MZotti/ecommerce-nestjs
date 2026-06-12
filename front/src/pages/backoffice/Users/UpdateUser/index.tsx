@@ -8,6 +8,8 @@ import { useForm, type SubmitHandler } from "react-hook-form"
 import Modal from "./Modal"
 import type UserFormData from "../UserForm/UserFormData"
 import FormCard from "@/components/FormCard"
+import { yupResolver } from "@hookform/resolvers/yup"
+import { schema } from "../UserForm/schema"
 
 const UpdateUser = () => {
     const { id } = useParams();
@@ -25,7 +27,8 @@ const UpdateUser = () => {
             email: user?.email,
             roleId: user?.role.id
         },
-        defaultValues: user
+        defaultValues: user,
+        resolver: yupResolver(schema)
     })
 
     const { handleSubmit } = methods;
