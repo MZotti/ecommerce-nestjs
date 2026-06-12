@@ -47,13 +47,11 @@ const Account = () => {
                             <Text fontSize="sm" fontWeight="bold" color="#FFF">{user?.name}</Text>
                         </Link>
                         :
-                        <Text fontSize="sm" color="#FFF">
-                            <Flex gap={1}>
-                                <Text fontWeight="bold" cursor="pointer" onClick={openModalLogin}>Login</Text>
-                                or
-                                <Text fontWeight="bold" cursor="pointer" onClick={openModalRegister}>create account</Text>
-                            </Flex>
-                        </Text>
+                        <Flex gap={1} color="#FFF">
+                            <Text fontWeight="bold" cursor="pointer" onClick={openModalLogin}>Login</Text>
+                            or
+                            <Text fontWeight="bold" cursor="pointer" onClick={openModalRegister}>create account</Text>
+                        </Flex>
                 }
             </HStack>
             <CustomerLoginContext.Provider value={{
