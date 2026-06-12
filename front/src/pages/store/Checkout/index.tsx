@@ -55,11 +55,8 @@ const Checkout = () => {
 
     const {
         handleSubmit,
-        reset,
-        formState: { errors }
+        reset
     } = methods
-
-    console.log("errors", errors);
 
     const { mutateAsync: createOrder, isPending } = useCreateOrder();
 

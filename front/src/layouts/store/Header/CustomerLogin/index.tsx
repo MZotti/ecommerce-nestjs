@@ -3,8 +3,6 @@ import Login from "./Login"
 import Register from "./Register"
 import { useCustomerLoginContext } from "@/contexts/CustomerLoginContext"
 import { LightMode } from "@/components/chakra-ui/color-mode"
-import { useSelector } from "react-redux"
-import type { State } from "@/state/reducers"
 
 const CustomerLogin = () => {
     const { isOpen, setIsOpen, display } = useCustomerLoginContext();
@@ -17,7 +15,7 @@ const CustomerLogin = () => {
             closeOnEscape
             closeOnInteractOutside
             onOpenChange={(e) => setIsOpen(e.open)}
-            size="sm"
+            size="xs"
         >
             <Portal>
                 <LightMode>
