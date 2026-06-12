@@ -84,8 +84,8 @@ const CreateOrder = () => {
                 isLoadingSubmit={isPending}
             >
                 <OrderForm />
+                <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
             </FormCard>
-            <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
         </>
     )
 }

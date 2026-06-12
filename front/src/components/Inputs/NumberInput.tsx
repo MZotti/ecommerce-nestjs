@@ -5,6 +5,7 @@ import { useFormContext } from 'react-hook-form'
 interface Props {
     id: string
     label: string
+    required?: boolean
 }
 
 const NumberInput = (props: Props) => {

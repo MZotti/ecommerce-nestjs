@@ -14,7 +14,7 @@ const formInitialState: ProductFormData = {
     name: "",
     categoryId: 0,
     description: "",
-    price: 0,
+    price: 1,
     stock: 1,
 }
 

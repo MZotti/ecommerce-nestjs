@@ -14,13 +14,13 @@ const ProductForm = () => {
 
     return (
         <>
-            <TextInput id='name' label='Name' />
-            <Skeleton loading={isFetching}>
-                <SelectInput id='categoryId' label='Category' options={categoriesOptions} />
+            <TextInput id='name' label='Name' required/>
+            <Skeleton loading={isFetching} asChild>
+                <SelectInput id='categoryId' label='Category' options={categoriesOptions} required/>
             </Skeleton>
-            <TextInput id='description' label='Description' />
-            <NumberInput id='price' label='Price' />
-            <NumberInput id='stock' label='Stock' />
+            <TextInput id='description' label='Description' required/>
+            <NumberInput id='price' label='Price' required/>
+            <NumberInput id='stock' label='Stock' required/>
             <TextInput id='imageUrl' label='Image URL' />
         </>
     )

@@ -8,6 +8,7 @@ import type Product from "@/interfaces/product"
 interface Props {
     id: string
     label: string
+    required?: boolean
     onSearch: any
     optionLabel: string
     optionSecondaryLabel?: string

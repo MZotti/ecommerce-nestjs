@@ -1,6 +1,7 @@
-import { Button, Card, HStack, Text } from '@chakra-ui/react'
+import { Box, Button, Card, HStack, Text } from '@chakra-ui/react'
 import FormContainer from '../Form/FormContainer'
 import type { FieldValues, UseFormReturn } from 'react-hook-form'
+import RequiredFieldsHelper from '../Inputs/RequiredFieldsHelper'
 
 interface Props<T extends FieldValues> {
     title: string
@@ -30,6 +31,7 @@ const FormCard = <T extends FieldValues,>({ title, methods, onSubmit, columns = 
                     >
                         {children}
                     </FormContainer>
+                    <RequiredFieldsHelper />
                 </Card.Body>
                 <Card.Footer>
                     <HStack w="full" justifyContent="end">

@@ -6,6 +6,7 @@ import { Controller, useFormContext as useHookFormContext } from "react-hook-for
 interface Props {
     id: string
     label: string
+    required?: boolean
     options: Option[]
 }
 
