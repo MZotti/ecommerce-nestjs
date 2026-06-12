@@ -8,6 +8,7 @@ import type OrderFormData from "../OrderForm/OrderFormData"
 import { useCreateOrder } from "@/hooks/backoffice/orders"
 import { PaymentMethods } from "@/enums/order"
 import FormCard from "@/components/FormCard"
+import { toaster } from "@/components/chakra-ui/toaster"
 
 const formInitialState: OrderFormData = {
     userId: 1,
@@ -24,7 +25,14 @@ const CreateOrder = () => {
 
     const { handleSubmit } = methods;
 
-    const { mutateAsync: createOrder, isPending } = useCreateOrder();
+    const { mutate: createOrder, isPending } = useCreateOrder({
+        onSuccess: () => setModalOpen(true),
+        onError: (error) => toaster.create({
+            description: error.response.data.message,
+            type: "error",
+
+        })
+    });
 
     const onSubmit: SubmitHandler<OrderFormData> = async (data) => {
         let paymentMethod = "";
@@ -57,9 +65,7 @@ const CreateOrder = () => {
             })
         }
 
-        await createOrder(orderData)
-
-        setModalOpen(true);
+        createOrder(orderData)
     }
 
     const backToList = () => {

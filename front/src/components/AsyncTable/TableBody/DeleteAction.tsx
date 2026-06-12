@@ -11,18 +11,25 @@ interface Props {
 }
 
 const DeleteAction = ({ rowId, isOpen, onClose }: Props) => {
-    const { deleteAction } = useTableContext()
+    const { label, deleteAction } = useTableContext()
     const { mutateAsync: deleteModel, isPending } = deleteAction;
 
     const onDelete = async () => {
-        await deleteModel(rowId);
+        try {
+            await deleteModel(rowId);
+
+            toaster.create({
+                description: `${label} deleted`,
+                type: "success",
+            })
+        } catch (error) {
+            toaster.create({
+                description: `${label} could not be deleted`,
+                type: "error",
+            })
+        }
 
         onClose();
-
-        toaster.create({
-            description: "Product deleted",
-            type: "success",
-        })
     }
 
     const actions: ModalAction[] = [

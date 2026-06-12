@@ -8,6 +8,7 @@ import type UserFormData from "../UserForm/UserFormData"
 import FormCard from "@/components/FormCard"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { schema } from "../UserForm/schema"
+import { toaster } from "@/components/chakra-ui/toaster"
 
 const formInitialState: UserFormData = {
     name: "",
@@ -16,6 +17,7 @@ const formInitialState: UserFormData = {
 }
 
 const CreateUser = () => {
+    const [modalOpen, setModalOpen] = useState<boolean>(false);
     const navigate = useNavigate();
 
     const methods = useForm<UserFormData>({
@@ -25,19 +27,20 @@ const CreateUser = () => {
 
     const { handleSubmit } = methods
 
-    const { mutateAsync: createUser, isPending } = useCreateUser();
+    const { mutate: createUser, isPending } = useCreateUser({
+        onSuccess: () => setModalOpen(true),
+        onError: (error) => toaster.create({
+            description: error.response.data.message,
+            type: "error",
 
-    const onSubmit: SubmitHandler<UserFormData> = async (data) => {
-        await createUser(data)
+        })
+    });
 
-        setModalOpen(true);
-    }
+    const onSubmit: SubmitHandler<UserFormData> = async (data) => createUser(data)
 
     const backToList = () => {
         navigate('../users')
     }
-
-    const [modalOpen, setModalOpen] = useState<boolean>(false);
 
     return (
         <>
@@ -49,8 +52,8 @@ const CreateUser = () => {
                 isLoadingSubmit={isPending}
             >
                 <UserForm />
+                <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
             </FormCard>
-            <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
         </>
     )
 }

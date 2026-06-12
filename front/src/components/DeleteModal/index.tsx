@@ -9,7 +9,7 @@ interface Props {
     model: string
 }
 
-const DeleteModal = ({ isOpen, onConfirm, onClose, isLoading, model }: Props) => {
+const DeleteModal = ({ isOpen, onConfirm, onClose, isLoading }: Props) => {
     return (
         <Dialog.Root placement="center" open={isOpen}>
             <Portal>

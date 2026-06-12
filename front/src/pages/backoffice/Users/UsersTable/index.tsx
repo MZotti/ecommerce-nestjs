@@ -12,6 +12,7 @@ import { PlusIcon } from "@phosphor-icons/react"
 import { Link } from "react-router-dom"
 import { useState } from "react"
 import TableActions from "./TableActions"
+import { toaster } from "@/components/chakra-ui/toaster"
 
 const Actions = <Flex>
     <Button colorPalette="green" asChild size="sm">

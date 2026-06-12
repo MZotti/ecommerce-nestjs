@@ -2,6 +2,7 @@ import ActionModal from '@/components/ActionModal'
 import type ModalAction from '@/interfaces/modalAction'
 import type { State } from '@/state/reducers'
 import { Alert, VStack } from '@chakra-ui/react'
+import { useFormContext } from 'react-hook-form'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
@@ -12,6 +13,7 @@ interface Props {
 
 const Modal = ({ isOpen, onClose }: Props) => {
     const navigate = useNavigate();
+    const { reset } = useFormContext();
 
     const products = useSelector(({ products }: State) => products)
     const lastProductId = products[0]?.id;
@@ -22,6 +24,7 @@ const Modal = ({ isOpen, onClose }: Props) => {
     }
 
     const createNewProduct = () => {
+        reset();
         onClose();
     }
 

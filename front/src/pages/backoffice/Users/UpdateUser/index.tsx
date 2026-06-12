@@ -10,6 +10,7 @@ import type UserFormData from "../UserForm/UserFormData"
 import FormCard from "@/components/FormCard"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { schema } from "../UserForm/schema"
+import { toaster } from "@/components/chakra-ui/toaster"
 
 const UpdateUser = () => {
     const { id } = useParams();
@@ -33,7 +34,14 @@ const UpdateUser = () => {
 
     const { handleSubmit } = methods;
 
-    const { mutateAsync: updateUser, isPending } = useUpdateUser();
+    const { mutateAsync: updateUser, isPending } = useUpdateUser({
+        onSuccess: () => setModalOpen(true),
+        onError: (error) => toaster.create({
+            description: error.response.data.message,
+            type: "error",
+
+        })
+    });
 
     const onSubmit: SubmitHandler<UserFormData> = async (data) => {
         await updateUser({ id: Number(id), formData: data })

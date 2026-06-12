@@ -10,6 +10,7 @@ import type ProductFormData from "../ProcuctForm/ProductFormData"
 import FormCard from "@/components/FormCard"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { schema } from "../ProcuctForm/schema"
+import { toaster } from "@/components/chakra-ui/toaster"
 
 const UpdateProduct = () => {
     const { id } = useParams();
@@ -37,13 +38,18 @@ const UpdateProduct = () => {
 
     const { handleSubmit } = methods
 
-    const { mutateAsync: updateProduct, isPending } = useUpdateProduct();
+    const { mutate: updateProduct, isPending } = useUpdateProduct({
+        onSuccess: () => setModalOpen(true),
+        onError: (error) => toaster.create({
+            description: error.response.data.message,
+            type: "error",
+
+        })
+    });
 
     const onSubmit: SubmitHandler<ProductFormData> = async (data) => {
         data.price = Number(data.price);
-        await updateProduct({ id: Number(id), formData: data })
-
-        setModalOpen(true);
+        updateProduct({ id: Number(id), formData: data })
     }
 
     const backToList = () => {

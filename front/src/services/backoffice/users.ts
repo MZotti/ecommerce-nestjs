@@ -2,53 +2,33 @@ import { BACKOFFICE_URL } from '@/enums/urls';
 import AXIOS from '@/services/api'
 
 const getUsers = async (page = 1, perPage = 10, search = "", filters = "") => {
-    try {
-        const { data } = await AXIOS.get(`${BACKOFFICE_URL}/users?page=${page}&perPage=${perPage}&search=${search}`)
+    const { data } = await AXIOS.get(`${BACKOFFICE_URL}/users?page=${page}&perPage=${perPage}&search=${search}`)
 
-        return data;
-    } catch (error) {
-
-    }
+    return data;
 }
 
 const getUser = async (id: number) => {
-    try {
-        const { data } = await AXIOS.get(`${BACKOFFICE_URL}/users/${id}`)
+    const { data } = await AXIOS.get(`${BACKOFFICE_URL}/users/${id}`)
 
-        return data;
-    } catch (error) {
-
-    }
+    return data;
 }
 
 const postUser = async (payload: any) => {
-    try {
-        const { data } = await AXIOS.post(`${BACKOFFICE_URL}/users`, payload)
+    const { data } = await AXIOS.post(`${BACKOFFICE_URL}/users`, payload)
 
-        return data;
-    } catch (error) {
-
-    }
+    return data;
 }
 
 const putUser = async (id: number, payload: any) => {
-    try {
-        const { data } = await AXIOS.put(`${BACKOFFICE_URL}/users/${id}`, payload)
+    const { data } = await AXIOS.put(`${BACKOFFICE_URL}/users/${id}`, payload)
 
-        return data;
-    } catch (error) {
-
-    }
+    return data;
 }
 
 const deleteUser = async (id: number) => {
-    try {
-        const { data } = await AXIOS.delete(`${BACKOFFICE_URL}/users/${id}`)
+    const { data } = await AXIOS.delete(`${BACKOFFICE_URL}/users/${id}`)
 
-        return data;
-    } catch (error) {
-
-    }
+    return data;
 }
 
 export {

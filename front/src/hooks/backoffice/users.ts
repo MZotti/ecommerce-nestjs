@@ -1,3 +1,4 @@
+import type HookCallBack from '@/interfaces/hook'
 import type User from '@/interfaces/user'
 import { deleteUser, getUser, getUsers, postUser, putUser } from '@/services/backoffice/users'
 import { useMutation, useQuery } from '@tanstack/react-query'
@@ -40,14 +41,14 @@ const useLazyGetUser = (id: number) => {
     })
 }
 
-const useCreateUser = () => {
+const useCreateUser = ({ onSuccess, onError }: HookCallBack) => {
     const dispatch = useDispatch()
     const { createUserAction } = bindActionCreators(userCreator, dispatch)
 
     const query = useMutation({
-        mutationFn: (formData: any) => {
-            return postUser(formData)
-        },
+        mutationFn: (formData: any) => postUser(formData),
+        onSuccess: () => onSuccess && onSuccess(),
+        onError: (error) => onError && onError(error)
     })
 
     useEffect(() => {
@@ -59,14 +60,14 @@ const useCreateUser = () => {
     return query;
 }
 
-const useUpdateUser = () => {
+const useUpdateUser = ({ onSuccess, onError }: HookCallBack) => {
     const dispatch = useDispatch()
     const { updateUserAction } = bindActionCreators(userCreator, dispatch)
 
     const query = useMutation({
-        mutationFn: ({ id, formData }: { id: number, formData: any }) => {
-            return putUser(id, formData)
-        },
+        mutationFn: ({ id, formData }: { id: number, formData: any }) => putUser(id, formData),
+        onSuccess: () => onSuccess && onSuccess(),
+        onError: (error) => onError && onError(error)
     })
 
     useEffect(() => {
@@ -83,9 +84,7 @@ const useDeleteUser = () => {
     const { deleteUserAction } = bindActionCreators(userCreator, dispatch)
 
     const query = useMutation({
-        mutationFn: (id: number) => {
-            return deleteUser(id)
-        },
+        mutationFn: (id: number) => deleteUser(id)
     })
 
     useEffect(() => {

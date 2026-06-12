@@ -8,6 +8,7 @@ import { useCreateProduct } from "@/hooks/backoffice/products"
 import FormCard from "@/components/FormCard"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { schema } from "../ProcuctForm/schema"
+import { toaster } from "@/components/chakra-ui/toaster"
 
 const formInitialState: ProductFormData = {
     name: "",
@@ -27,15 +28,20 @@ const CreateProduct = () => {
 
     const { handleSubmit } = methods;
 
-    const { mutateAsync: createProduct, isPending } = useCreateProduct();
+    const { mutate: createProduct, isPending } = useCreateProduct({
+        onSuccess: () => setModalOpen(true),
+        onError: (error) => toaster.create({
+            description: error.response.data.message,
+            type: "error",
+
+        })
+    });
 
     const onSubmit: SubmitHandler<ProductFormData> = async (data) => {
         data.price = Number(data.price);
         data.stock = Number(data.stock);
 
-        await createProduct(data)
-
-        setModalOpen(true);
+        createProduct(data);
     }
 
     const backToList = () => {
@@ -54,8 +60,8 @@ const CreateProduct = () => {
                 isLoadingSubmit={isPending}
             >
                 <ProductForm />
+                <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
             </FormCard>
-            <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
         </>
     )
 }

@@ -1,3 +1,4 @@
+import type HookCallBack from '@/interfaces/hook'
 import type Order from '@/interfaces/order'
 import { getCustomerOrders, getOrder, getOrders, postOrder } from '@/services/backoffice/orders'
 import { orderCreator } from '@/state'
@@ -59,14 +60,14 @@ const useLazyGetOrder = (id: number) => {
     })
 }
 
-const useCreateOrder = () => {
+const useCreateOrder = ({ onSuccess, onError }: HookCallBack) => {
     const dispatch = useDispatch()
     const { createOrderAction } = bindActionCreators(orderCreator, dispatch)
 
     const query = useMutation({
-        mutationFn: (formData: any) => {
-            return postOrder(formData)
-        },
+        mutationFn: (formData: any) => postOrder(formData),
+        onSuccess: () => onSuccess && onSuccess(),
+        onError: (error) => onError && onError(error)
     })
 
     useEffect(() => {

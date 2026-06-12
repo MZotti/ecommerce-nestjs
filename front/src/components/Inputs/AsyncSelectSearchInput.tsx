@@ -1,8 +1,7 @@
 import { Combobox, HStack, Portal, Span, Spinner, useListCollection } from "@chakra-ui/react"
 import InputContainer from "./InputContainer"
 import { Controller, useFormContext } from "react-hook-form"
-import { useEffect, useState } from "react"
-import { useLazyGetProductsByName } from "@/hooks/backoffice/products"
+import { useState } from "react"
 import { useAsync } from "react-use"
 import type Product from "@/interfaces/product"
 

@@ -1,3 +1,4 @@
+import type HookCallBack from '@/interfaces/hook'
 import type Product from '@/interfaces/product'
 import { deleteProduct, getProduct, getProductsByName, getProducts, postProduct, putProduct } from '@/services/backoffice/products'
 import { productCreator } from '@/state'
@@ -50,14 +51,14 @@ const useLazyGetProduct = (id: number) => {
     })
 }
 
-const useCreateProduct = () => {
+const useCreateProduct = ({ onSuccess, onError }: HookCallBack) => {
     const dispatch = useDispatch()
     const { createProductAction } = bindActionCreators(productCreator, dispatch)
 
     const query = useMutation({
-        mutationFn: (formData: any) => {
-            return postProduct(formData)
-        },
+        mutationFn: (formData: any) => postProduct(formData),
+        onSuccess: () => onSuccess && onSuccess(),
+        onError: (error) => onError && onError(error)
     })
 
     useEffect(() => {
@@ -69,14 +70,14 @@ const useCreateProduct = () => {
     return query;
 }
 
-const useUpdateProduct = () => {
+const useUpdateProduct = ({ onSuccess, onError }: HookCallBack) => {
     const dispatch = useDispatch()
     const { updateProductAction } = bindActionCreators(productCreator, dispatch)
 
     const query = useMutation({
-        mutationFn: ({ id, formData }: { id: number, formData: any }) => {
-            return putProduct(id, formData)
-        },
+        mutationFn: ({ id, formData }: { id: number, formData: any }) => putProduct(id, formData),
+        onSuccess: () => onSuccess && onSuccess(),
+        onError: (error) => onError && onError(error)
     })
 
     useEffect(() => {
