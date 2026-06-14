@@ -8,6 +8,7 @@ interface Props {
     id: string
     label: string
     required?: boolean
+    colSpan?: number
 }
 
 const PasswordInput = (props: Props) => {

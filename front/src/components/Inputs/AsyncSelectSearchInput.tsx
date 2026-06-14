@@ -9,6 +9,7 @@ interface Props {
     id: string
     label: string
     required?: boolean
+    colSpan?: number
     onSearch: any
     optionLabel: string
     optionSecondaryLabel?: string

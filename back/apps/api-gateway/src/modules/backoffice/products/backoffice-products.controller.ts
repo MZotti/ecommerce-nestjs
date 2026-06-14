@@ -1,9 +1,10 @@
 import { CreateProductDto } from '@app/common/dto/products/create-product.dto';
 import { UpdateProductDto } from '@app/common/dto/products/update-product.dto';
-import { Body, Controller, Delete, Get, HttpException, Inject, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, Inject, Param, Patch, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 import { JwtAuthGuard } from '../../../common/jwt/jwt-auth.guard';
+import { IncreaseProductStockDto } from '@app/common/dto/products/increase-product-stock.dto';
 
 @Controller('backoffice/products')
 export class BackofficeProductsController {
@@ -66,6 +67,25 @@ export class BackofficeProductsController {
         try {
             return await lastValueFrom(
                 this.client.send('updateProduct', { id, data: dto })
+            );
+        } catch (error: any) {
+            if (error?.statusCode) {
+                throw new HttpException(error.message, error.statusCode);
+            }
+
+            throw new HttpException(
+                error,
+                500,
+            );
+        }
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Patch(':id/increase-stock')
+    async increaseStock(@Param('id') id: number, @Body() dto: IncreaseProductStockDto) {
+        try {
+            return await lastValueFrom(
+                this.client.send('increaseProductStock', { productId: id, quantity: dto.quantity })
             );
         } catch (error: any) {
             if (error?.statusCode) {

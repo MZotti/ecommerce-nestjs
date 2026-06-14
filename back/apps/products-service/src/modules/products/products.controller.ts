@@ -70,6 +70,11 @@ export class ProductsController {
         return this.productsService.stockAvailable(items);
     }
 
+    @MessagePattern('increaseProductStock')
+    async increaseProductStock(@Payload() item: { productId: number; quantity: number }) {
+        return this.productsService.increaseStock([item]);
+    }
+
     @EventPattern('orderCreated')
     async handleOrderCreated(@Payload() data: { items: { productId: number; quantity: number }[] }, @Ctx() context: RmqContext) {
         const channel = context.getChannelRef();

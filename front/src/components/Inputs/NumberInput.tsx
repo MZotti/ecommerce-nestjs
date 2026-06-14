@@ -6,6 +6,7 @@ interface Props {
     id: string
     label: string
     required?: boolean
+    colSpan?: number
 }
 
 const NumberInput = (props: Props) => {
@@ -15,7 +16,7 @@ const NumberInput = (props: Props) => {
     return (
         <InputContainer {...props}>
             <ChakraNumberInput.Root w="full">
-                <ChakraNumberInput.Input {...register(id)} />
+                <ChakraNumberInput.Input defaultValue={1} {...register(id)} />
             </ChakraNumberInput.Root>
         </InputContainer>
     )

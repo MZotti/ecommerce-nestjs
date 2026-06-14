@@ -30,7 +30,7 @@ export const updateProductAction = (product: Product) => {
     }
 }
 
-export const UpdateStockAction = ({ id, newStock }: { id: number, newStock: number }) => {
+export const updateStockAction = ({ id, newStock }: { id: number, newStock: number }) => {
     return (dispatch: Dispatch<Action>) => {
         dispatch({
             type: ProductActionType.UPDATE_STOCK,

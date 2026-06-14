@@ -1,6 +1,6 @@
 import type HookCallBack from '@/interfaces/hook'
 import type Product from '@/interfaces/product'
-import { deleteProduct, getProduct, getProductsByName, getProducts, postProduct, putProduct } from '@/services/backoffice/products'
+import { deleteProduct, getProduct, getProductsByName, getProducts, postProduct, putProduct, increaseProductStock } from '@/services/backoffice/products'
 import { productCreator } from '@/state'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useEffect } from 'react'
@@ -89,6 +89,26 @@ const useUpdateProduct = ({ onSuccess, onError }: HookCallBack) => {
     return query;
 }
 
+const useIncreaseProductStock = ({ onSuccess, onError }: HookCallBack) => {
+    const dispatch = useDispatch()
+    const { updateStockAction } = bindActionCreators(productCreator, dispatch)
+
+    const query = useMutation({
+        mutationFn: ({ id, formData }: { id: number, formData: any }) => increaseProductStock(id, formData),
+        onSuccess: () => onSuccess && onSuccess(),
+        onError: (error) => onError && onError(error)
+    })
+
+    // useEffect(() => {
+    //     if (query.data) {
+    //         updateStockAction(query.data)
+    //     }
+    // }, [query.data])
+
+    return query;
+
+}
+
 const useDeleteProduct = () => {
     const dispatch = useDispatch()
     const { deleteProductAction } = bindActionCreators(productCreator, dispatch)
@@ -108,4 +128,12 @@ const useDeleteProduct = () => {
     return query;
 }
 
-export { useGetProducts, useLazyGetProductsByName, useGetProduct, useLazyGetProduct, useCreateProduct, useUpdateProduct, useDeleteProduct }
+export { 
+    useGetProducts, 
+    useLazyGetProductsByName, 
+    useGetProduct, 
+    useLazyGetProduct, 
+    useCreateProduct, 
+    useUpdateProduct, 
+    useIncreaseProductStock, 
+    useDeleteProduct }

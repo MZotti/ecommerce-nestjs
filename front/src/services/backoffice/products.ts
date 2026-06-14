@@ -31,6 +31,12 @@ const putProduct = async (id: number, payload: any) => {
     return data;
 }
 
+const increaseProductStock = async (id: number, payload: any) => {
+    const { data } = await AXIOS.patch(`${BACKOFFICE_URL}/products/${id}/increase-stock`, payload)
+
+    return data;
+}
+
 const deleteProduct = async (id: number) => {
     const { data } = await AXIOS.delete(`${BACKOFFICE_URL}/products/${id}`)
 
@@ -43,5 +49,6 @@ export {
     getProduct,
     postProduct,
     putProduct,
+    increaseProductStock,
     deleteProduct
 }

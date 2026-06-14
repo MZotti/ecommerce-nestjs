@@ -58,6 +58,7 @@ const CreateProduct = () => {
                 onSubmit={handleSubmit(onSubmit)}
                 onCancel={backToList}
                 isLoadingSubmit={isPending}
+                columns={2}
             >
                 <ProductForm />
                 <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
