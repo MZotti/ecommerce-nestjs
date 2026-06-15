@@ -2,7 +2,7 @@ import { CreateProductDto } from '@app/common/dto/products/create-product.dto';
 import { UpdateProductDto } from '@app/common/dto/products/update-product.dto';
 import { PrismaService } from '@app/database/prisma.service';
 import { Injectable } from '@nestjs/common';
-import { RpcException } from '@nestjs/microservices';
+import { AppRpcException } from '@app/common/errors/app-rpc.exception';
 import slugfy from 'slugify';
 
 @Injectable()
@@ -134,10 +134,7 @@ export class ProductsService {
         });
 
         if (!existingProduct) {
-            throw new RpcException({
-                statusCode: 404,
-                message: 'Product not found',
-            });
+            throw new AppRpcException(404, 'Product not found');
         }
 
         return existingProduct;
@@ -159,10 +156,7 @@ export class ProductsService {
         });
 
         if (!existingProduct) {
-            throw new RpcException({
-                statusCode: 404,
-                message: 'Product not found',
-            });
+            throw new AppRpcException(404, 'Product not found');
         }
 
         return existingProduct;
@@ -203,10 +197,7 @@ export class ProductsService {
         const existingProduct = await this.prisma.product.findUnique({ where: { id } });
 
         if (!existingProduct) {
-            throw new RpcException({
-                statusCode: 404,
-                message: 'Product not found',
-            });
+            throw new AppRpcException(404, 'Product not found');
         }
 
         const slug = slugfy(name, {
@@ -235,10 +226,7 @@ export class ProductsService {
         const existingProduct = await this.prisma.product.findUnique({ where: { id } });
 
         if (!existingProduct) {
-            throw new RpcException({
-                statusCode: 404,
-                message: 'Product not found',
-            });
+            throw new AppRpcException(404, 'Product not found');
         }
 
         await this.prisma.product.delete({
@@ -255,11 +243,11 @@ export class ProductsService {
             });
 
             if (!product) {
-                throw new RpcException(`Product not found: ${item.productId}`);
+                throw new AppRpcException(404, `Product ${item.productId} not found`);
             }
 
             if (product.stock < item.quantity) {
-                throw new RpcException(`Insufficient stock for ${product.name}`);
+                throw new AppRpcException(403, `Insufficient stock for ${product.name}`);
             }
         }
 
@@ -273,7 +261,7 @@ export class ProductsService {
             });
 
             if (!product) {
-                throw new RpcException(`Product not found: ${item.productId}`);
+                throw new AppRpcException(404, `Product ${item.productId} not found`);
             }
 
             await this.prisma.product.update({
@@ -296,11 +284,11 @@ export class ProductsService {
             });
 
             if (!product) {
-                throw new RpcException(`Product not found: ${item.productId}`);
+                throw new AppRpcException(404, `Product ${item.productId} not found`);
             }
 
             if (product.stock < item.quantity) {
-                throw new RpcException(`Insufficient stock for ${product.name}`);
+                throw new AppRpcException(403, `Insufficient stock for ${product.name}`);
             }
 
             await this.prisma.product.update({

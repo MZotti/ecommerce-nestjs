@@ -3,7 +3,8 @@ import { ProductDto } from '@app/common/dto/products/product.dto';
 import { OrderStatusEnum } from '@app/common/enums/order-status.enum';
 import { PrismaService } from '@app/database/prisma.service';
 import { Inject, Injectable } from '@nestjs/common';
-import { ClientProxy, RpcException } from '@nestjs/microservices';
+import { ClientProxy } from '@nestjs/microservices';
+import { AppRpcException } from '@app/common/errors/app-rpc.exception';
 import { lastValueFrom } from 'rxjs';
 
 @Injectable()
@@ -124,10 +125,7 @@ export class OrdersService {
         });
 
         if (!existingOrder) {
-            throw new RpcException({
-                statusCode: 404,
-                message: 'Order not found',
-            });
+            throw new AppRpcException(404, 'Order not found');
         }
 
         return existingOrder;
@@ -153,7 +151,7 @@ export class OrdersService {
             const product = productMap.get(item.productId);
 
             if (!product) {
-                throw new RpcException(`Product ${item.productId} not found`);
+                throw new AppRpcException(404, `Product ${item.productId} not found`);
             }
 
             const price = product.price;
@@ -176,10 +174,7 @@ export class OrdersService {
             );
         } catch (error: any) {
             console.log(error);
-            throw new RpcException({
-                statusCode: 403,
-                message: error.message,
-            });
+            throw new AppRpcException(403, error.message ?? 'Insufficient stock');
         }
 
         const order = this.prisma.order.create({
@@ -216,24 +211,15 @@ export class OrdersService {
         });
 
         if (!existingOrder) {
-            throw new RpcException({
-                statusCode: 404,
-                message: 'Order not found',
-            });
+            throw new AppRpcException(404, 'Order not found');
         }
 
         if (existingOrder.status == OrderStatusEnum.FINISHED) {
-            throw new RpcException({
-                statusCode: 403,
-                message: 'Order already finished',
-            });
+            throw new AppRpcException(403, 'Order already finished');
         }
 
         if (existingOrder.status == OrderStatusEnum.CANCELED) {
-            throw new RpcException({
-                statusCode: 403,
-                message: 'Order already canceled',
-            });
+            throw new AppRpcException(403, 'Order already canceled');
         }
 
         const orderItems = await this.prisma.orderItem.findMany({
@@ -257,10 +243,7 @@ export class OrdersService {
         });
 
         if (!existingOrder) {
-            throw new RpcException({
-                statusCode: 404,
-                message: 'Order not found',
-            });
+            throw new AppRpcException(404, 'Order not found');
         }
 
         const statusEnum = OrderStatusEnum[status]

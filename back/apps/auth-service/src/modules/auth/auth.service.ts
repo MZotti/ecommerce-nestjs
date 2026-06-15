@@ -1,10 +1,10 @@
-import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@app/database/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { RegisterDto } from '@app/common/dto/auth/register.dto';
 import { LoginDto } from '@app/common/dto/auth/login.dto';
-import { RpcException } from '@nestjs/microservices';
+import { AppRpcException } from '@app/common/errors/app-rpc.exception';
 import { RegisterCustomerDto } from '@app/common/dto/auth/register-customer.dto';
 import { User } from '@prisma/client';
 
@@ -18,10 +18,7 @@ export class AuthService {
         const existingUser = await this.prisma.user.findUnique({ where: { email } });
 
         if (existingUser) {
-            throw new RpcException({
-                statusCode: 409,
-                message: 'Email already in use',
-            });
+            throw new AppRpcException(409, 'Email already in use');
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -49,19 +46,13 @@ export class AuthService {
         const existingUser = await this.prisma.user.findUnique({ where: { email } });
 
         if (existingUser) {
-            throw new RpcException({
-                statusCode: 409,
-                message: 'Email already in use',
-            });
+            throw new AppRpcException(409, 'Email already in use');
         }
 
         const existingCustomer = await this.prisma.customer.findFirst({ where: { document } });
 
         if (existingCustomer) {
-            throw new RpcException({
-                statusCode: 409,
-                message: 'Document already in use',
-            });
+            throw new AppRpcException(409, 'Document already in use');
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -96,19 +87,13 @@ export class AuthService {
         const user = await this.prisma.user.findUnique({ where: { email } });
 
         if (!user) {
-            throw new RpcException({
-                statusCode: 401,
-                message: 'Invalid credentials',
-            });
+            throw new AppRpcException(401, 'Invalid credentials');
         }
 
         const isPasswordValid = await bcrypt.compare(password, user.password);
 
         if (!isPasswordValid) {
-            throw new RpcException({
-                statusCode: 401,
-                message: 'Invalid credentials',
-            });
+            throw new AppRpcException(401, 'Invalid credentials');
         }
 
         const loggedUser = await this.prisma.user.findUnique({

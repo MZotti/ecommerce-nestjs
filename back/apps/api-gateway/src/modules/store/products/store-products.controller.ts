@@ -1,6 +1,7 @@
-import { Controller, Get, HttpException, Inject, Param, Query } from '@nestjs/common';
+import { Controller, Get, Inject, Param, Query } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
+import { handleRpcError } from '../../../common/utils/handle-rpc-error.util';
 
 @Controller('store/products')
 export class StoreProductsController {
@@ -25,19 +26,8 @@ export class StoreProductsController {
 
     @Get(':slug')
     async find(@Param('slug') slug: string) {
-        try {
-            return await lastValueFrom(
-                this.client.send('findBySlug', { slug })
-            );
-        } catch (error: any) {
-            if (error?.statusCode) {
-                throw new HttpException(error.message, error.statusCode);
-            }
-
-            throw new HttpException(
-                error,
-                500,
-            );
-        }
+        return lastValueFrom(
+            this.client.send('findBySlug', { slug })
+        ).catch(handleRpcError);
     }
 }

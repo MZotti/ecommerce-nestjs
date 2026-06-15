@@ -1,7 +1,8 @@
 import { CreateCustomerDto } from '@app/common/dto/customers/create-customer.dto';
 import { PrismaService } from '@app/database/prisma.service';
 import { Inject, Injectable } from '@nestjs/common';
-import { ClientProxy, RpcException } from '@nestjs/microservices';
+import { ClientProxy } from '@nestjs/microservices';
+import { AppRpcException } from '@app/common/errors/app-rpc.exception';
 
 import * as bcrypt from 'bcrypt';
 import { lastValueFrom } from 'rxjs';
@@ -95,10 +96,7 @@ export class CustomersService {
         });
 
         if (!existingCustomer) {
-            throw new RpcException({
-                statusCode: 404,
-                message: 'Customer not found',
-            });
+            throw new AppRpcException(404, 'Customer not found');
         }
 
         return existingCustomer;
@@ -110,19 +108,13 @@ export class CustomersService {
         const existingUser = await this.prisma.user.findUnique({ where: { email } });
 
         if (existingUser) {
-            throw new RpcException({
-                statusCode: 409,
-                message: 'Email already in use',
-            });
+            throw new AppRpcException(409, 'Email already in use');
         }
 
         const existingCustomer = await this.prisma.customer.findFirst({ where: { document } });
 
         if (existingCustomer) {
-            throw new RpcException({
-                statusCode: 409,
-                message: 'Document already in use',
-            });
+            throw new AppRpcException(409, 'Document already in use');
         }
 
         const password = Math.random().toString(36).substring(2);

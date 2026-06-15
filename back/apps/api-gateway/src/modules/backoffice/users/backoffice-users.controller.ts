@@ -1,9 +1,10 @@
 import { CreateUserDto } from '@app/common/dto/users/create-user.dto';
 import { UpdateUserDto } from '@app/common/dto/users/update-user.dto';
-import { Body, Controller, Delete, Get, HttpException, Inject, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Inject, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 import { JwtAuthGuard } from '../../../common/jwt/jwt-auth.guard';
+import { handleRpcError } from '../../../common/utils/handle-rpc-error.util';
 
 @Controller('backoffice/users')
 export class BackofficeUsersController {
@@ -28,20 +29,9 @@ export class BackofficeUsersController {
     @UseGuards(JwtAuthGuard)
     @Get(':id')
     async find(@Param('id') id: number) {
-        try {
-            return await lastValueFrom(
-                this.client.send('findUser', { id })
-            );
-        } catch (error: any) {
-            if (error?.statusCode) {
-                throw new HttpException(error.message, error.statusCode);
-            }
-
-            throw new HttpException(
-                error,
-                500,
-            );
-        }
+        return lastValueFrom(
+            this.client.send('findUser', { id })
+        ).catch(handleRpcError);
     }
 
     @UseGuards(JwtAuthGuard)
@@ -53,38 +43,16 @@ export class BackofficeUsersController {
     @UseGuards(JwtAuthGuard)
     @Put(':id')
     async update(@Param('id') id: number, @Body() dto: UpdateUserDto) {
-        try {
-            return await lastValueFrom(
-                this.client.send('updateUser', { id, data: dto })
-            );
-        } catch (error: any) {
-            if (error?.statusCode) {
-                throw new HttpException(error.message, error.statusCode);
-            }
-
-            throw new HttpException(
-                error,
-                500,
-            );
-        }
+        return lastValueFrom(
+            this.client.send('updateUser', { id, data: dto })
+        ).catch(handleRpcError);
     }
 
     @UseGuards(JwtAuthGuard)
     @Delete(':id')
     async delete(@Param('id') id: number) {
-        try {
-            return await lastValueFrom(
-                this.client.send('deleteUser', { id })
-            );
-        } catch (error: any) {
-            if (error?.statusCode) {
-                throw new HttpException(error.message, error.statusCode);
-            }
-
-            throw new HttpException(
-                error,
-                500,
-            );
-        }
+        return lastValueFrom(
+            this.client.send('deleteUser', { id })
+        ).catch(handleRpcError);
     }
 }

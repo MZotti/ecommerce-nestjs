@@ -2,7 +2,7 @@ import { CreateUserDto } from '@app/common/dto/users/create-user.dto';
 import { UpdateUserDto } from '@app/common/dto/users/update-user.dto';
 import { PrismaService } from '@app/database/prisma.service';
 import { Injectable } from '@nestjs/common';
-import { RpcException } from '@nestjs/microservices';
+import { AppRpcException } from '@app/common/errors/app-rpc.exception';
 
 import * as bcrypt from 'bcrypt';
 
@@ -76,10 +76,7 @@ export class UsersService {
         });
 
         if (!existingUser) {
-            throw new RpcException({
-                statusCode: 404,
-                message: 'User not found',
-            });
+            throw new AppRpcException(404, 'User not found');
         }
 
         return existingUser;
@@ -91,10 +88,7 @@ export class UsersService {
         const existingUser = await this.prisma.user.findUnique({ where: { email } });
 
         if (existingUser) {
-            throw new RpcException({
-                statusCode: 409,
-                message: 'Email already in use',
-            });
+            throw new AppRpcException(409, 'Email already in use');
         }
 
         const password = Math.random().toString(36).substring(2);
@@ -125,19 +119,13 @@ export class UsersService {
         const existingUser = await this.prisma.user.findUnique({ where: { id } });
 
         if (!existingUser) {
-            throw new RpcException({
-                statusCode: 404,
-                message: 'User not found',
-            });
+            throw new AppRpcException(404, 'User not found');
         }
 
         const existingEmail = await this.prisma.user.findUnique({ where: { email, NOT: { id } } });
 
         if (existingEmail) {
-            throw new RpcException({
-                statusCode: 409,
-                message: 'Email already in use',
-            });
+            throw new AppRpcException(409, 'Email already in use');
         }
 
         return this.prisma.user.update({
@@ -159,10 +147,7 @@ export class UsersService {
         const existingUser = await this.prisma.user.findUnique({ where: { id } });
 
         if (!existingUser) {
-            throw new RpcException({
-                statusCode: 404,
-                message: 'User not found',
-            });
+            throw new AppRpcException(404, 'User not found');
         }
 
         await this.prisma.user.delete({
