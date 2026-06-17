@@ -1,67 +1,29 @@
 import { CreateCustomerDto } from '@app/common/dto/customers/create-customer.dto';
-import { PrismaService } from '@app/database/prisma.service';
-import { Inject, Injectable } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
+import { Injectable } from '@nestjs/common';
 import { AppRpcException } from '@app/common/errors/app-rpc.exception';
+import { Prisma } from '@prisma/client';
+import { CustomersRepository } from './customers.repository';
 
 import * as bcrypt from 'bcrypt';
-import { lastValueFrom } from 'rxjs';
 
 @Injectable()
 export class CustomersService {
-    constructor(
-        private prisma: PrismaService,
-        @Inject('ORDERS_SERVICE') private ordersClient: ClientProxy
-    ) { }
+    constructor(private customersRepository: CustomersRepository) { }
 
     async findAll({ page, perPage, search }: { page: number, perPage: number, search?: string }) {
         const skip = (page - 1) * perPage;
 
+        const where: Prisma.CustomerWhereInput = {
+            user: { roleId: 5 },
+            OR: [
+                { user: { name: { contains: search, mode: 'insensitive' } } },
+                { user: { email: { contains: search, mode: 'insensitive' } } },
+            ],
+        };
+
         const [data, total] = await Promise.all([
-            this.prisma.customer.findMany({
-                skip,
-                take: perPage,
-                orderBy: { createdAt: 'desc' },
-                select: {
-                    id: true,
-                    document: true,
-                    phone: true,
-                    birthDate: true,
-                    createdAt: true,
-                    user: {
-                        include: {
-                            addresses: true
-                        },
-                        omit: {
-                            password: true
-                        }
-                    },
-                },
-                where: {
-                    user: {
-                        roleId: 5
-                    },
-                    OR: [
-                        {
-                            user: {
-                                name: {
-                                    contains: search,
-                                    mode: 'insensitive'
-                                },
-                            }
-                        },
-                        {
-                            user: {
-                                email: {
-                                    contains: search,
-                                    mode: 'insensitive'
-                                },
-                            }
-                        }
-                    ]
-                },
-            }),
-            this.prisma.customer.count(),
+            this.customersRepository.findMany({ skip, take: perPage, where }),
+            this.customersRepository.count(),
         ]);
 
         return {
@@ -76,24 +38,7 @@ export class CustomersService {
     }
 
     async find(id: number) {
-        const existingCustomer = await this.prisma.customer.findUnique({
-            where: { id },
-            select: {
-                id: true,
-                document: true,
-                phone: true,
-                birthDate: true,
-                createdAt: true,
-                user: {
-                    include: {
-                        addresses: true
-                    },
-                    omit: {
-                        password: true
-                    }
-                },
-            },
-        });
+        const existingCustomer = await this.customersRepository.findById(id);
 
         if (!existingCustomer) {
             throw new AppRpcException(404, 'Customer not found');
@@ -103,15 +48,15 @@ export class CustomersService {
     }
 
     async create(dto: CreateCustomerDto) {
-        const { name, email, document, phone, birthdate } = dto;
+        const { name, email, document, phone } = dto;
 
-        const existingUser = await this.prisma.user.findUnique({ where: { email } });
+        const existingUser = await this.customersRepository.findUserByEmail(email);
 
         if (existingUser) {
             throw new AppRpcException(409, 'Email already in use');
         }
 
-        const existingCustomer = await this.prisma.customer.findFirst({ where: { document } });
+        const existingCustomer = await this.customersRepository.findByDocument(document);
 
         if (existingCustomer) {
             throw new AppRpcException(409, 'Document already in use');
@@ -120,31 +65,13 @@ export class CustomersService {
         const password = Math.random().toString(36).substring(2);
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const roleId = 5;
-
-        return this.prisma.user.create({
-            data: {
-                name,
-                email,
-                password: hashedPassword,
-                roleId,
-                customer: {
-                    create: {
-                        document,
-                        phone
-                    }
-                }
-            },
-            select: {
-                id: true,
-                name: true,
-                email: true,
-                isActive: true,
-                roleId: true,
-                role: true,
-                createdAt: true,
-                customer: true,
-            },
+        return this.customersRepository.createUserWithCustomer({
+            name,
+            email,
+            password: hashedPassword,
+            roleId: 5,
+            document,
+            phone,
         });
     }
 }

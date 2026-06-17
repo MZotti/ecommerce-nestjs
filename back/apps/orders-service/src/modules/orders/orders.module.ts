@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
 import { OrdersController } from './orders.controller';
 import { OrdersService } from './orders.service';
+import { OrdersRepository } from './orders.repository';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
 	controllers: [OrdersController],
-	providers: [OrdersService],
+	providers: [OrdersService, OrdersRepository],
 	imports: [
 		ClientsModule.register([
 			{

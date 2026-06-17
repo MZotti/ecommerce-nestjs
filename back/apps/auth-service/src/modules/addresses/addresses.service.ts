@@ -1,33 +1,19 @@
 import { CreateAddressDto } from '@app/common/dto/addresses/create-address.dto';
-import { PrismaService } from '@app/database/prisma.service';
 import { Injectable } from '@nestjs/common';
+import { AddressesRepository } from './addresses.repository';
 
 @Injectable()
 export class AddressesService {
-    constructor(private prisma: PrismaService) { }
+    constructor(private addressesRepository: AddressesRepository) { }
 
     async get(userId: number) {
-        return this.prisma.address.findMany({ where: { userId } })
+        return this.addressesRepository.findByUserId(userId);
     }
 
     async create(userId: number, dto: CreateAddressDto) {
-        let isDefault = false;
+        const existingAddresses = await this.addressesRepository.countByUserId(userId);
+        const isDefault = existingAddresses === 0;
 
-        const existingAddresses = await this.prisma.address.count({
-            where: {
-                userId
-            }
-        })
-
-        if (existingAddresses === 0)
-            isDefault = true;
-
-        return await this.prisma.address.create({
-            data: {
-                userId,
-                isDefault,
-                ...dto
-            }
-        })
+        return this.addressesRepository.create({ userId, isDefault, ...dto });
     }
 }

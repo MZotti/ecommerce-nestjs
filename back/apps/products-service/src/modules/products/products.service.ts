@@ -1,41 +1,25 @@
 import { CreateProductDto } from '@app/common/dto/products/create-product.dto';
 import { UpdateProductDto } from '@app/common/dto/products/update-product.dto';
-import { PrismaService } from '@app/database/prisma.service';
 import { Injectable } from '@nestjs/common';
 import { AppRpcException } from '@app/common/errors/app-rpc.exception';
+import { Prisma } from '@prisma/client';
+import { ProductsRepository } from './products.repository';
 import slugfy from 'slugify';
 
 @Injectable()
 export class ProductsService {
-    constructor(private prisma: PrismaService) { }
+    constructor(private productsRepository: ProductsRepository) { }
 
     async findAll({ page, perPage, search }: { page: number, perPage: number, search?: string }) {
         const skip = (page - 1) * perPage;
 
+        const where: Prisma.ProductWhereInput = {
+            name: { contains: search, mode: 'insensitive' },
+        };
+
         const [data, total] = await Promise.all([
-            this.prisma.product.findMany({
-                skip,
-                take: perPage,
-                orderBy: { createdAt: 'desc' },
-                select: {
-                    id: true,
-                    category: true,
-                    name: true,
-                    slug: true,
-                    description: true,
-                    price: true,
-                    stock: true,
-                    imageUrl: true,
-                    createdAt: true,
-                },
-                where: {
-                    name: {
-                        contains: search,
-                        mode: 'insensitive'
-                    }
-                }
-            }),
-            this.prisma.product.count(),
+            this.productsRepository.findMany({ skip, take: perPage, where }),
+            this.productsRepository.count(),
         ]);
 
         return {
@@ -52,39 +36,15 @@ export class ProductsService {
     async findAllStore({ page, perPage, search, filters }: { page: number, perPage: number, search?: string, filters?: string }) {
         const skip = (page - 1) * perPage;
 
+        const where: Prisma.ProductWhereInput = {
+            name: { contains: search, mode: 'insensitive' },
+            stock: { gt: 0 },
+            category: { slug: { contains: filters, mode: 'insensitive' } },
+        };
+
         const [data, total] = await Promise.all([
-            this.prisma.product.findMany({
-                skip,
-                take: perPage,
-                orderBy: { createdAt: 'desc' },
-                select: {
-                    id: true,
-                    category: true,
-                    name: true,
-                    slug: true,
-                    description: true,
-                    price: true,
-                    stock: true,
-                    imageUrl: true,
-                    createdAt: true,
-                },
-                where: {
-                    name: {
-                        contains: search,
-                        mode: 'insensitive'
-                    },
-                    stock: {
-                        gt: 0
-                    },
-                    category: {
-                        slug: {
-                            contains: filters,
-                            mode: 'insensitive'
-                        }
-                    }
-                }
-            }),
-            this.prisma.product.count(),
+            this.productsRepository.findMany({ skip, take: perPage, where }),
+            this.productsRepository.count(),
         ]);
 
         return {
@@ -99,39 +59,16 @@ export class ProductsService {
     }
 
     async findManyByIds(ids: number[]) {
-        return await this.prisma.product.findMany({
-            where: { id: { in: ids } }
-        });
+        return this.productsRepository.findManyByIds(ids);
     }
 
     async findManyByName(search?: string) {
-        if (!search || search === "")
-            return []
-
-        return await this.prisma.product.findMany({
-            where: {
-                name: {
-                    contains: search,
-                    mode: 'insensitive'
-                }
-            }
-        });
+        if (!search || search === '') return [];
+        return this.productsRepository.findManyByName(search);
     }
 
     async find(id: number) {
-        const existingProduct = await this.prisma.product.findUnique({
-            where: { id },
-            select: {
-                id: true,
-                category: true,
-                name: true,
-                slug: true,
-                description: true,
-                price: true,
-                stock: true,
-                imageUrl: true,
-            },
-        });
+        const existingProduct = await this.productsRepository.findById(id);
 
         if (!existingProduct) {
             throw new AppRpcException(404, 'Product not found');
@@ -141,19 +78,7 @@ export class ProductsService {
     }
 
     async findBySlug(slug: string) {
-        const existingProduct = await this.prisma.product.findFirst({
-            where: { slug },
-            select: {
-                id: true,
-                category: true,
-                name: true,
-                slug: true,
-                description: true,
-                price: true,
-                imageUrl: true,
-                stock: true
-            },
-        });
+        const existingProduct = await this.productsRepository.findBySlug(slug);
 
         if (!existingProduct) {
             throw new AppRpcException(404, 'Product not found');
@@ -165,82 +90,42 @@ export class ProductsService {
     async create(dto: CreateProductDto) {
         const { name, categoryId, description, price, stock } = dto;
 
-        const slug = slugfy(name, {
-            lower: true
-        });
+        const slug = slugfy(name, { lower: true });
 
-        return this.prisma.product.create({
-            data: {
-                categoryId,
-                name,
-                slug,
-                description,
-                price,
-                stock,
-            },
-            select: {
-                id: true,
-                category: true,
-                name: true,
-                slug: true,
-                description: true,
-                price: true,
-                stock: true,
-                imageUrl: true
-            },
-        });
+        return this.productsRepository.create({ categoryId, name, slug, description, price, stock });
     }
 
     async update(id: number, dto: UpdateProductDto) {
         const { name } = dto;
 
-        const existingProduct = await this.prisma.product.findUnique({ where: { id } });
+        const existingProduct = await this.productsRepository.findById(id);
 
         if (!existingProduct) {
             throw new AppRpcException(404, 'Product not found');
         }
 
-        const slug = slugfy(name, {
-            lower: true
-        });
+        const slug = slugfy(name, { lower: true });
 
         console.log(dto);
 
-        return this.prisma.product.update({
-            where: { id },
-            data: { slug: slug, ...dto },
-            select: {
-                id: true,
-                category: true,
-                name: true,
-                slug: true,
-                description: true,
-                price: true,
-                stock: true,
-                imageUrl: true
-            },
-        });
+        return this.productsRepository.update(id, { slug, ...dto });
     }
 
     async delete(id: number) {
-        const existingProduct = await this.prisma.product.findUnique({ where: { id } });
+        const existingProduct = await this.productsRepository.findById(id);
 
         if (!existingProduct) {
             throw new AppRpcException(404, 'Product not found');
         }
 
-        await this.prisma.product.delete({
-            where: { id }
-        });
+        await this.productsRepository.delete(id);
 
         return { id };
     }
 
     async stockAvailable(items: { productId: number; quantity: number }[]) {
         for (const item of items) {
-            const product = await this.prisma.product.findUnique({
-                where: { id: item.productId },
-            });
+            const product = await this.productsRepository.findById(item.productId);
 
             if (!product) {
                 throw new AppRpcException(404, `Product ${item.productId} not found`);
@@ -256,22 +141,13 @@ export class ProductsService {
 
     async increaseStock(items: { productId: number; quantity: number }[]) {
         for (const item of items) {
-            const product = await this.prisma.product.findUnique({
-                where: { id: item.productId },
-            });
+            const product = await this.productsRepository.findById(item.productId);
 
             if (!product) {
                 throw new AppRpcException(404, `Product ${item.productId} not found`);
             }
 
-            await this.prisma.product.update({
-                where: { id: item.productId },
-                data: {
-                    stock: {
-                        increment: item.quantity,
-                    },
-                },
-            });
+            await this.productsRepository.updateStock(item.productId, { increment: item.quantity });
         }
 
         return true;
@@ -279,9 +155,7 @@ export class ProductsService {
 
     async decreaseStock(items: { productId: number; quantity: number }[]) {
         for (const item of items) {
-            const product = await this.prisma.product.findUnique({
-                where: { id: item.productId },
-            });
+            const product = await this.productsRepository.findById(item.productId);
 
             if (!product) {
                 throw new AppRpcException(404, `Product ${item.productId} not found`);
@@ -291,14 +165,7 @@ export class ProductsService {
                 throw new AppRpcException(403, `Insufficient stock for ${product.name}`);
             }
 
-            await this.prisma.product.update({
-                where: { id: item.productId },
-                data: {
-                    stock: {
-                        decrement: item.quantity,
-                    },
-                },
-            });
+            await this.productsRepository.updateStock(item.productId, { decrement: item.quantity });
         }
 
         return true;

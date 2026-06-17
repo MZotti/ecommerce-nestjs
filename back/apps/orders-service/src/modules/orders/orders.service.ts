@@ -1,16 +1,16 @@
 import { CreateOrderDto } from '@app/common/dto/orders/create-order.dto';
 import { ProductDto } from '@app/common/dto/products/product.dto';
 import { OrderStatusEnum } from '@app/common/enums/order-status.enum';
-import { PrismaService } from '@app/database/prisma.service';
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { AppRpcException } from '@app/common/errors/app-rpc.exception';
 import { lastValueFrom } from 'rxjs';
+import { OrdersRepository } from './orders.repository';
 
 @Injectable()
 export class OrdersService {
     constructor(
-        private prisma: PrismaService,
+        private ordersRepository: OrdersRepository,
         @Inject('PRODUCTS_SERVICE') private productsClient: ClientProxy,
         @Inject('EVENT_BUS') private eventBus: ClientProxy
     ) { }
@@ -19,29 +19,8 @@ export class OrdersService {
         const skip = (page - 1) * perPage;
 
         const [data, total] = await Promise.all([
-            this.prisma.order.findMany({
-                skip,
-                take: perPage,
-                orderBy: { createdAt: 'desc' },
-                select: {
-                    id: true,
-                    userId: true,
-                    paymentMethod: true,
-                    status: true,
-                    total: true,
-                    items: true,
-                    shippingCity: true,
-                    shippingComplement: true,
-                    shippingCountry: true,
-                    shippingNeighborhood: true,
-                    shippingNumber: true,
-                    shippingState: true,
-                    shippingStreet: true,
-                    shippingZipCode: true,
-                    createdAt: true
-                }
-            }),
-            this.prisma.order.count(),
+            this.ordersRepository.findMany({ skip, take: perPage }),
+            this.ordersRepository.count(),
         ]);
 
         return {
@@ -59,36 +38,8 @@ export class OrdersService {
         const skip = (page - 1) * perPage;
 
         const [data, total] = await Promise.all([
-            this.prisma.order.findMany({
-                skip,
-                take: perPage,
-                orderBy: { createdAt: 'desc' },
-                select: {
-                    id: true,
-                    userId: true,
-                    paymentMethod: true,
-                    status: true,
-                    total: true,
-                    items: true,
-                    shippingCity: true,
-                    shippingComplement: true,
-                    shippingCountry: true,
-                    shippingNeighborhood: true,
-                    shippingNumber: true,
-                    shippingState: true,
-                    shippingStreet: true,
-                    shippingZipCode: true,
-                    createdAt: true
-                },
-                where: {
-                    userId
-                }
-            }),
-            this.prisma.order.count({
-                where: {
-                    userId
-                }
-            }),
+            this.ordersRepository.findMany({ skip, take: perPage, where: { userId } }),
+            this.ordersRepository.count({ userId }),
         ]);
 
         return {
@@ -103,26 +54,7 @@ export class OrdersService {
     }
 
     async find(id: number) {
-        const existingOrder = await this.prisma.order.findUnique({
-            where: { id },
-            select: {
-                id: true,
-                userId: true,
-                paymentMethod: true,
-                status: true,
-                total: true,
-                items: true,
-                shippingCity: true,
-                shippingComplement: true,
-                shippingCountry: true,
-                shippingNeighborhood: true,
-                shippingNumber: true,
-                shippingState: true,
-                shippingStreet: true,
-                shippingZipCode: true,
-                createdAt: true
-            }
-        });
+        const existingOrder = await this.ordersRepository.findById(id);
 
         if (!existingOrder) {
             throw new AppRpcException(404, 'Order not found');
@@ -177,27 +109,20 @@ export class OrdersService {
             throw new AppRpcException(403, error.message ?? 'Insufficient stock');
         }
 
-        const order = this.prisma.order.create({
-            data: {
-                userId,
-                total,
-                paymentMethod,
-                status: OrderStatusEnum.PENDING,
-                items: {
-                    create: orderItems,
-                },
-                shippingCity,
-                shippingComplement,
-                shippingCountry,
-                shippingNeighborhood,
-                shippingNumber,
-                shippingState,
-                shippingStreet,
-                shippingZipCode
-            },
-            include: {
-                items: true,
-            },
+        const order = this.ordersRepository.create({
+            userId,
+            total,
+            paymentMethod,
+            status: OrderStatusEnum.PENDING,
+            items: { create: orderItems },
+            shippingCity,
+            shippingComplement,
+            shippingCountry,
+            shippingNeighborhood,
+            shippingNumber,
+            shippingState,
+            shippingStreet,
+            shippingZipCode,
         });
 
         this.eventBus.emit('orderCreated', { items: orderItems });
@@ -206,9 +131,7 @@ export class OrdersService {
     }
 
     async cancelOrder(id: number) {
-        const existingOrder = await this.prisma.order.findUnique({
-            where: { id },
-        });
+        const existingOrder = await this.ordersRepository.findById(id);
 
         if (!existingOrder) {
             throw new AppRpcException(404, 'Order not found');
@@ -222,41 +145,26 @@ export class OrdersService {
             throw new AppRpcException(403, 'Order already canceled');
         }
 
-        const orderItems = await this.prisma.orderItem.findMany({
-            where: { orderId: id },
-        });
-
-        const order = await this.prisma.order.update({
-            where: { id },
-            data: { status: OrderStatusEnum.CANCELED }
-        });
+        const orderItems = await this.ordersRepository.findOrderItems(id);
+        const order = await this.ordersRepository.update(id, { status: OrderStatusEnum.CANCELED });
 
         this.eventBus.emit('orderCanceled', { items: orderItems });
 
         return order;
     }
 
-
     async updateStatus(id: number, status: string) {
-        const existingOrder = await this.prisma.order.findUnique({
-            where: { id },
-        });
+        const existingOrder = await this.ordersRepository.findById(id);
 
         if (!existingOrder) {
             throw new AppRpcException(404, 'Order not found');
         }
 
-        const statusEnum = OrderStatusEnum[status]
-
-        const order = await this.prisma.order.update({
-            where: { id },
-            data: { status: statusEnum }
-        });
+        const statusEnum = OrderStatusEnum[status];
+        const order = await this.ordersRepository.update(id, { status: statusEnum });
 
         if (status == 'cancelled') {
-            const orderItems = await this.prisma.orderItem.findMany({
-                where: { orderId: id },
-            });
+            const orderItems = await this.ordersRepository.findOrderItems(id);
             this.eventBus.emit('orderCanceled', { items: orderItems });
         }
 

@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
 import { CustomersService } from './customers.service';
 import { CustomersController } from './customers.controller';
+import { CustomersRepository } from './customers.repository';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
 	controllers: [CustomersController],
-	providers: [CustomersService],
+	providers: [CustomersService, CustomersRepository],
 	imports: [
 		ClientsModule.register([
 			{
