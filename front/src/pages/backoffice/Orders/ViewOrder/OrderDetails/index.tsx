@@ -4,12 +4,13 @@ import OrderStatusDisplay from "@/components/OrderStatusDisplay"
 import { useFetchDataContext } from "@/contexts/FetchDataContext"
 import { dateFormat } from "@/functions/date"
 import { Grid, GridItem, Separator, Text, VStack } from "@chakra-ui/react"
-import OrderActions from "./OrderActions"
+import OrderActions from "../OrderActions"
 import { formatPriceToCurrency } from "@/functions/textFormat"
 import type Order from "@/interfaces/order"
 import { useLazyGetUser } from "@/hooks/backoffice/users"
 import { useEffect } from "react"
 import { Link } from "react-router-dom"
+import OrderPayment from "./OrderPayment"
 
 const OrderDetails = () => {
     const { data: order } = useFetchDataContext<Order>();
@@ -85,6 +86,8 @@ const OrderDetails = () => {
                         </DataDisplay>
                     </Grid>
                 </VStack>
+                <Separator my={8} />
+                <OrderPayment />
             </CardContainer>
         </GridItem>
     )

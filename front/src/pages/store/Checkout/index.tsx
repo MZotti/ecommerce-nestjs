@@ -28,6 +28,11 @@ interface CheckoutFormData {
     shippingCity: string
     shippingState: string
     shippingCountry: string
+    cardNumber?: string
+    holderName?: string
+    cvv?: string
+    expiresMonth?: number
+    expiresYear?: number
 }
 
 const formInitialState: CheckoutFormData = {
@@ -39,7 +44,8 @@ const formInitialState: CheckoutFormData = {
     shippingState: "",
     shippingStreet: "",
     shippingZipCode: "",
-    shippingComplement: ""
+    shippingComplement: "",
+    cvv: "123",
 }
 
 const Checkout = () => {

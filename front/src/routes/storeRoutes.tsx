@@ -10,6 +10,7 @@ import Orders from "@/pages/store/Account/Orders";
 import ViewOrder from "@/pages/store/Account/ViewOrder";
 import Addressses from "@/pages/store/Account/Addresses";
 import Products from "@/pages/store/Products";
+import PaymentCards from "@/pages/store/Account/PaymentCards";
 
 export const storeRoutes = [
     {
@@ -23,6 +24,7 @@ export const storeRoutes = [
                     { path: 'orders', element: <Orders /> },
                     { path: 'orders/:orderId', element: <ViewOrder /> },
                     { path: 'addresses', element: <Addressses /> },
+                    { path: 'cards', element: <PaymentCards /> },
                 ]
             },
             { path: ':slug', element: <Products /> },

@@ -1,4 +1,5 @@
 import type Address from '@/interfaces/address'
+import type PaymentCard from '@/interfaces/paymentCard'
 import type Auth from 'interfaces/auth'
 import type User from 'interfaces/user'
 import { AuthActionType } from 'state/action-types/authTypes'
@@ -23,4 +24,9 @@ interface AuthCreateAddressAction {
     payload: Address
 }
 
-export type Action = AuthLoginAction | AuthLogoutAction | AuthUpdateMeAction | AuthCreateAddressAction
+interface AuthCreatePaymentCardAction {
+    type: AuthActionType.CREATE_PAYMENT_CARD,
+    payload: PaymentCard
+}
+
+export type Action = AuthLoginAction | AuthLogoutAction | AuthUpdateMeAction | AuthCreateAddressAction | AuthCreatePaymentCardAction

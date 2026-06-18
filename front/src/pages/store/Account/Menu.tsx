@@ -16,6 +16,9 @@ const Menu = () => {
                     <Link to="./addresses">
                         <Text>Addressses</Text>
                     </Link>
+                    <Link to="./cards">
+                        <Text>Cards</Text>
+                    </Link>
                 </VStack>
             </SimpleCard>
         </Flex>

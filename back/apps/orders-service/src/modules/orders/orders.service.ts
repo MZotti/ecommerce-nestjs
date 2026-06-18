@@ -6,11 +6,13 @@ import { ClientProxy } from '@nestjs/microservices';
 import { AppRpcException } from '@app/common/errors/app-rpc.exception';
 import { lastValueFrom } from 'rxjs';
 import { OrdersRepository } from './orders.repository';
+import { OrdersPaymentsService } from '../orders-payments/orders-payments.service';
 
 @Injectable()
 export class OrdersService {
     constructor(
         private ordersRepository: OrdersRepository,
+        private orderPaymentService: OrdersPaymentsService,
         @Inject('PRODUCTS_SERVICE') private productsClient: ClientProxy,
         @Inject('EVENT_BUS') private eventBus: ClientProxy
     ) { }
@@ -109,7 +111,7 @@ export class OrdersService {
             throw new AppRpcException(403, error.message ?? 'Insufficient stock');
         }
 
-        const order = this.ordersRepository.create({
+        const order = await this.ordersRepository.create({
             userId,
             total,
             paymentMethod,
@@ -126,6 +128,20 @@ export class OrdersService {
         });
 
         this.eventBus.emit('orderCreated', { items: orderItems });
+
+        if (paymentMethod === "CREDIT" || paymentMethod === "DEBIT") {
+            console.log("entrou condicional");
+            const { cardBrand, cardNumber, holderName, expiresMonth, expiresYear } = dto;
+
+            this.orderPaymentService.create({
+                orderId: order.id,
+                cardBrand,
+                cardNumber,
+                expiresMonth,
+                expiresYear,
+                holderName
+            })
+        }
 
         return order;
     }

@@ -39,7 +39,7 @@ export class OrdersRepository {
     findById(id: number) {
         return this.prisma.order.findUnique({
             where: { id },
-            select: this.orderSelect,
+            select: { ...this.orderSelect, orderPayment: true},
         });
     }
 

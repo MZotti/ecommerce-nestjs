@@ -2,43 +2,27 @@ import { BACKOFFICE_URL } from '@/enums/urls';
 import AXIOS from '@/services/api'
 
 const getCustomers = async (page = 1, perPage = 10, search = "", filters = "") => {
-    try {
-        const { data } = await AXIOS.get(`${BACKOFFICE_URL}/customers?page=${page}&perPage=${perPage}&search=${search}`)
+    const { data } = await AXIOS.get(`${BACKOFFICE_URL}/customers?page=${page}&perPage=${perPage}&search=${search}`)
 
-        return data;
-    } catch (error) {
-
-    }
+    return data;
 }
 
 const getCustomer = async (id: number) => {
-    try {
-        const { data } = await AXIOS.get(`${BACKOFFICE_URL}/customers/${id}`)
+    const { data } = await AXIOS.get(`${BACKOFFICE_URL}/customers/${id}`)
 
-        return data;
-    } catch (error) {
-
-    }
+    return data;
 }
 
 const postCustomer = async (payload: any) => {
-    try {
-        const { data } = await AXIOS.post(`${BACKOFFICE_URL}/customers`, payload)
+    const { data } = await AXIOS.post(`${BACKOFFICE_URL}/customers`, payload)
 
-        return data;
-    } catch (error) {
-
-    }
+    return data;
 }
 
 const putCustomer = async (id: number, payload: any) => {
-    try {
-        const { data } = await AXIOS.put(`${BACKOFFICE_URL}/customers/${id}`, payload)
+    const { data } = await AXIOS.put(`${BACKOFFICE_URL}/customers/${id}`, payload)
 
-        return data;
-    } catch (error) {
-
-    }
+    return data;
 }
 
 export {

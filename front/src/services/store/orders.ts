@@ -2,33 +2,21 @@ import { STORE_URL } from '@/enums/urls';
 import AXIOS from '@/services/api'
 
 const postOrder = async (payload: any) => {
-    try {
-        const { data } = await AXIOS.post(`${STORE_URL}/orders`, payload)
+    const { data } = await AXIOS.post(`${STORE_URL}/orders`, payload)
 
-        return data;
-    } catch (error) {
-
-    }
+    return data;
 }
 
 const getOrders = async () => {
-    try {
-        const { data } = await AXIOS.get(`${STORE_URL}/orders`)
+    const { data } = await AXIOS.get(`${STORE_URL}/orders`)
 
-        return data;
-    } catch (error) {
-
-    }
+    return data;
 }
 
 const getOrder = async (id: number) => {
-    try {
-        const { data } = await AXIOS.get(`${STORE_URL}/orders/${id}`)
+    const { data } = await AXIOS.get(`${STORE_URL}/orders/${id}`)
 
-        return data;
-    } catch (error) {
-
-    }
+    return data;
 }
 
 export {

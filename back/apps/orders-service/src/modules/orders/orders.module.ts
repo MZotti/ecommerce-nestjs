@@ -3,6 +3,7 @@ import { OrdersController } from './orders.controller';
 import { OrdersService } from './orders.service';
 import { OrdersRepository } from './orders.repository';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { OrdersPaymentsModule } from '../orders-payments/orders-payments.module';
 
 @Module({
 	controllers: [OrdersController],
@@ -29,6 +30,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 				},
 			}
 		]),
+		OrdersPaymentsModule
 	]
 })
 export class OrdersModule { }

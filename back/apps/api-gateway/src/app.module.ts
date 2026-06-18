@@ -13,6 +13,7 @@ import { BackofficeOrdersModule } from './modules/backoffice/orders/backoffice-o
 import { StoreProductsModule } from './modules/store/products/store-products.module';
 import { StoreOrdersModule } from './modules/store/orders/store-orders.module';
 import { StoreAddressesModule } from './modules/store/addresses/store-addresses.module';
+import { StorePaymentCardsModule } from './modules/store/payment-cards/store-payment-cards.module';
 
 @Module({
 	imports: [
@@ -25,6 +26,7 @@ import { StoreAddressesModule } from './modules/store/addresses/store-addresses.
 		StoreProductsModule,
 		StoreOrdersModule,
 		StoreAddressesModule,
+		StorePaymentCardsModule,
 		ClientsModule.register([
 			{
 				name: 'AUTH_SERVICE',

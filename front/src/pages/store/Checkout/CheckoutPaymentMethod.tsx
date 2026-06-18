@@ -1,5 +1,6 @@
 import { createListCollection, HStack, RadioCard, Text, VStack } from "@chakra-ui/react"
 import { useFormContext } from "react-hook-form"
+import CheckoutPaymentCard from "./CheckoutPaymentCard";
 
 const CheckoutPaymentMethod = () => {
     const { setValue, watch, formState: { errors }, clearErrors } = useFormContext();
@@ -42,6 +43,9 @@ const CheckoutPaymentMethod = () => {
                 </HStack>
             </RadioCard.Root>
             <Text fontWeight="bold" fontSize="sm" color="red">{errorMessage}</Text>
+            {
+                (paymentMethod == "CREDIT" || paymentMethod == "DEBIT") && <CheckoutPaymentCard />
+            }
         </VStack>
     )
 }

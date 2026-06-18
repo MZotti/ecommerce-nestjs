@@ -24,12 +24,22 @@ const reducer = (state: Auth = initialState, action: Action) => {
             }
         case AuthActionType.CREATE_ADDRESS:
             const currentAddresses = state.user?.addresses || [];
-            
+
             return {
                 ...state,
                 user: {
                     ...state.user,
                     addresses: [...currentAddresses, action.payload]
+                }
+            }
+        case AuthActionType.CREATE_PAYMENT_CARD:
+            const paymentCards = state.user?.paymentCards || [];
+
+            return {
+                ...state,
+                user: {
+                    ...state.user,
+                    paymentCards: [...paymentCards, action.payload]
                 }
             }
         default:

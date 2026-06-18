@@ -5,6 +5,7 @@ import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './modules/users/users.module';
 import { CustomersModule } from './modules/customers/customers.module';
 import { AddressesModule } from './modules/addresses/addresses.module';
+import { PaymentCardsModule } from './modules/payment-cards/payment-cards.module';
 
 @Module({
 	imports: [
@@ -15,7 +16,8 @@ import { AddressesModule } from './modules/addresses/addresses.module';
 		AuthModule,
 		UsersModule,
 		CustomersModule,
-		AddressesModule
+		AddressesModule,
+		PaymentCardsModule
 	],
 })
 export class AuthServiceModule { }

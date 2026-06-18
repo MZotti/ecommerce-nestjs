@@ -106,7 +106,8 @@ export class AuthService {
                 password: false,
                 createdAt: true,
                 customer: true,
-                addresses: true
+                addresses: true,
+                paymentCards: true,
             },
         });
 
@@ -126,6 +127,7 @@ export class AuthService {
                 role: true,
                 customer: true,
                 addresses: true,
+                paymentCards: true,
             }
         })
     }

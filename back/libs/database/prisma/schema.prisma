@@ -6,21 +6,24 @@ datasource db {
   provider = "postgresql"
 }
 
+// AUTH
+
 model User {
-  id        Int       @id @default(autoincrement())
-  role      Role      @relation(fields: [roleId], references: [id])
-  roleId    Int
-  isActive  Boolean   @default(true)
-  name      String
-  email     String    @unique
-  password  String
+  id            Int       @id @default(autoincrement())
+  role          Role      @relation(fields: [roleId], references: [id])
+  roleId        Int
+  isActive      Boolean   @default(true)
+  name          String
+  email         String    @unique
+  password      String
 
-  customer  Customer?
-  addresses Address[]
+  customer      Customer?
+  addresses     Address[]
+  paymentCards  PaymentCard[]
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  deletedAt     DateTime?
 }
 
 model Role {
@@ -64,6 +67,31 @@ model Address {
   updatedAt     DateTime @updatedAt
 }
 
+model PaymentCard {
+  id            Int      @id @default(autoincrement())
+  userId        Int
+  user          User     @relation(fields: [userId], references: [id])
+
+  type          PaymentType
+  gatewayToken  String?
+  brand         String
+  last4         String
+  holderName    String
+  expiresMonth  Int
+  expiresYear   Int
+  isDefault     Boolean  @default(false)
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+enum PaymentType {
+  CREDIT_CARD
+  DEBIT_CARD
+}
+
+// PRODUCTS
+
 model Product {
   id          Int       @id @default(autoincrement())
   category    Category  @relation(fields: [categoryId], references: [id])
@@ -93,6 +121,8 @@ model Category {
   products Product[]
 }
 
+// ORDERS
+
 model Order {
   id                    Int           @id @default(autoincrement())
   userId                Int
@@ -110,6 +140,7 @@ model Order {
   shippingState         String        @default("")
   shippingCountry       String        @default("")
 
+  orderPayment          OrderPayment?
   items                 OrderItem[]
 
   createdAt             DateTime      @default(now())
@@ -128,6 +159,22 @@ enum OrderStatus {
   SHIPPED
   CANCELED
   FINISHED
+}
+
+model OrderPayment {
+  id                Int     @id @default(autoincrement())
+  orderId           Int     @unique
+  order             Order   @relation(fields: [orderId], references: [id])
+
+  cardToken         String
+  cardBrand         String
+  cardLast4         String
+  cardHolderName    String
+  cardExpiresMonth  Int
+  cardExpiresYear   Int
+
+  paidAt            DateTime      @default(now())
+
 }
 
 model OrderItem {

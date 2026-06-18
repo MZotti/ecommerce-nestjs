@@ -1,12 +1,13 @@
 import { OrderStatusColor } from '@/enums/order'
-import { calculateCartTotalPrice } from '@/functions/cart';
-import { formatPriceToCurrency } from '@/functions/textFormat';
 import { useGetOrder } from '@/hooks/store/orders';
-import { Badge, Box, Flex, Spinner, Text, VStack } from '@chakra-ui/react';
+import { Badge, Flex, Spinner, Text, VStack } from '@chakra-ui/react';
 import { useParams } from 'react-router-dom'
 import OrderItem from './OrderItem';
 import type { OrderItem as TOrderItem } from '@/interfaces/order';
 import { dateFormat } from '@/functions/date';
+import OrderShipping from './OrderShipping';
+import OrderPayment from './OrderPayment';
+import OrderResume from './OrderResume';
 
 const ViewOrder = () => {
     const { orderId } = useParams();
@@ -28,27 +29,13 @@ const ViewOrder = () => {
                                 {
                                     order?.items.map((item: TOrderItem) => <OrderItem key={item.productId} item={item} />)
                                 }
-                                <Box>
-                                    <Text fontWeight="bold">Shipping info</Text>
-                                    <Text>Zip Code: {order.shippingZipCode}</Text>
-                                    <Text>Street: {order.shippingStreet} - {order.shippingNumber}</Text>
-                                    <Text>Complement: {order.shippingComplement}</Text>
-                                    <Text>Neighborhood: {order.shippingNeighborhood}</Text>
-                                    <Text>City: {order.shippingCity}</Text>
-                                    <Text>State: {order.shippingState}</Text>
-                                    <Text>Country: {order.shippingCountry}</Text>
-                                </Box>
+                                <OrderShipping order={order} />
+                                {
+                                    order.orderPayment && <OrderPayment orderPayment={order.orderPayment} />
+                                }
                             </VStack>
                         </Flex>
-                        <Flex flexGrow={1}>
-                            <VStack w="full" gap={2} alignItems="end">
-                                <Text>Payment method: {order?.paymentMethod}</Text>
-                                <Text>Total products: USD {formatPriceToCurrency(calculateCartTotalPrice(order?.items))}</Text>
-                                <Text>Shipping: USD $0.00</Text>
-                                <Text>Discount: USD $0.00</Text>
-                                <Text fontWeight="bold">Total: USD {formatPriceToCurrency(order?.total)}</Text>
-                            </VStack>
-                        </Flex>
+                        <OrderResume order={order} />
                     </>
             }
         </Flex>

@@ -3,6 +3,7 @@ import { Module } from '@nestjs/common';
 import { DatabaseModule } from '@app/database';
 import { ConfigModule } from '@nestjs/config';
 import { OrdersModule } from './modules/orders/orders.module';
+import { OrdersPaymentsModule } from './modules/orders-payments/orders-payments.module';
 
 @Module({
 	imports: [
@@ -10,7 +11,8 @@ import { OrdersModule } from './modules/orders/orders.module';
 			isGlobal: true,
 		}),
 		DatabaseModule,
-		OrdersModule
+		OrdersModule,
+		OrdersPaymentsModule
 	],
 })
 export class OrdersServiceModule { }

@@ -9,6 +9,11 @@ const schema = yup.object({
     shippingCity: yup.string().required("Address is invalid"),
     shippingState: yup.string().required("Address is invalid"),
     shippingCountry: yup.string().required("Address is invalid"),
+    cardNumber: yup.string().when('paymentMethod', {
+        is: (val: string) => val === 'CREDIT' || val === 'DEBIT',
+        then: (schema) => schema.required("Select you card"),
+        otherwise: (schema) => schema.optional(),
+    }),
 });
 
 export {

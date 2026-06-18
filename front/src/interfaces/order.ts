@@ -4,8 +4,9 @@ export default interface Order {
     id: number
     userId: number
     total: number
-    paymentMethod: PaymentMethods
     status: OrderStatus
+    paymentMethod: PaymentMethods
+    orderPayment?: OrderPayment
     items: OrderItem[]
     shippingZipCode: string
     shippingStreet: string
@@ -16,6 +17,17 @@ export default interface Order {
     shippingState: string
     shippingCountry: string
     createdAt: Date
+}
+
+export interface OrderPayment {
+    id: number
+    orderId: number
+    cardToken: string
+    cardBrand: string
+    cardLast4: string
+    cardHolderName: string
+    cardExpiresMonth: number
+    cardExpiresYear: number
 }
 
 export interface OrderItem {
