@@ -4,10 +4,17 @@ import axios from 'axios'
 const instance = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
     timeout: 1000,
-    headers: { 
+    headers: {
         'X-Custom-Header': 'foobar',
-        'Authorization': `Bearer ${getAccessToken()}`
     }
+});
+
+instance.interceptors.request.use((config) => {
+    const token = getAccessToken();
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
 });
 
 export default instance
