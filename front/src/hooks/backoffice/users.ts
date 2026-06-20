@@ -1,4 +1,5 @@
 import type HookCallBack from '@/interfaces/hook'
+import type Pagination from '@/interfaces/pagination'
 import type User from '@/interfaces/user'
 import { deleteUser, getUser, getUsers, postUser, putUser } from '@/services/backoffice/users'
 import { useMutation, useQuery } from '@tanstack/react-query'
@@ -11,7 +12,7 @@ const useGetUsers = (currentPage: number, perPage: number, search?: string, filt
     const dispatch = useDispatch()
     const { paginateUsersAction } = bindActionCreators(userCreator, dispatch)
 
-    const query = useQuery({
+    const query = useQuery<Pagination<User>>({
         queryKey: ['users', currentPage, perPage, search, filters],
         queryFn: () => getUsers(currentPage, perPage, search, filters),
     })
@@ -26,7 +27,7 @@ const useGetUsers = (currentPage: number, perPage: number, search?: string, filt
 }
 
 const useGetUser = (id: number, storedUser?: User | null) => {
-    return useQuery({
+    return useQuery<User>({
         queryKey: ['user', id],
         queryFn: () => getUser(id),
         enabled: storedUser == null
@@ -34,7 +35,7 @@ const useGetUser = (id: number, storedUser?: User | null) => {
 }
 
 const useLazyGetUser = (id: number) => {
-    return useQuery({
+    return useQuery<User>({
         queryKey: ['user'],
         queryFn: () => getUser(id),
         enabled: false

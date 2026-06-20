@@ -1,5 +1,6 @@
 import type HookCallBack from '@/interfaces/hook'
 import type Order from '@/interfaces/order'
+import type Pagination from '@/interfaces/pagination'
 import { getCustomerOrders, getOrder, getOrders, postOrder } from '@/services/backoffice/orders'
 import { orderCreator } from '@/state'
 import { useMutation, useQuery } from '@tanstack/react-query'
@@ -11,7 +12,7 @@ const useGetOrders = (currentPage: number, perPage: number, search?: string, fil
     const dispatch = useDispatch()
     const { paginateOrdersAction } = bindActionCreators(orderCreator, dispatch)
 
-    const query = useQuery({
+    const query = useQuery<Pagination<Order>>({
         queryKey: ['orders', currentPage, perPage, search, filters],
         queryFn: () => getOrders(currentPage, perPage, search, filters),
     })
@@ -29,7 +30,7 @@ const useGetCustomerOrders = (userId: number, currentPage: number, perPage: numb
     const dispatch = useDispatch()
     const { paginateOrdersAction } = bindActionCreators(orderCreator, dispatch)
 
-    const query = useQuery({
+    const query = useQuery<Pagination<Order>>({
         queryKey: ['orders', userId, currentPage, perPage],
         queryFn: () => getCustomerOrders(userId, currentPage, perPage),
         enabled: userId != null
@@ -45,7 +46,7 @@ const useGetCustomerOrders = (userId: number, currentPage: number, perPage: numb
 }
 
 const useGetOrder = (id: number, storedOrder?: Order | null) => {
-    return useQuery({
+    return useQuery<Order>({
         queryKey: ['order'],
         queryFn: () => getOrder(id),
         enabled: storedOrder == null
@@ -53,7 +54,7 @@ const useGetOrder = (id: number, storedOrder?: Order | null) => {
 }
 
 const useLazyGetOrder = (id: number) => {
-    return useQuery({
+    return useQuery<Order>({
         queryKey: ['order'],
         queryFn: () => getOrder(id),
         enabled: false

@@ -1,4 +1,5 @@
 import type Customer from '@/interfaces/customer'
+import type Pagination from '@/interfaces/pagination'
 import { getCustomer, getCustomers, postCustomer, putCustomer } from '@/services/backoffice/customers'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useEffect } from 'react'
@@ -10,7 +11,7 @@ const useGetCustomers = (currentPage: number, perPage: number, search?: string, 
     const dispatch = useDispatch()
     const { paginateCustomersAction } = bindActionCreators(customerCreator, dispatch)
 
-    const query = useQuery({
+    const query = useQuery<Pagination<Customer>>({
         queryKey: ['customers', currentPage, perPage, search, filters],
         queryFn: () => getCustomers(currentPage, perPage, search, filters),
     })
@@ -25,7 +26,7 @@ const useGetCustomers = (currentPage: number, perPage: number, search?: string, 
 }
 
 const useGetCustomer = (id: number, storedCustomer?: Customer | null) => {
-    return useQuery({
+    return useQuery<Customer>({
         queryKey: ['customer', id],
         queryFn: () => getCustomer(id),
         enabled: storedCustomer == null
@@ -33,7 +34,7 @@ const useGetCustomer = (id: number, storedCustomer?: Customer | null) => {
 }
 
 const useLazyGetCustomer = (id: number) => {
-    return useQuery({
+    return useQuery<Customer>({
         queryKey: ['customer'],
         queryFn: () => getCustomer(id),
         enabled: false

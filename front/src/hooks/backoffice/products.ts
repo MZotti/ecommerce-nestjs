@@ -1,4 +1,5 @@
 import type HookCallBack from '@/interfaces/hook'
+import type Pagination from '@/interfaces/pagination'
 import type Product from '@/interfaces/product'
 import { deleteProduct, getProduct, getProductsByName, getProducts, postProduct, putProduct, increaseProductStock } from '@/services/backoffice/products'
 import { productCreator } from '@/state'
@@ -12,7 +13,7 @@ const useGetProducts = (currentPage: number, perPage: number, search?: string, f
     const dispatch = useDispatch()
     const { paginateProductsAction } = bindActionCreators(productCreator, dispatch)
 
-    const query = useQuery({
+    const query = useQuery<Pagination<Product>>({
         queryKey: ['products', currentPage, perPage, search, filters],
         queryFn: () => getProducts(currentPage, perPage, search, filters),
     })
@@ -28,7 +29,7 @@ const useGetProducts = (currentPage: number, perPage: number, search?: string, f
 }
 
 const useGetProduct = (id: number, storedProduct?: Product | null) => {
-    return useQuery({
+    return useQuery<Product>({
         queryKey: ['product', id],
         queryFn: () => getProduct(id),
         enabled: storedProduct == null
@@ -36,7 +37,7 @@ const useGetProduct = (id: number, storedProduct?: Product | null) => {
 }
 
 const useLazyGetProductsByName = (search: string) => {
-    return useQuery({
+    return useQuery<Product>({
         queryKey: ['product'],
         queryFn: () => getProductsByName(search),
         enabled: false
@@ -44,7 +45,7 @@ const useLazyGetProductsByName = (search: string) => {
 }
 
 const useLazyGetProduct = (id: number) => {
-    return useQuery({
+    return useQuery<Product>({
         queryKey: ['product'],
         queryFn: () => getProduct(id),
         enabled: false
