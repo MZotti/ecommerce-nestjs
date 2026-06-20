@@ -28,7 +28,7 @@ export class OrdersRepository {
         return this.prisma.order.findMany({
             ...args,
             orderBy: { createdAt: 'desc' },
-            select: this.orderSelect,
+            select: { ...this.orderSelect, orderPayment: true},
         });
     }
 
