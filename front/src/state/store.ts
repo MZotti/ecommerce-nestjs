@@ -1,8 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit'
 import rootReducer from './reducers'
 
+const cart = localStorage.getItem('cart');
+
+const preloadedState = {
+    cart: cart ? JSON.parse(cart) : [],
+};
+
 export const store = configureStore({
     reducer: rootReducer,
+    preloadedState
 })
 
 export type RootState = ReturnType<typeof store.getState>

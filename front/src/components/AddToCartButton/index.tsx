@@ -1,5 +1,5 @@
 import type Product from '@/interfaces/product'
-import { cartCreator } from '@/state';
+import { cartCreator, store } from '@/state';
 import type { State } from '@/state/reducers';
 import { Button } from '@chakra-ui/react';
 import { CheckCircleIcon, ShoppingCartIcon } from '@phosphor-icons/react';
@@ -31,8 +31,8 @@ const AddToCartButton = ({ product, quantity = 1 }: { product: Product, quantity
                 productId: product.id,
                 quantity
             })
-
         }
+
         setClick(true);
     }
 

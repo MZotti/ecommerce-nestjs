@@ -10,10 +10,10 @@ const Cart = () => {
     return (
         <Box cursor="pointer" position="relative" asChild>
             <Link to="/cart">
-                <Float>
+                <Float placement="top-end">
                     {
                         cart.length > 0 &&
-                        <Circle size="5" bg="green" color="white">
+                        <Circle size="5" bg="green.600" color="white">
                             <Text fontSize="sm">{cart.length}</Text>
                         </Circle>
                     }

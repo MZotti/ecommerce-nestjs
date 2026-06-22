@@ -33,6 +33,7 @@
     "react-use": "^17.6.0",
     "recharts": "^3.8.1",
     "redux": "^5.0.1",
+    "redux-persist": "^6.0.0",
     "redux-thunk": "^3.1.0",
     "use-mask-input": "^3.9.0",
     "yup": "^1.7.1"
