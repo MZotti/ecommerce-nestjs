@@ -1,11 +1,11 @@
 import type Customer from '@/interfaces/customer'
 import type Pagination from '@/interfaces/pagination'
 import { getCustomer, getCustomers, postCustomer, putCustomer } from '@/services/backoffice/customers'
+import { customerCreator } from '@/state/backoffice'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { customerCreator } from 'state/index'
 
 const useGetCustomers = (currentPage: number, perPage: number, search?: string, filters?: string) => {
     const dispatch = useDispatch()

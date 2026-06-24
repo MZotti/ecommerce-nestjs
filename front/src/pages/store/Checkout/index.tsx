@@ -3,7 +3,7 @@ import OrderResume from '@/components/OrderResume'
 import SimpleCard from '@/components/SimpleCard'
 import { useCreateOrder } from '@/hooks/store/orders';
 import type { OrderItem } from '@/interfaces/order';
-import { cartCreator } from '@/state';
+import { cartCreator } from '@/state/store/index';
 import type { State } from '@/state/reducers';
 import { Button, Flex, VStack } from '@chakra-ui/react'
 import { FormProvider, useForm, type SubmitHandler } from 'react-hook-form';
@@ -50,8 +50,8 @@ const formInitialState: CheckoutFormData = {
 
 const Checkout = () => {
     const navigate = useNavigate();
-    const cart = useSelector(({ cart }: State) => cart)
-    const auth = useSelector(({ auth }: State) => auth)
+    const cart = useSelector(({ store }: State) => store.cart)
+    const auth = useSelector(({ shared }: State) => shared.auth)
 
     const [modalOpen, setModalOpen] = useState<boolean>(false);
 

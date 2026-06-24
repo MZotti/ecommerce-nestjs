@@ -15,7 +15,7 @@ const Modal = ({ isOpen, onClose }: Props) => {
     const navigate = useNavigate();
     const { reset } = useFormContext();
 
-    const products = useSelector(({ products }: State) => products)
+    const products = useSelector(({ backoffice }: State) => backoffice.products)
     const lastProductId = products[0]?.id;
 
     const backToList = () => {

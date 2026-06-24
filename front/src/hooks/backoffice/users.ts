@@ -2,11 +2,11 @@ import type HookCallBack from '@/interfaces/hook'
 import type Pagination from '@/interfaces/pagination'
 import type User from '@/interfaces/user'
 import { deleteUser, getUser, getUsers, postUser, putUser } from '@/services/backoffice/users'
+import { userCreator } from '@/state/backoffice'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { userCreator } from 'state/index'
 
 const useGetUsers = (currentPage: number, perPage: number, search?: string, filters?: string) => {
     const dispatch = useDispatch()

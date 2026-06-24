@@ -16,7 +16,7 @@ const UpdateUser = () => {
     const { id } = useParams();
     const navigate = useNavigate();
 
-    const users = useSelector(({ users }: State) => users)
+    const users = useSelector(({ backoffice }: State) => backoffice.users)
     const storedUser = users.find(user => user.id == Number(id)) || null;
     const { data, isFetching } = useGetUser(Number(id), storedUser);
 

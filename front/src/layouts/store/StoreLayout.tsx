@@ -8,13 +8,14 @@ import { useMe } from "@/hooks/auth";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
-import { authCreator, store } from "@/state";
 import LoadingScreen from "./LoadingScreen";
 import type { State } from "@/state/reducers";
+import { authCreator } from "@/state/shared";
+import { store } from "@/state";
 
 const StoreLayout = () => {
 	const { data, isFetching, isFetched } = useMe();
-    const cart = useSelector(({ cart }: State) => cart)
+    const cart = useSelector(({ store }: State) => store.cart)
 
 	const dispatch = useDispatch()
 	const { updateMeAction } = bindActionCreators(authCreator, dispatch)
@@ -28,7 +29,7 @@ const StoreLayout = () => {
 		store.subscribe(() => {
 			localStorage.setItem(
 				'cart',
-				JSON.stringify(store.getState().cart)
+				JSON.stringify(store.getState().store.cart)
 			);
 		});
 	}, [cart])

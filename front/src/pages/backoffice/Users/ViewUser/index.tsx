@@ -11,7 +11,7 @@ import { useParams } from "react-router-dom";
 const ViewUser = () => {
     const { id } = useParams();
 
-    const users = useSelector(({ users }: State) => users)
+    const users = useSelector(({ backoffice }: State) => backoffice.users)
     const storedUser = users.find(user => user.id == Number(id)) || null;
     const { data, isFetching } = useGetUser(Number(id), storedUser);
 

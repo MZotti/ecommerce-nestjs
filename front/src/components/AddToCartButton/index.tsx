@@ -1,6 +1,6 @@
 import type Product from '@/interfaces/product'
-import { cartCreator, store } from '@/state';
 import type { State } from '@/state/reducers';
+import { cartCreator } from '@/state/store/index';
 import { Button } from '@chakra-ui/react';
 import { CheckCircleIcon, ShoppingCartIcon } from '@phosphor-icons/react';
 import { useState } from 'react';
@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 const AddToCartButton = ({ product, quantity = 1 }: { product: Product, quantity?: number }) => {
-    const cart = useSelector(({ cart }: State) => cart)
+    const cart = useSelector(({ store }: State) => store.cart)
     const dispatch = useDispatch()
     const { addToCartAction, increaseProductAction } = bindActionCreators(cartCreator, dispatch)
 

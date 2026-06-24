@@ -17,7 +17,7 @@ const UpdateProduct = () => {
     const navigate = useNavigate();
 
 
-    const products = useSelector(({ products }: State) => products)
+    const products = useSelector(({ backoffice }: State) => backoffice.products)
     const storedProduct = products.find(product => product.id == Number(id)) || null;
     const { data, isFetching } = useGetProduct(Number(id), storedProduct);
 

@@ -1,5 +1,7 @@
+import LoadingBar from '@/components/LoadingBar'
 import { createPaymentCardCollection } from '@/functions/checkout'
 import { getCardBrandLogo } from '@/functions/paymentCard'
+import { useGetPaymentCards } from '@/hooks/store/paymentCards'
 import type { State } from '@/state/reducers'
 import { Box, createListCollection, Image, RadioCard, Text, VStack } from '@chakra-ui/react'
 import { useState } from 'react'
@@ -7,9 +9,10 @@ import { useFormContext } from 'react-hook-form'
 import { useSelector } from 'react-redux'
 
 const CheckoutPaymentCard = () => {
+    const { paymentCards: cards } = useSelector(({ store }: State) => store.customer)
+    const { isFetching } = useGetPaymentCards(cards);
+
     const { setValue, formState: { errors }, clearErrors } = useFormContext()
-    const auth = useSelector(({ auth }: State) => auth)
-    const cards = auth.user?.paymentCards || []
 
     const [cardId, setCardId] = useState<number>(0);
 
@@ -36,6 +39,11 @@ const CheckoutPaymentCard = () => {
         setValue("expiresYear", selectedCard.expiresYear);
         clearErrors("cardNumber");
     }
+
+    if(isFetching)
+        return (
+            <LoadingBar label='cards' />
+        )
 
     return (
         <VStack p={4} borderRadius={4} outline="1px solid" outlineColor={hasError ? "red.400" : "transparent"} backgroundColor={hasError ? "red.200" : "inherit"} alignItems="start" w="full" transition="0.2s all ease">

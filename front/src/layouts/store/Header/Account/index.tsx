@@ -13,7 +13,7 @@ export interface LoginContextProps {
 }
 
 const Account = () => {
-    const { user } = useSelector(({ auth }: State) => auth)
+    const { user } = useSelector(({ shared }: State) => shared.auth)
     const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
     const [display, setDisplay] = useState<"login" | "register">("login");
 

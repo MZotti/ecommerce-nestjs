@@ -3,7 +3,7 @@ import { Flex, Text, VStack } from '@chakra-ui/react'
 import { useSelector } from 'react-redux'
 
 const Details = () => {
-    const auth = useSelector(({ auth }: State) => auth)
+    const auth = useSelector(({ shared }: State) => shared.auth)
     const { user } = auth || {}
 
     return (

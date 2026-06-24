@@ -1,4 +1,6 @@
+import LoadingBar from "@/components/LoadingBar"
 import { createAddressesCollection } from "@/functions/checkout"
+import { useGetAddresses } from "@/hooks/store/address"
 import type { State } from "@/state/reducers"
 import { Button, createListCollection, RadioCard, Text, VStack } from "@chakra-ui/react"
 import { useState } from "react"
@@ -6,9 +8,10 @@ import { useFormContext } from "react-hook-form"
 import { useSelector } from "react-redux"
 
 const CheckoutAddress = ({ openModal }: { openModal: () => void }) => {
+    const { addresses } = useSelector(({ store }: State) => store.customer)
+    const { isFetching } = useGetAddresses(addresses);
+
     const { setValue, formState: { errors }, clearErrors } = useFormContext()
-    const auth = useSelector(({ auth }: State) => auth)
-    const addresses = auth.user?.addresses || []
 
     const [addressId, setAddressId] = useState<number>(0);
 
@@ -38,6 +41,11 @@ const CheckoutAddress = ({ openModal }: { openModal: () => void }) => {
         setValue("shippingComplement", selectedAddress.complement);
         clearErrors("shippingCity");
     }
+
+    if(isFetching)
+        return (
+            <LoadingBar label='addresses' />
+        )
 
     return (
         <VStack p={4} borderRadius={4} outline="1px solid" outlineColor={hasError ? "red.400" : "transparent"} backgroundColor={hasError ? "red.200" : "inherit"} alignItems="start" w="full" transition="0.2s all ease">

@@ -32,7 +32,7 @@ const formInitialState: AddressFormData = {
 }
 
 const CreateAddressModal = ({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) => {
-    const { mutateAsync: createAddress, isPending } = useCreateAddress();
+    const { mutateAsync: createAddress, isPending } = useCreateAddress({});
 
     const methods = useForm<AddressFormData>({
         defaultValues: formInitialState,

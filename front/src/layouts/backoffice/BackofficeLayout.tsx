@@ -1,4 +1,4 @@
-import { Navigate, Outlet, useNavigate } from "react-router-dom"
+import { Outlet, useNavigate } from "react-router-dom"
 import Header from "./Header"
 import NavBar from "./NavBar"
 import { Box, Flex } from "@chakra-ui/react"
@@ -9,7 +9,7 @@ import { useColorModeValue } from "@/components/chakra-ui/color-mode"
 import { useEffect } from "react"
 import { useDispatch } from "react-redux"
 import { bindActionCreators } from "redux"
-import { authCreator } from "@/state"
+import { authCreator } from "@/state/shared"
 
 const BackofficeLayout = () => {
     const navigate = useNavigate();

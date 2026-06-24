@@ -15,7 +15,7 @@ const Modal = ({ isOpen, onClose }: Props) => {
     const navigate = useNavigate();
     const { reset } = useFormContext()
 
-    const orders = useSelector(({ orders }: State) => orders)
+    const orders = useSelector(({ backoffice }: State) => backoffice.orders)
     const lastOrderId = orders[0]?.id;
 
     const backToList = () => {

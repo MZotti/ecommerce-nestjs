@@ -7,7 +7,7 @@ import { formatPriceToCurrency } from '@/functions/textFormat'
 import OrderResumeDetail from './OrderResumeDetail'
 
 const OrderResume = ({ actionButton }: { actionButton: React.ReactNode }) => {
-    const cart = useSelector(({ cart }: State) => cart)
+    const cart = useSelector(({ store }: State) => store.cart)
 
     return (
         <Flex flexGrow={1}>

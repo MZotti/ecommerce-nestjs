@@ -11,7 +11,7 @@ import OrderTimeline from "./OrderTimeline";
 const ViewOrder = () => {
     const { id } = useParams();
 
-    const orders = useSelector(({ orders }: State) => orders)
+    const orders = useSelector(({ backoffice }: State) => backoffice.orders)
     const storedOrder = orders.find(order => order.id == Number(id)) || null;
     const { data, isFetching } = useGetOrder(Number(id), storedOrder);
 

@@ -6,17 +6,25 @@ import CreatePaymentCardModal from "./CreatePaymentCardModal";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import type { State } from "@/state/reducers";
+import { useGetPaymentCards } from "@/hooks/store/paymentCards";
+import LoadingBar from "@/components/LoadingBar";
 
 const PaymentCards = () => {
-    const auth = useSelector(({ auth }: State) => auth)
-    const cards = auth.user?.paymentCards || []
+    const { paymentCards } = useSelector(({ store }: State) => store.customer)
+    const { isFetching } = useGetPaymentCards(paymentCards);
+    const cards = paymentCards || []
 
     const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
 
     const onOpen = () => setModalIsOpen(true);
     const onClose = () => setModalIsOpen(false);
 
-    if (cards.length == 0)
+    if (isFetching)
+        return (
+            <LoadingBar label="cards" />
+        )
+
+    if (cards.length == 0 )
         return (
             <>
                 <NoCard onOpen={onOpen} />

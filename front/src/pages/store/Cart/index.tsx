@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux'
 import type { State } from '@/state/reducers'
 
 const Cart = () => {
-    const cart = useSelector(({ cart }: State) => cart)
+    const cart = useSelector(({ store }: State) => store.cart)
     return (
         <Flex w="full" px="400px" gap={2}>
             <CartItems />

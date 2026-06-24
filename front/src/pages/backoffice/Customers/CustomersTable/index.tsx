@@ -2,7 +2,7 @@ import AsyncTable from "@/components/AsyncTable"
 import TableContainer from "@/components/TableContainer"
 import { TableProvider } from "@/contexts/TableContext"
 import { usePagination } from "@/hooks/backoffice/pagination"
-import { useDeleteUser, useGetUsers } from "@/hooks/backoffice/users"
+import { useDeleteUser } from "@/hooks/backoffice/users"
 import type { State } from "@/state/reducers"
 import { useSelector } from "react-redux"
 
@@ -24,7 +24,7 @@ const Actions = <Flex>
 </Flex>
 
 const CustomersTable = () => {
-    const customers = useSelector(({ customers }: State) => customers)
+    const customers = useSelector(({ backoffice }: State) => backoffice.customers)
 
     const {
         currentPage,

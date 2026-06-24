@@ -5,15 +5,22 @@ import NoAddress from './NoAddress'
 import CreateAddressModal from './CreateAddressModal'
 import { useState } from 'react'
 import ListAddress from './ListAddress'
+import { useGetAddresses } from '@/hooks/store/address'
+import LoadingBar from '@/components/LoadingBar'
 
 const Addressses = () => {
-    const auth = useSelector(({ auth }: State) => auth)
-    const addresses = auth.user?.addresses || []
+    const { addresses } = useSelector(({ store }: State) => store.customer)
+    const { isFetching } = useGetAddresses(addresses);
 
     const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
 
     const onOpen = () => setModalIsOpen(true);
     const onClose = () => setModalIsOpen(false);
+
+    if (isFetching)
+        return (
+            <LoadingBar label="addresses" />
+        )
 
     if (addresses.length == 0)
         return (

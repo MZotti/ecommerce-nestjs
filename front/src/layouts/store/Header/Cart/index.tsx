@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 const Cart = () => {
-    const cart = useSelector(({ cart }: State) => cart)
+    const cart = useSelector(({ store }: State) => store.cart)
 
     return (
         <Box cursor="pointer" position="relative" asChild>

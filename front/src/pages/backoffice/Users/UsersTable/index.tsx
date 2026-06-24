@@ -24,7 +24,7 @@ const Actions = <Flex>
 </Flex>
 
 const UsersTable = () => {
-    const users = useSelector(({ users }: State) => users)
+    const users = useSelector(({ backoffice }: State) => backoffice.users)
 
     const {
         currentPage,

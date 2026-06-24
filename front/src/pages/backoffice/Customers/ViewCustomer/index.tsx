@@ -11,7 +11,7 @@ import { Grid } from "@chakra-ui/react";
 const ViewCustomer = () => {
     const { id } = useParams();
 
-    const customers = useSelector(({ customers }: State) => customers)
+    const customers = useSelector(({ backoffice }: State) => backoffice.customers)
     const storedCustomer = customers.find(customer => customer.id == Number(id)) || null;
     const { data, isFetching } = useGetCustomer(Number(id), storedCustomer);
 

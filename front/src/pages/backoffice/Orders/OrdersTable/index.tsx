@@ -10,7 +10,6 @@ import { Button, Flex } from "@chakra-ui/react"
 import { PlusIcon } from "@phosphor-icons/react"
 import { Link } from "react-router-dom"
 import { useState } from "react"
-import TableActions from "./TableActions"
 import { useGetOrders } from "@/hooks/backoffice/orders"
 
 const Actions = <Flex>
@@ -23,7 +22,7 @@ const Actions = <Flex>
 </Flex>
 
 const OrdersTable = () => {
-    const orders = useSelector(({ orders }: State) => orders)
+    const orders = useSelector(({ backoffice }: State) => backoffice.orders)
 
     const {
         currentPage,
