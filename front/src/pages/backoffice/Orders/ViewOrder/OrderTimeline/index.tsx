@@ -1,15 +1,21 @@
 import CardContainer from "@/components/CardContainer";
 import { useFetchDataContext } from "@/contexts/FetchDataContext";
-import { GridItem, Timeline } from "@chakra-ui/react";
+import { Flex, GridItem, Text, Timeline } from "@chakra-ui/react";
 import TimelineItem from "./TimelineItem";
 import LoadingItem from "./LoadingItem";
+import { ListDashesIcon } from "@phosphor-icons/react";
+import type Order from "@/interfaces/order";
 
 const OrderTimeline = () => {
-    const { data: order, isLoading } = useFetchDataContext();
+    const { data: order, isLoading } = useFetchDataContext<Order>();
 
     return (
         <GridItem>
-            <CardContainer fullW title="Timeline">
+            <CardContainer fullW >
+                <Flex gap={2} alignItems="center" mb={8}>
+                    <ListDashesIcon size={22} weight="bold" />
+                    <Text fontWeight="bold">Timeline</Text>
+                </Flex>
                 <Timeline.Root>
                     {
                         isLoading ? <LoadingItem />

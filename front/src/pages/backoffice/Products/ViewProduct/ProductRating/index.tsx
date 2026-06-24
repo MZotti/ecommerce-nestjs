@@ -9,7 +9,7 @@ const ProductRating = () => {
             <CardContainer fullW>
                 <Flex gap={2} alignItems="center" mb={8}>
                     <StarIcon size={22} weight="bold" />
-                    <Text fontWeight="bold"> Rating</Text>
+                    <Text fontWeight="bold">Rating</Text>
                 </Flex>
                 <VStack gap={4} w="full" alignItems="start">
                     <Text>Average Rating</Text>
