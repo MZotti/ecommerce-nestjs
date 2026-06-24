@@ -1,6 +1,21 @@
 import { createListCollection, HStack, RadioCard, Text, VStack } from "@chakra-ui/react"
 import { useFormContext } from "react-hook-form"
 import CheckoutPaymentCard from "./CheckoutPaymentCard";
+import { BarcodeIcon, CreditCardIcon, PixLogoIcon } from "@phosphor-icons/react";
+
+const getImageOrIcon = (label: string): React.ReactNode => {
+    switch (label) {
+        case "PIX":
+            return <PixLogoIcon size={18} />
+        case "PAYMENT ORDER":
+            return <BarcodeIcon size={18} />
+        case "CREDIT":
+        case "DEBIT":
+            return <CreditCardIcon size={18} />
+        default:
+            return <></>
+    }
+}
 
 const CheckoutPaymentMethod = () => {
     const { setValue, watch, formState: { errors }, clearErrors } = useFormContext();
@@ -24,6 +39,8 @@ const CheckoutPaymentMethod = () => {
         clearErrors("paymentMethod");
     }
 
+    console.log(paymentMethod)
+
     return (
         <VStack p={4} borderRadius={4} outline="1px solid" outlineColor={hasError ? "red.400" : "transparent"} backgroundColor={hasError ? "red.200" : "inherit"} alignItems="start" w="full" transition="0.2s all ease">
             <RadioCard.Root w="full" size="lg" colorPalette="orange" variant="solid" value={paymentMethod} onValueChange={(e) => onChange(e.value)} >
@@ -35,7 +52,14 @@ const CheckoutPaymentMethod = () => {
                                 <RadioCard.ItemHiddenInput />
                                 <RadioCard.ItemControl>
                                     <RadioCard.ItemIndicator />
-                                    <RadioCard.ItemText>{item.label}</RadioCard.ItemText>
+                                    <RadioCard.ItemText>
+                                        <HStack>
+                                            {
+                                                getImageOrIcon(item.label)
+                                            }
+                                            <Text>{item.label}</Text>
+                                        </HStack>
+                                    </RadioCard.ItemText>
                                 </RadioCard.ItemControl>
                             </RadioCard.Item>
                         ))
@@ -44,7 +68,7 @@ const CheckoutPaymentMethod = () => {
             </RadioCard.Root>
             <Text fontWeight="bold" fontSize="sm" color="red">{errorMessage}</Text>
             {
-                (paymentMethod == "CREDIT" || paymentMethod == "DEBIT") && <CheckoutPaymentCard />
+                (paymentMethod == "CREDIT" || paymentMethod == "DEBIT") && <CheckoutPaymentCard cardType={paymentMethod} />
             }
         </VStack>
     )
