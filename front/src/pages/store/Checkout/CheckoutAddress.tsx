@@ -1,6 +1,6 @@
 import LoadingBar from "@/components/LoadingBar"
 import { createAddressesCollection } from "@/functions/checkout"
-import { useGetAddresses } from "@/hooks/store/address"
+import { useGetAddresses } from "@/hooks/store/addresses"
 import type { State } from "@/state/reducers"
 import { Button, createListCollection, RadioCard, Text, VStack } from "@chakra-ui/react"
 import { useState } from "react"

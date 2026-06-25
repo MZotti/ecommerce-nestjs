@@ -1,7 +1,7 @@
 import { LightMode } from '@/components/chakra-ui/color-mode'
 import FormContainer from '@/components/Form/FormContainer'
 import TextInput from '@/components/Inputs/TextInput'
-import { useCreateAddress } from '@/hooks/store/address'
+import { useCreateAddress } from '@/hooks/store/addresses'
 import { Button, CloseButton, Dialog, HStack, Portal } from '@chakra-ui/react'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm, type SubmitHandler } from 'react-hook-form'

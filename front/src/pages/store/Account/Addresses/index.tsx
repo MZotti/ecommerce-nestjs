@@ -5,7 +5,7 @@ import NoAddress from './NoAddress'
 import CreateAddressModal from './CreateAddressModal'
 import { useState } from 'react'
 import ListAddress from './ListAddress'
-import { useGetAddresses } from '@/hooks/store/address'
+import { useGetAddresses } from '@/hooks/store/addresses'
 import LoadingBar from '@/components/LoadingBar'
 
 const Addressses = () => {
