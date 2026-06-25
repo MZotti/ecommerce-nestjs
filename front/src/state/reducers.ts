@@ -1,7 +1,7 @@
 import { combineReducers } from '@reduxjs/toolkit'
 
 import backofficeReducer from './backoffice/reducers'
-import storeReducer from './store/reducers'
+import storeReducer from './storeFront/reducers'
 import sharedReducer from './shared/reducers'
 
 const rootReducer = combineReducers({

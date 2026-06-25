@@ -1,7 +1,7 @@
 import type HookCallBack from "@/interfaces/hook"
 import type PaymentCard from "@/interfaces/paymentCard"
 import { getPaymentCards, postPaymentCard } from "@/services/store/paymentCards"
-import { customerCreator } from "@/state/store/index"
+import { customerCreator } from "@/state/storeFront"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { useEffect } from "react"
 import { useDispatch } from "react-redux"

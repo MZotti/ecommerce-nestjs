@@ -1,7 +1,7 @@
 import type Address from "@/interfaces/address"
 import type HookCallBack from "@/interfaces/hook"
 import { getAddresses, postAddress } from "@/services/store/addresses"
-import { customerCreator } from "@/state/store/index"
+import { customerCreator } from "@/state/storeFront"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { useEffect } from "react"
 import { useDispatch } from "react-redux"

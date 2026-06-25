@@ -3,7 +3,7 @@ import SimpleCard from '@/components/SimpleCard'
 import { useFetchDataContext } from '@/contexts/FetchDataContext'
 import { formatPriceToCurrency } from '@/functions/textFormat';
 import type Product from '@/interfaces/product';
-import { cartCreator } from '@/state/store/index';
+import { cartCreator } from '@/state/storeFront';
 import { Button, Flex, Separator, SkeletonText, Text, VStack } from '@chakra-ui/react'
 import { MinusCircleIcon, PlusCircleIcon } from '@phosphor-icons/react';
 import { useState } from 'react';

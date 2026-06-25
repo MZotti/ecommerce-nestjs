@@ -1,6 +1,6 @@
 import type Product from '@/interfaces/product'
 import type { State } from '@/state/reducers';
-import { cartCreator } from '@/state/store/index';
+import { cartCreator } from '@/state/storeFront';
 import { Button } from '@chakra-ui/react';
 import { CheckCircleIcon, ShoppingCartIcon } from '@phosphor-icons/react';
 import { useState } from 'react';

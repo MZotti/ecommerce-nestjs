@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import CartItem from './CartItem'
 import { TrashIcon } from '@phosphor-icons/react'
 import { bindActionCreators } from 'redux'
-import { cartCreator } from '@/state/store/index'
+import { cartCreator } from '@/state/storeFront'
 
 const CartItems = () => {
     const cart = useSelector(({ store }: State) => store.cart)

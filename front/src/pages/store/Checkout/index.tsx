@@ -3,7 +3,7 @@ import OrderResume from '@/components/OrderResume'
 import SimpleCard from '@/components/SimpleCard'
 import { useCreateOrder } from '@/hooks/store/orders';
 import type { OrderItem } from '@/interfaces/order';
-import { cartCreator } from '@/state/store/index';
+import { cartCreator } from '@/state/storeFront';
 import type { State } from '@/state/reducers';
 import { Button, Flex, VStack } from '@chakra-ui/react'
 import { FormProvider, useForm, type SubmitHandler } from 'react-hook-form';

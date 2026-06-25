@@ -1,6 +1,6 @@
 import { formatPriceToCurrency } from '@/functions/textFormat'
 import type { OrderItem } from '@/interfaces/order'
-import { cartCreator } from '@/state/store/index'
+import { cartCreator } from '@/state/storeFront'
 import { Button, Flex, HStack, Image, Text, VStack } from '@chakra-ui/react'
 import { MinusIcon, PlusIcon, TrashIcon } from '@phosphor-icons/react'
 import { useDispatch } from 'react-redux'
