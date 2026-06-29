@@ -9,7 +9,7 @@ const Account = () => {
             <Text fontSize="lg" fontWeight="bold" mb={6}>My Account</Text>
             <Flex gap={2}>
                 <Menu />
-                <Flex flex={3}>
+                <Flex flex={4}>
                     <SimpleCard>
                         <Outlet />
                     </SimpleCard>

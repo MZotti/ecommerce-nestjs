@@ -21,6 +21,7 @@ export const storeRoutes = [
             {
                 path: 'my-account', element: <Account />, children: [
                     { index: true, element: <Details /> },
+                    { path: 'details', element: <Details /> },
                     { path: 'orders', element: <Orders /> },
                     { path: 'orders/:orderId', element: <ViewOrder /> },
                     { path: 'addresses', element: <Addressses /> },

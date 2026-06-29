@@ -46,10 +46,10 @@ const CheckoutPaymentCard = ({ cardType }: { cardType: string }) => {
         )
 
     return (
-        <VStack p={4} borderRadius={4} outline="1px solid" outlineColor={hasError ? "red.400" : "transparent"} backgroundColor={hasError ? "red.200" : "inherit"} alignItems="start" w="full" transition="0.2s all ease">
+        <VStack  borderRadius={4} outline="1px solid" outlineColor={hasError ? "red.400" : "transparent"} backgroundColor={hasError ? "red.200" : "inherit"} alignItems="start" w="full" transition="0.2s all ease">
             <RadioCard.Root w="full" size="lg" colorPalette="orange" variant="solid" value={String(cardId)} onValueChange={(e) => onChange(Number(e.value))} >
                 <RadioCard.Label fontSize="md">Select card to use</RadioCard.Label>
-                <SimpleGrid columns={[4]} gap={8} >
+                <SimpleGrid columns={[3]} gap="0.5rem" >
                     {
                         collection.items.map((item) => (
                             <GridItem>
