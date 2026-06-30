@@ -10,9 +10,8 @@ import { useGetPaymentCards } from "@/hooks/store/paymentCards";
 import LoadingBar from "@/components/LoadingBar";
 
 const PaymentCards = () => {
-    const { paymentCards } = useSelector(({ store }: State) => store.customer)
-    const { isFetching } = useGetPaymentCards(paymentCards);
-    const cards = paymentCards || []
+    const cards = useSelector(({ store }: State) => store.paymentCards)
+    const { isFetching } = useGetPaymentCards(cards);
 
     const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
 
@@ -24,7 +23,7 @@ const PaymentCards = () => {
             <LoadingBar label="cards" />
         )
 
-    if (cards.length == 0 )
+    if (cards.length == 0)
         return (
             <>
                 <NoCard onOpen={onOpen} />

@@ -1,0 +1,4 @@
+export enum CustomerActionTypes {
+    GET_PAYMENT_CARDS = 'GET_PAYMENT_CARDS',
+    CREATE_PAYMENT_CARD = 'CREATE_PAYMENT_CARD'
+}

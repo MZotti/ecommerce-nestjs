@@ -1,21 +1,25 @@
 
 import { useGetOrders } from '@/hooks/store/orders';
-import { Flex, Separator, Spinner, VStack } from '@chakra-ui/react';
+import { Separator, VStack } from '@chakra-ui/react';
 import type TOrder from '@/interfaces/order';
 import ListOrder from './ListOrder';
+import { useSelector } from 'react-redux';
+import type { State } from '@/state/reducers';
+import LoadingBar from '@/components/LoadingBar';
 
 const Orders = () => {
-    const { data, isFetching } = useGetOrders();
-    const { data: orders } = data || {}
+    const orders = useSelector(({ store }: State) => store.orders)
+    const { isFetching } = useGetOrders(orders);
+
+    if (isFetching)
+        return (
+            <LoadingBar label="orders" />
+        )
 
     return (
         <VStack gap={6} separator={<Separator w="full" variant="solid" />}>
             {
-                isFetching ?
-                    <Flex>
-                        <Spinner size="lg" />
-                    </Flex>
-                    : orders?.map((el: TOrder) => <ListOrder order={el} />)
+                orders.map((el: TOrder) => <ListOrder order={el} />)
             }
         </VStack>
     )

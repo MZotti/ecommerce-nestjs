@@ -1,7 +1,7 @@
 import type Address from "@/interfaces/address"
 import type HookCallBack from "@/interfaces/hook"
 import { deleteAddress, getAddresses, postAddress, putAddress, setDefaultAddress } from "@/services/store/addresses"
-import { customerCreator } from "@/state/storeFront"
+import { addressCreator } from "@/state/storeFront"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { useEffect } from "react"
 import { useDispatch } from "react-redux"
@@ -9,7 +9,7 @@ import { bindActionCreators } from "redux"
 
 const useGetAddresses = (storedAddresses: Address[]) => {
     const dispatch = useDispatch()
-    const { getAddressesAction } = bindActionCreators(customerCreator, dispatch)
+    const { getAddressesAction } = bindActionCreators(addressCreator, dispatch)
 
     const query = useQuery<Address[]>({
         queryKey: ['addresses', storedAddresses],
@@ -28,7 +28,7 @@ const useGetAddresses = (storedAddresses: Address[]) => {
 
 const useCreateAddress = ({ onSuccess, onError }: HookCallBack) => {
     const dispatch = useDispatch()
-    const { createAddressAction } = bindActionCreators(customerCreator, dispatch)
+    const { createAddressAction } = bindActionCreators(addressCreator, dispatch)
 
     const query = useMutation({
         mutationFn: (formData: any) => postAddress(formData),
@@ -47,7 +47,7 @@ const useCreateAddress = ({ onSuccess, onError }: HookCallBack) => {
 
 const useUpdateAddress = (id: number, { onSuccess, onError }: HookCallBack) => {
     const dispatch = useDispatch()
-    const { updateAddressAction } = bindActionCreators(customerCreator, dispatch)
+    const { updateAddressAction } = bindActionCreators(addressCreator, dispatch)
 
     const query = useMutation({
         mutationFn: (formData: any) => putAddress(id, formData),
@@ -69,7 +69,7 @@ const useUpdateAddress = (id: number, { onSuccess, onError }: HookCallBack) => {
 
 const useSetDefault = () => {
     const dispatch = useDispatch()
-    const { setDefaultAddressAction } = bindActionCreators(customerCreator, dispatch)
+    const { setDefaultAddressAction } = bindActionCreators(addressCreator, dispatch)
 
     const query = useMutation({
         mutationFn: (id: any) => setDefaultAddress(id)
@@ -86,7 +86,7 @@ const useSetDefault = () => {
 
 const useDeleteAddress = () => {
     const dispatch = useDispatch()
-    const { deleteAddressAction } = bindActionCreators(customerCreator, dispatch)
+    const { deleteAddressAction } = bindActionCreators(addressCreator, dispatch)
 
     const query = useMutation({
         mutationFn: (id: any) => deleteAddress(id)

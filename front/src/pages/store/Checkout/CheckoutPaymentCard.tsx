@@ -9,7 +9,7 @@ import { useFormContext } from 'react-hook-form'
 import { useSelector } from 'react-redux'
 
 const CheckoutPaymentCard = ({ cardType }: { cardType: string }) => {
-    const { paymentCards: cards } = useSelector(({ store }: State) => store.customer)
+    const cards = useSelector(({ store }: State) => store.paymentCards)
     const { isFetching } = useGetPaymentCards(cards);
 
     const { setValue, formState: { errors }, clearErrors } = useFormContext()
@@ -46,7 +46,7 @@ const CheckoutPaymentCard = ({ cardType }: { cardType: string }) => {
         )
 
     return (
-        <VStack  borderRadius={4} outline="1px solid" outlineColor={hasError ? "red.400" : "transparent"} backgroundColor={hasError ? "red.200" : "inherit"} alignItems="start" w="full" transition="0.2s all ease">
+        <VStack borderRadius={4} outline="1px solid" outlineColor={hasError ? "red.400" : "transparent"} backgroundColor={hasError ? "red.200" : "inherit"} alignItems="start" w="full" transition="0.2s all ease">
             <RadioCard.Root w="full" size="lg" colorPalette="orange" variant="solid" value={String(cardId)} onValueChange={(e) => onChange(Number(e.value))} >
                 <RadioCard.Label fontSize="md">Select card to use</RadioCard.Label>
                 <SimpleGrid columns={[3]} gap="0.5rem" >

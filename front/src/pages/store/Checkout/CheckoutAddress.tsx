@@ -8,7 +8,7 @@ import { useFormContext } from "react-hook-form"
 import { useSelector } from "react-redux"
 
 const CheckoutAddress = ({ openModal }: { openModal: () => void }) => {
-    const { addresses } = useSelector(({ store }: State) => store.customer)
+    const addresses = useSelector(({ store }: State) => store.addresses)
     const { isFetching } = useGetAddresses(addresses);
 
     const { setValue, formState: { errors }, clearErrors } = useFormContext()
@@ -42,7 +42,7 @@ const CheckoutAddress = ({ openModal }: { openModal: () => void }) => {
         clearErrors("shippingCity");
     }
 
-    if(isFetching)
+    if (isFetching)
         return (
             <LoadingBar label='addresses' />
         )

@@ -9,7 +9,7 @@ import { useGetAddresses } from '@/hooks/store/addresses'
 import LoadingBar from '@/components/LoadingBar'
 
 const Addressses = () => {
-    const { addresses } = useSelector(({ store }: State) => store.customer)
+    const addresses = useSelector(({ store }: State) => store.addresses)
     const { isFetching } = useGetAddresses(addresses);
 
     const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
