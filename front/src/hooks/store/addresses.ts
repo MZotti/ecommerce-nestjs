@@ -1,6 +1,6 @@
 import type Address from "@/interfaces/address"
 import type HookCallBack from "@/interfaces/hook"
-import { getAddresses, postAddress } from "@/services/store/addresses"
+import { deleteAddress, getAddresses, postAddress, putAddress, setDefaultAddress } from "@/services/store/addresses"
 import { customerCreator } from "@/state/storeFront"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { useEffect } from "react"
@@ -45,7 +45,66 @@ const useCreateAddress = ({ onSuccess, onError }: HookCallBack) => {
     return query;
 }
 
+const useUpdateAddress = (id: number, { onSuccess, onError }: HookCallBack) => {
+    const dispatch = useDispatch()
+    const { updateAddressAction } = bindActionCreators(customerCreator, dispatch)
+
+    const query = useMutation({
+        mutationFn: (formData: any) => putAddress(id, formData),
+        onSuccess: () => onSuccess && onSuccess(),
+        onError: () => onError && onError()
+    })
+
+    console.log("query", query)
+
+    useEffect(() => {
+        if (query.data) {
+            console.log("q", query.data)
+            updateAddressAction(query.data)
+        }
+    }, [query.data])
+
+    return query;
+}
+
+const useSetDefault = () => {
+    const dispatch = useDispatch()
+    const { setDefaultAddressAction } = bindActionCreators(customerCreator, dispatch)
+
+    const query = useMutation({
+        mutationFn: (id: any) => setDefaultAddress(id)
+    })
+
+    useEffect(() => {
+        if (query.data) {
+            setDefaultAddressAction(query.data.id)
+        }
+    }, [query.data])
+
+    return query;
+}
+
+const useDeleteAddress = () => {
+    const dispatch = useDispatch()
+    const { deleteAddressAction } = bindActionCreators(customerCreator, dispatch)
+
+    const query = useMutation({
+        mutationFn: (id: any) => deleteAddress(id)
+    })
+
+    useEffect(() => {
+        if (query.data) {
+            deleteAddressAction(query.data.id)
+        }
+    }, [query.data])
+
+    return query;
+}
+
 export {
     useGetAddresses,
-    useCreateAddress
+    useCreateAddress,
+    useUpdateAddress,
+    useSetDefault,
+    useDeleteAddress
 }

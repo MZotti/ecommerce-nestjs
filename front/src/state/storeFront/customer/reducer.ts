@@ -20,6 +20,39 @@ const reducer = (state = initialState, action: Action) => {
                 ...state,
                 addresses: [...state.addresses, action.payload]
             }
+        case CustomerActionTypes.UPDATE_ADDRESS:
+            return {
+                ...state,
+                addresses: state.addresses.map(address => {
+                    if (address.id === action.payload.id) {
+                        return action.payload
+                    }
+
+                    return address
+                })
+            }
+        case CustomerActionTypes.SET_DEFAULT_ADDRESS:
+            return {
+                ...state,
+                addresses: state.addresses.map(address => {
+                    if (address.id === action.payload) {
+                        return {
+                            ...address,
+                            isDefault: true
+                        }
+                    }
+
+                    return {
+                        ...address,
+                        isDefault: false
+                    }
+                })
+            }
+        case CustomerActionTypes.DELETE_ADDRESS:
+            return {
+                ...state,
+                addresses: state.addresses.filter(address => address.id !== action.payload)
+            }
         case CustomerActionTypes.GET_PAYMENT_CARDS:
             return {
                 ...state,

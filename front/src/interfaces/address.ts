@@ -10,4 +10,5 @@ export default interface Address {
     state: string
     country: string
     isDefault: boolean
+    createdAt: Date
 }

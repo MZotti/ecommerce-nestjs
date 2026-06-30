@@ -22,6 +22,33 @@ export const createAddressAction = (address: Address) => {
     }
 }
 
+export const updateAddressAction = (address: Address) => {
+    return (dispatch: Dispatch<Action>) => {
+        dispatch({
+            type: CustomerActionTypes.UPDATE_ADDRESS,
+            payload: address,
+        })
+    }
+}
+
+export const setDefaultAddressAction = (addressId: number) => {
+    return (dispatch: Dispatch<Action>) => {
+        dispatch({
+            type: CustomerActionTypes.SET_DEFAULT_ADDRESS,
+            payload: addressId,
+        })
+    }
+}
+
+export const deleteAddressAction = (addressId: number) => {
+    return (dispatch: Dispatch<Action>) => {
+        dispatch({
+            type: CustomerActionTypes.DELETE_ADDRESS,
+            payload: addressId,
+        })
+    }
+}
+
 export const getPaymentCardsAction = (paymentCards: PaymentCard[]) => {
     return (dispatch: Dispatch<Action>) => {
         dispatch({

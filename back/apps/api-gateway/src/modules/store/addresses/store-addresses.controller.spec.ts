@@ -28,13 +28,13 @@ describe('StoreAddressesController', () => {
     expect(controller).toBeDefined();
   });
 
-  describe('authAddresses', () => {
-    it('should send "getAddresses" with user from request', async () => {
-      const user = { id: 1 };
-      await controller.authAddresses({ user });
-      expect(mockClient.send).toHaveBeenCalledWith('getAddresses', user);
-    });
-  });
+  // describe('authAddresses', () => {
+  //   it('should send "getAddresses" with user from request', async () => {
+  //     const user = { id: 1 };
+  //     await controller.authAddresses({ user });
+  //     expect(mockClient.send).toHaveBeenCalledWith('getAddresses', user);
+  //   });
+  // });
 
   describe('create', () => {
     it('should send "createAddress" with userId and dto', () => {

@@ -1,8 +1,8 @@
 import type { State } from '@/state/reducers'
-import { Button, Separator, VStack } from '@chakra-ui/react'
+import { Button, Flex, SimpleGrid } from '@chakra-ui/react'
 import { useSelector } from 'react-redux'
 import NoAddress from './NoAddress'
-import CreateAddressModal from './CreateAddressModal'
+import CreateAddressModal from '../../../../components/AddressModal'
 import { useState } from 'react'
 import ListAddress from './ListAddress'
 import { useGetAddresses } from '@/hooks/store/addresses'
@@ -32,13 +32,16 @@ const Addressses = () => {
 
     return (
         <>
-            <VStack id="hey" w="full" gap={6} separator={<Separator w="full" variant="solid" />}>
-                {
-                    addresses.map(address => <ListAddress address={address} />)
-                }
-                <Button colorPalette="orange" onClick={onOpen}>Create Address</Button>
-            </VStack>
+            <Flex justifyContent="end" mb={4}>
+                <Button colorPalette="orange" onClick={onOpen}>Create New Address</Button>
+            </Flex>
             <CreateAddressModal isOpen={modalIsOpen} onClose={onClose} />
+            <SimpleGrid columns={[2]} gap={4}>
+                {
+                    addresses.map(address => <ListAddress key={address.id} address={address} />)
+                }
+
+            </SimpleGrid>
         </>
     )
 }

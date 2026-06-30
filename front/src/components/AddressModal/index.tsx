@@ -1,11 +1,13 @@
 import { LightMode } from '@/components/chakra-ui/color-mode'
 import FormContainer from '@/components/Form/FormContainer'
 import TextInput from '@/components/Inputs/TextInput'
-import { useCreateAddress } from '@/hooks/store/addresses'
+import { useCreateAddress, useUpdateAddress } from '@/hooks/store/addresses'
 import { Button, CloseButton, Dialog, HStack, Portal } from '@chakra-ui/react'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm, type SubmitHandler } from 'react-hook-form'
-import { schema } from './schema'
+import { schema } from '../../pages/store/Account/Addresses/schema'
+import type Address from '@/interfaces/address'
+import { toaster } from '../chakra-ui/toaster'
 
 interface AddressFormData {
     name: string
@@ -31,39 +33,61 @@ const formInitialState: AddressFormData = {
     country: "",
 }
 
-const CreateAddressModal = ({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) => {
-    const { mutateAsync: createAddress, isPending } = useCreateAddress({});
+const AddressModal = ({ isOpen, onClose, existingAddress }: { isOpen: boolean, onClose: () => void, existingAddress?: Address }) => {
+    const { mutateAsync: createAddress, isPending: isCreating } = useCreateAddress({});
+    const { mutateAsync: updateAddress, isPending: isUpdating } = useUpdateAddress(existingAddress?.id || 0, {
+        onSuccess: () => {
+            toaster.create({
+                description: "Addresss updated",
+                type: "success"
+            })
+        }
+    });
+    const isLoading = isCreating || isUpdating
+
+    const update = existingAddress ? true : false;
+    const submit = !update ? createAddress : updateAddress
 
     const methods = useForm<AddressFormData>({
-        defaultValues: formInitialState,
+        defaultValues: existingAddress ? {
+            name: existingAddress.name,
+            zipCode: existingAddress.zipCode,
+            street: existingAddress.street,
+            number: existingAddress.number,
+            complement: existingAddress.complement,
+            neighborhood: existingAddress.neighborhood,
+            city: existingAddress.city,
+            state: existingAddress.state,
+            country: existingAddress.country,
+        } : formInitialState,
         resolver: yupResolver(schema)
     })
 
     const { reset, handleSubmit } = methods;
 
     const onSubmit: SubmitHandler<AddressFormData> = async (data) => {
-        await createAddress(data)
+        await submit(data)
 
         onClose();
         reset();
     }
 
     return (
-        <Dialog.Root placement="center" open={isOpen} size="sm">
+        <Dialog.Root placement="center" open={isOpen} size="sm" lazyMount unmountOnExit>
             <Portal>
                 <LightMode>
                     <Dialog.Backdrop />
                     <Dialog.Positioner>
                         <Dialog.Content>
                             <Dialog.Header>
-                                <Dialog.Title>Create New Address</Dialog.Title>
+                                <Dialog.Title>{!update ? "Create New Address" : "Update Address"}</Dialog.Title>
                             </Dialog.Header>
                             <Dialog.Body>
                                 <form onSubmit={handleSubmit(onSubmit)}>
                                     <FormContainer
                                         methods={methods}
                                         columns={2}
-                                        isLoadingSubmit={isPending}
+                                        isLoadingSubmit={isLoading}
                                     >
                                         <TextInput id='name' label='Address Name' />
                                         <TextInput id='zipCode' label='Zip Code' />
@@ -76,12 +100,12 @@ const CreateAddressModal = ({ isOpen, onClose }: { isOpen: boolean, onClose: () 
                                         <TextInput id='country' label='Country' />
                                     </FormContainer>
                                     <HStack justifyContent="end">
-                                        <Button colorPalette="green" type="submit">Register</Button>
+                                        <Button colorPalette="green" type="submit">{!update ? "Register" : "Update"}</Button>
                                     </HStack>
                                 </form>
                             </Dialog.Body>
                             <Dialog.CloseTrigger asChild>
-                                <CloseButton size="sm" onClick={onClose} disabled={isPending} />
+                                <CloseButton size="sm" onClick={onClose} disabled={isLoading} />
                             </Dialog.CloseTrigger>
                         </Dialog.Content>
                     </Dialog.Positioner>
@@ -91,4 +115,4 @@ const CreateAddressModal = ({ isOpen, onClose }: { isOpen: boolean, onClose: () 
     )
 }
 
-export default CreateAddressModal
+export default AddressModal

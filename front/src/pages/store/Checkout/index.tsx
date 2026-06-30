@@ -15,7 +15,7 @@ import CheckoutPaymentMethod from './CheckoutPaymentMethod';
 import CheckoutAddress from './CheckoutAddress';
 import { schema } from './checkoutSchema';
 import { useState } from 'react';
-import CreateAddressModal from '../Account/Addresses/CreateAddressModal';
+import CreateAddressModal from '../../../components/AddressModal';
 
 interface CheckoutFormData {
     items?: OrderItem[]
