@@ -1,6 +1,6 @@
 import type HookCallBack from "@/interfaces/hook"
 import type PaymentCard from "@/interfaces/paymentCard"
-import { getPaymentCards, postPaymentCard } from "@/services/store/paymentCards"
+import { deletePaymentCard, getPaymentCards, postPaymentCard } from "@/services/store/paymentCards"
 import { paymentCardCreator } from "@/state/storeFront"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { useEffect } from "react"
@@ -45,7 +45,25 @@ const useCreatePaymentCard = ({ onSuccess, onError }: HookCallBack) => {
     return query;
 }
 
+const useDeletePaymentCard = () => {
+    const dispatch = useDispatch()
+    const { deletePaymentCardAction } = bindActionCreators(paymentCardCreator, dispatch)
+
+    const query = useMutation({
+        mutationFn: (id: any) => deletePaymentCard(id)
+    })
+
+    useEffect(() => {
+        if (query.data) {
+            deletePaymentCardAction(query.data.id)
+        }
+    }, [query.data])
+
+    return query;
+}
+
 export {
     useGetPaymentCards,
-    useCreatePaymentCard
+    useCreatePaymentCard,
+    useDeletePaymentCard
 }

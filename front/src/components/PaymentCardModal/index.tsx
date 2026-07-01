@@ -4,11 +4,12 @@ import TextInput from '@/components/Inputs/TextInput'
 import { Button, CloseButton, Dialog, HStack, Portal } from '@chakra-ui/react'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm, type SubmitHandler } from 'react-hook-form'
-import { schema } from './schema'
 import { useCreatePaymentCard } from '@/hooks/store/paymentCards'
 import creditCardType from 'credit-card-type';
 import CardNumberInput from '@/components/Inputs/CardNumberInputs'
 import NumberInput from '@/components/Inputs/NumberInput'
+import SelectInput from '@/components/Inputs/SelectInput'
+import { schema } from './schema'
 
 interface AddressFormData {
     cardNumber: string
@@ -16,6 +17,7 @@ interface AddressFormData {
     cvv: string
     expiresMonth: string
     expiresYear: string
+    type: string
 }
 
 const formInitialState: AddressFormData = {
@@ -24,10 +26,11 @@ const formInitialState: AddressFormData = {
     cvv: "",
     expiresMonth: "",
     expiresYear: "",
+    type: "CREDIT_CARD"
 
 }
 
-const CreatePaymentCardModal = ({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) => {
+const PaymentCardModal = ({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) => {
     const { mutate: createPaymentCard, isPending } = useCreatePaymentCard({
         onSuccess: () => {
             reset();
@@ -51,7 +54,6 @@ const CreatePaymentCardModal = ({ isOpen, onClose }: { isOpen: boolean, onClose:
 
         const formData = {
             ...data,
-            type: "CREDIT_CARD",
             expiresMonth: Number(data.expiresMonth),
             expiresYear: Number(data.expiresYear),
             brand: card.type
@@ -79,6 +81,10 @@ const CreatePaymentCardModal = ({ isOpen, onClose }: { isOpen: boolean, onClose:
                                     >
                                         <CardNumberInput id='cardNumber' label='Card Number' colSpan={2} required />
                                         <TextInput id='holderName' label='Holder Name' colSpan={2} required />
+                                        <SelectInput id='type' label='Type' options={[
+                                            { label: "Credit Card", value: "CREDIT_CARD" },
+                                            { label: "Debit Card", value: "DEBIT_CARD" },
+                                        ]} required />
                                         <NumberInput id='cvv' label='CVV' required />
                                         <NumberInput id='expiresMonth' label='Expires Month' required />
                                         <NumberInput id='expiresYear' label='Expires Year' required />
@@ -99,4 +105,4 @@ const CreatePaymentCardModal = ({ isOpen, onClose }: { isOpen: boolean, onClose:
     )
 }
 
-export default CreatePaymentCardModal
+export default PaymentCardModal

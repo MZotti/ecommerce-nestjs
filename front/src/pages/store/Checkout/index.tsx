@@ -71,7 +71,6 @@ const Checkout = () => {
     const { mutateAsync: createOrder, isPending } = useCreateOrder();
 
     const onSubmit: SubmitHandler<CheckoutFormData> = async (data) => {
-        console.log("entrou submit");
 
         if (!auth.user) {
             toaster.create({

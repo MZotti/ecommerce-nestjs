@@ -1,15 +1,17 @@
 import type { Action } from './actions'
-import { CustomerActionTypes } from './types'
+import { PaymentCardActionTypes } from './types'
 import type PaymentCard from '@/interfaces/paymentCard'
 
 const initialState: PaymentCard[] = []
 
 const reducer = (state = initialState, action: Action) => {
     switch (action.type) {
-        case CustomerActionTypes.GET_PAYMENT_CARDS:
+        case PaymentCardActionTypes.GET_PAYMENT_CARDS:
             return action.payload
-        case CustomerActionTypes.CREATE_PAYMENT_CARD:
+        case PaymentCardActionTypes.CREATE_PAYMENT_CARD:
             return [action.payload, ...state]
+        case PaymentCardActionTypes.DELETE_PAYMENT_CARD:
+            return state.filter(card => card.id !== action.payload)
         default:
             return state
     }

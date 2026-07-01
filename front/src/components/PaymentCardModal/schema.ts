@@ -23,6 +23,7 @@ const schema = yup.object({
     ),
     expiresMonth: yup.string().required("CVV is required"),
     expiresYear: yup.string().required("CVV is required"),
+    type: yup.string().required("Card Type is required"),
 });
 
 export {

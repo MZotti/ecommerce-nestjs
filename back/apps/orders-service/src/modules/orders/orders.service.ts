@@ -107,7 +107,6 @@ export class OrdersService {
                 this.productsClient.send('stockAvailable', orderItems),
             );
         } catch (error: any) {
-            console.log(error);
             throw new AppRpcException(403, error.message ?? 'Insufficient stock');
         }
 
@@ -130,7 +129,6 @@ export class OrdersService {
         this.eventBus.emit('orderCreated', { items: orderItems });
 
         if (paymentMethod === "CREDIT" || paymentMethod === "DEBIT") {
-            console.log("entrou condicional");
             const { cardBrand, cardNumber, holderName, expiresMonth, expiresYear } = dto;
 
             this.orderPaymentService.create({

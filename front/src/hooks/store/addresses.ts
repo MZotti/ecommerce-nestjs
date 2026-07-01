@@ -55,11 +55,8 @@ const useUpdateAddress = (id: number, { onSuccess, onError }: HookCallBack) => {
         onError: () => onError && onError()
     })
 
-    console.log("query", query)
-
     useEffect(() => {
         if (query.data) {
-            console.log("q", query.data)
             updateAddressAction(query.data)
         }
     }, [query.data])

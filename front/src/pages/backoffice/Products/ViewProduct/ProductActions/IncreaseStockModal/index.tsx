@@ -51,8 +51,6 @@ const IncreaseStockModal = ({ isOpen, onClose }: Props) => {
 
 
     const onSubmit: SubmitHandler<StockFormData> = async (data) => {
-        console.log(data);
-
         updateStock({
             id: product.id,
             formData: {

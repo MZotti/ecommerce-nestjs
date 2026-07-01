@@ -106,8 +106,6 @@ export class ProductsService {
 
         const slug = slugfy(name, { lower: true });
 
-        console.log(dto);
-
         return this.productsRepository.update(id, { slug, ...dto });
     }
 

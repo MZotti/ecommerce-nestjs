@@ -25,7 +25,6 @@ const Paginator = () => {
     const fontSize = 15
 
     const arrowPagination = (page: number) => {
-        console.log("entrou arrow pagination", page, lastPage);
         if (page < 1 || page > lastPage) return
 
         setCurrentPage(page)

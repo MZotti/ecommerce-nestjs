@@ -5,7 +5,7 @@ import { useCreateAddress, useUpdateAddress } from '@/hooks/store/addresses'
 import { Button, CloseButton, Dialog, HStack, Portal } from '@chakra-ui/react'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm, type SubmitHandler } from 'react-hook-form'
-import { schema } from '../../pages/store/Account/Addresses/schema'
+import { schema } from './schema'
 import type Address from '@/interfaces/address'
 import { toaster } from '../chakra-ui/toaster'
 

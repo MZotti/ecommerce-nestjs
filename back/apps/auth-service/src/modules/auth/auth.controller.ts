@@ -19,7 +19,6 @@ export class AuthController {
 
 	@MessagePattern('registerCustomer')
 	async registerCustomer(@Payload() dto: RegisterCustomerDto) {
-		console.log("3");
 		return this.authService.registerCustomer(dto);
 	}
 

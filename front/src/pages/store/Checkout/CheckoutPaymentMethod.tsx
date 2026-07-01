@@ -39,8 +39,6 @@ const CheckoutPaymentMethod = () => {
         clearErrors("paymentMethod");
     }
 
-    console.log(paymentMethod)
-
     return (
         <VStack p={4} borderRadius={4} outline="1px solid" outlineColor={hasError ? "red.400" : "transparent"} backgroundColor={hasError ? "red.200" : "inherit"} alignItems="start" w="full" transition="0.2s all ease">
             <RadioCard.Root w="full" size="lg" colorPalette="orange" variant="solid" value={paymentMethod} onValueChange={(e) => onChange(e.value)} >

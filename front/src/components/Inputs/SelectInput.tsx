@@ -12,7 +12,7 @@ interface Props {
 }
 
 interface Option {
-    value: number
+    value: number | string
     label: string
 }
 
@@ -33,7 +33,7 @@ const SelectInput = (props: Props) => {
                 control={control}
                 name={props.id}
                 render={({ field }) => (
-                    <Select.Root disabled={isLoadingSubmit} name={field.name} value={[field.value]} collection={collections} onValueChange={({ value }) => onChange(value)} size="sm" width="320px"  >
+                    <Select.Root disabled={isLoadingSubmit} name={field.name} value={[field.value]} collection={collections} onValueChange={({ value }) => onChange(value)} size="sm" width="full"  >
                         <Select.HiddenSelect />
                         <Select.Control>
                             <Select.Trigger>
@@ -56,7 +56,6 @@ const SelectInput = (props: Props) => {
                             </Select.Positioner>
                         </Portal>
                     </Select.Root>
-
                 )} />
         </InputContainer>
     )

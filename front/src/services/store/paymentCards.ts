@@ -13,8 +13,8 @@ const postPaymentCard = async (payload: any) => {
     return data;
 }
 
-const deletePaymentCards = async (id: number) => {
-    const { data } = await AXIOS.post(`${STORE_URL}/payment-cards/${id}`)
+const deletePaymentCard = async (id: number) => {
+    const { data } = await AXIOS.delete(`${STORE_URL}/payment-cards/${id}`)
 
     return data;
 }
@@ -22,5 +22,5 @@ const deletePaymentCards = async (id: number) => {
 export {
     getPaymentCards,
     postPaymentCard,
-    deletePaymentCards
+    deletePaymentCard
 }

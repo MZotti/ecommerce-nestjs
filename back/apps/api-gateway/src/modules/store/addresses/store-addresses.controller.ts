@@ -16,7 +16,6 @@ export class StoreAddressesController {
     @UseGuards(JwtAuthGuard)
     @Get()
     async authAddresses(@CurrentUser('id') userId: number) {
-        console.log("store controller", userId)
         return this.client.send('getAddresses', { userId });
     }
 

@@ -37,7 +37,7 @@ const ListAddress = ({ address }: { address: Address }) => {
                                     <Button colorPalette="orange" variant="surface" size="xs" onClick={onSetAsDefault} disabled={isPendingDefault} loading={isPendingDefault} >Set as default</Button>
                             }
                             <Button colorPalette="orange" variant="surface" size="xs" onClick={onEdit} >Edit</Button>
-                            <Button colorPalette="orange" variant="surface" size="xs" onClick={onRemove} disabled={isPendingDelete} loading={isPendingDelete} >Remove</Button>
+                            <Button colorPalette="red" variant="surface" size="xs" onClick={onRemove} disabled={isPendingDelete} loading={isPendingDelete} >Remove</Button>
                         </HStack>
                     </Float>
                 }

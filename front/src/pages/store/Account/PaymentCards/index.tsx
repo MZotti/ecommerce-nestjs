@@ -1,13 +1,12 @@
-import { Button, Separator, VStack } from "@chakra-ui/react";
+import { Button, Flex, SimpleGrid } from "@chakra-ui/react";
 import ListPaymenCard from "./ListPaymenCard";
-import type PaymentCard from "@/interfaces/paymentCard";
 import NoCard from "./NoCard";
-import CreatePaymentCardModal from "./CreatePaymentCardModal";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import type { State } from "@/state/reducers";
 import { useGetPaymentCards } from "@/hooks/store/paymentCards";
 import LoadingBar from "@/components/LoadingBar";
+import PaymentCardModal from "@/components/PaymentCardModal";
 
 const PaymentCards = () => {
     const cards = useSelector(({ store }: State) => store.paymentCards)
@@ -27,19 +26,22 @@ const PaymentCards = () => {
         return (
             <>
                 <NoCard onOpen={onOpen} />
-                <CreatePaymentCardModal isOpen={modalIsOpen} onClose={onClose} />
+                <PaymentCardModal isOpen={modalIsOpen} onClose={onClose} />
             </>
         )
 
     return (
         <>
-            <VStack gap={6} separator={<Separator w="full" variant="solid" />}>
+            <Flex justifyContent="end" mb={4}>
+                <Button colorPalette="orange" onClick={onOpen}>Create New Card</Button>
+            </Flex>
+            <PaymentCardModal isOpen={modalIsOpen} onClose={onClose} />
+            <SimpleGrid columns={[2]} gap={4}>
                 {
-                    cards?.map((el: PaymentCard) => <ListPaymenCard card={el} />)
+                    cards.map(card => <ListPaymenCard key={card.id} card={card} />)
                 }
-                <Button colorPalette="orange" onClick={onOpen}>Create Payment Card</Button>
-            </VStack>
-            <CreatePaymentCardModal isOpen={modalIsOpen} onClose={onClose} />
+
+            </SimpleGrid>
         </>
     )
 }
