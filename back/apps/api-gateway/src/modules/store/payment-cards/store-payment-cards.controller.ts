@@ -5,8 +5,12 @@ import { CurrentUser } from 'apps/api-gateway/src/common/decorators/current-user
 import { JwtAuthGuard } from 'apps/api-gateway/src/common/jwt/jwt-auth.guard';
 import { lastValueFrom } from 'rxjs';
 import { handleRpcError } from 'apps/api-gateway/src/common/utils/handle-rpc-error.util';
+import { RolesGuard } from 'apps/api-gateway/src/common/jwt/roles.guard';
+import { Roles } from 'apps/api-gateway/src/common/decorators/roles.decorator';
 
 @Controller('store/payment-cards')
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles('CUSTOMER')
 export class StorePaymentCardsController {
     constructor(
         @Inject('AUTH_SERVICE') private client: ClientProxy,

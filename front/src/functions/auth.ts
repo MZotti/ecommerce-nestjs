@@ -1,3 +1,5 @@
+import type Auth from "@/interfaces/auth";
+import type User from "@/interfaces/user";
 import { me } from "@/services/auth";
 
 const ACCESS_TOKEN = "access_token"
@@ -20,8 +22,24 @@ const userIsLogged = async (): Promise<boolean> => {
     }
 }
 
+const isBackofficeUser = (user: User | null | undefined): boolean => {
+    if (!user)
+        return false;
+
+    return ['ADMIN', 'MANAGER', 'OPERATIONAL', 'ANALYST'].includes(user?.role.name || "")
+}
+
+const isStoreUser = (user: User | null | undefined): boolean => {
+    if (!user)
+        return false;
+
+    return ['CUSTOMER'].includes(user?.role.name || "")
+}
+
 export {
     storeAccessToken,
     getAccessToken,
-    userIsLogged
+    userIsLogged,
+    isBackofficeUser,
+    isStoreUser
 }

@@ -1,4 +1,4 @@
-import { Outlet, useNavigate } from "react-router-dom"
+import { Navigate, Outlet, useNavigate } from "react-router-dom"
 import Header from "./Header"
 import NavBar from "./NavBar"
 import { Box, Flex } from "@chakra-ui/react"
@@ -7,9 +7,11 @@ import { useMe } from "@/hooks/auth"
 import { Toaster } from "@/components/chakra-ui/toaster"
 import { useColorModeValue } from "@/components/chakra-ui/color-mode"
 import { useEffect } from "react"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { bindActionCreators } from "redux"
 import { authCreator } from "@/state/shared"
+import type { State } from "@/state/reducers"
+import { isBackofficeUser } from "@/functions/auth"
 
 const BackofficeLayout = () => {
     const navigate = useNavigate();
@@ -30,6 +32,10 @@ const BackofficeLayout = () => {
 
     if (isFetching)
         return <LoadingScreen />
+
+    if (!isBackofficeUser(data)) {
+        return <Navigate to="/backoffice/login" replace />;
+    }
 
     return (
         <Box

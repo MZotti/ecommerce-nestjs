@@ -5,14 +5,17 @@ import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 import { JwtAuthGuard } from '../../../common/jwt/jwt-auth.guard';
 import { handleRpcError } from '../../../common/utils/handle-rpc-error.util';
+import { RolesGuard } from '../../../common/jwt/roles.guard';
+import { Roles } from '../../../common/decorators/roles.decorator';
 
 @Controller('backoffice/users')
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles('ADMIN', 'MANAGER', 'OPERATIONAL', 'ANALYST')
 export class BackofficeUsersController {
     constructor(
         @Inject('AUTH_SERVICE') private client: ClientProxy,
     ) { }
 
-    @UseGuards(JwtAuthGuard)
     @Get()
     async findAll(
         @Query('page') page = 1,
@@ -26,7 +29,6 @@ export class BackofficeUsersController {
         });
     }
 
-    @UseGuards(JwtAuthGuard)
     @Get(':id')
     async find(@Param('id') id: number) {
         return lastValueFrom(
@@ -34,13 +36,11 @@ export class BackofficeUsersController {
         ).catch(handleRpcError);
     }
 
-    @UseGuards(JwtAuthGuard)
     @Post()
     async create(@Body() dto: CreateUserDto) {
         return this.client.send('createUser', dto);
     }
 
-    @UseGuards(JwtAuthGuard)
     @Put(':id')
     async update(@Param('id') id: number, @Body() dto: UpdateUserDto) {
         return lastValueFrom(
@@ -48,7 +48,6 @@ export class BackofficeUsersController {
         ).catch(handleRpcError);
     }
 
-    @UseGuards(JwtAuthGuard)
     @Delete(':id')
     async delete(@Param('id') id: number) {
         return lastValueFrom(

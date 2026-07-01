@@ -5,8 +5,12 @@ import { JwtAuthGuard } from '../../../common/jwt/jwt-auth.guard';
 import { CurrentUser } from 'apps/api-gateway/src/common/decorators/current-user.decorator';
 import { CreateCustomerOrderDto } from '@app/common/dto/orders/create-customer-order.dto';
 import { handleRpcError } from '../../../common/utils/handle-rpc-error.util';
+import { RolesGuard } from 'apps/api-gateway/src/common/jwt/roles.guard';
+import { Roles } from 'apps/api-gateway/src/common/decorators/roles.decorator';
 
 @Controller('store/orders')
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles('CUSTOMER')
 export class StoreOrdersController {
     constructor(
         @Inject('ORDERS_SERVICE') private client: ClientProxy,

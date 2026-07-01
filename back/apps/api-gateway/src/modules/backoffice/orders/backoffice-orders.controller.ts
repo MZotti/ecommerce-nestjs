@@ -4,14 +4,17 @@ import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 import { JwtAuthGuard } from '../../../common/jwt/jwt-auth.guard';
 import { handleRpcError } from '../../../common/utils/handle-rpc-error.util';
+import { RolesGuard } from '../../../common/jwt/roles.guard';
+import { Roles } from '../../../common/decorators/roles.decorator';
 
 @Controller('backoffice/orders')
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles('ADMIN', 'MANAGER', 'OPERATIONAL', 'ANALYST')
 export class BackofficeOrdersController {
     constructor(
         @Inject('ORDERS_SERVICE') private client: ClientProxy,
     ) { }
 
-    @UseGuards(JwtAuthGuard)
     @Get()
     async findAll(
         @Query('page') page = 1,
@@ -23,7 +26,6 @@ export class BackofficeOrdersController {
         });
     }
 
-    @UseGuards(JwtAuthGuard)
     @Get(':id')
     async find(@Param('id') id: number) {
         return lastValueFrom(
@@ -31,7 +33,6 @@ export class BackofficeOrdersController {
         ).catch(handleRpcError);
     }
 
-    @UseGuards(JwtAuthGuard)
     @Post()
     async create(@Body() dto: CreateOrderDto) {
         return lastValueFrom(
@@ -39,7 +40,6 @@ export class BackofficeOrdersController {
         ).catch(handleRpcError);
     }
 
-    @UseGuards(JwtAuthGuard)
     @Patch('cancel/:id')
     async cancelOrder(@Param('id') id: number) {
         return lastValueFrom(
@@ -47,7 +47,6 @@ export class BackofficeOrdersController {
         ).catch(handleRpcError);
     }
 
-    @UseGuards(JwtAuthGuard)
     @Get('customer/:id')
     async findCustomerOrders(
         @Param('id') id: number,

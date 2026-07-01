@@ -84,7 +84,7 @@ export class AuthService {
     async login(loginDto: LoginDto) {
         const { email, password } = loginDto;
 
-        const user = await this.prisma.user.findUnique({ where: { email } });
+        const user = await this.prisma.user.findUnique({ where: { email }, include: { role: true } });
 
         if (!user) {
             throw new AppRpcException(401, 'Invalid credentials');
@@ -103,13 +103,11 @@ export class AuthService {
                 name: true,
                 email: true,
                 role: true,
-                password: false,
-                createdAt: true,
-                customer: true,
-                addresses: true,
-                paymentCards: true,
+                password: false
             },
         });
+
+        console.log()
 
         return {
             user: loggedUser,
@@ -125,9 +123,6 @@ export class AuthService {
                 name: true,
                 email: true,
                 role: true,
-                customer: true,
-                addresses: true,
-                paymentCards: true,
             }
         })
     }

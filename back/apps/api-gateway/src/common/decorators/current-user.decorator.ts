@@ -6,6 +6,8 @@ export const CurrentUser = createParamDecorator(
 
         const user = request.user;
 
+        console.log("pegou o user", user);
+
         if (data) {
             return user?.[data];
         }

@@ -6,8 +6,12 @@ import { CurrentUser } from 'apps/api-gateway/src/common/decorators/current-user
 import { CreateAddressDto } from '@app/common/dto/addresses/create-address.dto';
 import { handleRpcError } from '../../../common/utils/handle-rpc-error.util';
 import { UpdateAddressDto } from '@app/common/dto/addresses/update-address-dto';
+import { RolesGuard } from 'apps/api-gateway/src/common/jwt/roles.guard';
+import { Roles } from 'apps/api-gateway/src/common/decorators/roles.decorator';
 
 @Controller('store/addresses')
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles('CUSTOMER')
 export class StoreAddressesController {
     constructor(
         @Inject('AUTH_SERVICE') private client: ClientProxy,

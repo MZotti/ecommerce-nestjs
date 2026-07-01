@@ -1,4 +1,4 @@
-import { Controller, Get, Inject, Param, Query } from '@nestjs/common';
+import { Controller, Get, Inject, Param, Query, UseGuards } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 import { handleRpcError } from '../../../common/utils/handle-rpc-error.util';
