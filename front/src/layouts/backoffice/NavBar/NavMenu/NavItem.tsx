@@ -2,6 +2,9 @@ import { Accordion, Flex, Text, VStack } from "@chakra-ui/react"
 import type { MenuItem } from "./Menus"
 import { useColorModeValue } from "@/components/chakra-ui/color-mode"
 import { Link } from "react-router-dom"
+import { hasRole } from "@/functions/auth"
+import { useSelector } from "react-redux"
+import type { State } from "@/state/reducers"
 
 interface Props {
     id: string
@@ -12,6 +15,8 @@ interface Props {
 }
 
 const NavItem = ({ id, label, link, icon, subItems }: Props) => {
+    const { user } = useSelector(({ shared }: State) => shared.auth)
+
     const backgroundHoverColor = useColorModeValue('gray.300', 'gray.600');
     const backgroundActiveColor = useColorModeValue('gray.300', 'gray.600');
 
@@ -39,7 +44,7 @@ const NavItem = ({ id, label, link, icon, subItems }: Props) => {
                     <Flex w="full" justifyContent="start" alignItems="center">
                         <VStack w="full" gap={0}>
                             {
-                                subItems?.map(m => <NavItem key={m.id} {...m} />)
+                                subItems?.filter(m => !m.roles ? m : hasRole(m.roles, user?.role.name || '')).map(m => <NavItem key={m.id} {...m} />)
                             }
                         </VStack>
                     </Flex >

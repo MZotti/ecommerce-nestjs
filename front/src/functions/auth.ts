@@ -36,10 +36,13 @@ const isStoreUser = (user: User | null | undefined): boolean => {
     return ['CUSTOMER'].includes(user?.role.name || "")
 }
 
+const hasRole = (roles: string[], userRole: string): boolean => roles.includes(userRole)
+
 export {
     storeAccessToken,
     getAccessToken,
     userIsLogged,
     isBackofficeUser,
-    isStoreUser
+    isStoreUser,
+    hasRole
 }

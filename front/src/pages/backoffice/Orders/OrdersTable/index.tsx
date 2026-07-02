@@ -11,17 +11,27 @@ import { PlusIcon } from "@phosphor-icons/react"
 import { Link } from "react-router-dom"
 import { useState } from "react"
 import { useGetOrders } from "@/hooks/backoffice/orders"
+import { hasRole } from "@/functions/auth"
 
-const Actions = <Flex>
-    <Button colorPalette="green" asChild size="sm">
-        <Link to="create">
-            <PlusIcon size="12px" />
-            Create
-        </Link>
-    </Button>
-</Flex>
+const Actions = (userRole: string) => {
+
+    return (
+        <Flex>
+            {
+                hasRole(['ADMIN', 'MANAGER'], userRole) &&
+                <Button colorPalette="green" asChild size="sm">
+                    <Link to="create">
+                        <PlusIcon size="12px" />
+                        Create
+                    </Link>
+                </Button>
+            }
+        </Flex>
+    )
+}
 
 const OrdersTable = () => {
+    const { user } = useSelector(({ shared }: State) => shared.auth)
     const orders = useSelector(({ backoffice }: State) => backoffice.orders)
 
     const {
@@ -51,7 +61,7 @@ const OrdersTable = () => {
     const clearRowsSelected = () => setRows([]);
 
     return (
-        <TableContainer label="Orders" actions={Actions}>
+        <TableContainer label="Orders" actions={Actions(user?.role.name || '')}>
             <TableProvider
                 value={{
                     data: orders,
