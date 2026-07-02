@@ -25,6 +25,18 @@ const putUser = async (id: number, payload: any) => {
     return data;
 }
 
+const activeUser = async (id: number) => {
+    const { data } = await AXIOS.patch(`${BACKOFFICE_URL}/users/active/${id}`)
+
+    return data;
+}
+
+const inaciveUser = async (id: number) => {
+    const { data } = await AXIOS.patch(`${BACKOFFICE_URL}/users/inactive/${id}`)
+
+    return data;
+}
+
 const deleteUser = async (id: number) => {
     const { data } = await AXIOS.delete(`${BACKOFFICE_URL}/users/${id}`)
 
@@ -36,5 +48,7 @@ export {
     getUser,
     postUser,
     putUser,
+    activeUser,
+    inaciveUser,
     deleteUser
 }

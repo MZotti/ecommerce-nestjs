@@ -83,6 +83,30 @@ export class UsersService {
         return this.usersRepository.update(id, dto);
     }
 
+    async activeUser(id: number) {
+        const existingUser = await this.usersRepository.findById(id);
+
+        if (!existingUser) {
+            throw new AppRpcException(404, 'User not found');
+        }
+
+        await this.usersRepository.active(id);
+
+        return { id }
+    }
+
+    async inactiveUser(id: number) {
+        const existingUser = await this.usersRepository.findById(id);
+
+        if (!existingUser) {
+            throw new AppRpcException(404, 'User not found');
+        }
+
+        await this.usersRepository.inactive(id);
+
+        return { id }
+    }
+
     async delete(id: number) {
         const existingUser = await this.usersRepository.findById(id);
 

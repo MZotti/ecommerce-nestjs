@@ -1,7 +1,7 @@
 import type HookCallBack from '@/interfaces/hook'
 import type Pagination from '@/interfaces/pagination'
 import type User from '@/interfaces/user'
-import { deleteUser, getUser, getUsers, postUser, putUser } from '@/services/backoffice/users'
+import { activeUser, deleteUser, getUser, getUsers, inaciveUser, postUser, putUser } from '@/services/backoffice/users'
 import { userCreator } from '@/state/backoffice'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useEffect } from 'react'
@@ -80,6 +80,44 @@ const useUpdateUser = ({ onSuccess, onError }: HookCallBack) => {
     return query;
 }
 
+const useActiveUser = ({ onSuccess, onError }: HookCallBack) => {
+    const dispatch = useDispatch()
+    const { activeUserAction } = bindActionCreators(userCreator, dispatch)
+
+    const query = useMutation({
+        mutationFn: (id: any) => activeUser(id),
+        onSuccess: () => onSuccess && onSuccess(),
+        onError: (error) => onError && onError(error)
+    })
+
+    useEffect(() => {
+        if (query.data) {
+            activeUserAction(query.data.id)
+        }
+    }, [query.data])
+
+    return query;
+}
+
+const useInactiveUser = ({ onSuccess, onError }: HookCallBack) => {
+    const dispatch = useDispatch()
+    const { inactiveUserAction } = bindActionCreators(userCreator, dispatch)
+
+    const query = useMutation({
+        mutationFn: (id: any) => inaciveUser(id),
+        onSuccess: () => onSuccess && onSuccess(),
+        onError: (error) => onError && onError(error)
+    })
+
+    useEffect(() => {
+        if (query.data) {
+            inactiveUserAction(query.data.id)
+        }
+    }, [query.data])
+
+    return query;
+}
+
 const useDeleteUser = () => {
     const dispatch = useDispatch()
     const { deleteUserAction } = bindActionCreators(userCreator, dispatch)
@@ -97,4 +135,4 @@ const useDeleteUser = () => {
     return query;
 }
 
-export { useGetUsers, useGetUser, useLazyGetUser, useCreateUser, useUpdateUser, useDeleteUser }
+export { useGetUsers, useGetUser, useLazyGetUser, useCreateUser, useUpdateUser, useActiveUser, useInactiveUser, useDeleteUser }

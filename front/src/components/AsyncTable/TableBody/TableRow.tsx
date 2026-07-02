@@ -43,7 +43,7 @@ const TableRow = ({ data }: Props) => {
                 ),
             )}
             {
-                hasActions && <Table.Cell pointerEvents="none" w="20px" key={columns.length}><RowActions id={rowId} /></Table.Cell>
+                hasActions && <Table.Cell pointerEvents="none" w="20px" key={columns.length}><RowActions id={rowId} model={data} /></Table.Cell>
             }
         </Table.Row>
     )

@@ -34,6 +34,20 @@ export class UsersController {
         return this.usersService.update(Number(id), data);
     }
 
+    @MessagePattern('activeUser')
+    async activeUser(@Payload() payload: { id: string; }) {
+        const { id } = payload;
+
+        return this.usersService.activeUser(Number(id));
+    }
+
+    @MessagePattern('inactiveUser')
+    async inactiveUser(@Payload() payload: { id: string; }) {
+        const { id } = payload;
+
+        return this.usersService.inactiveUser(Number(id));
+    }
+
     @MessagePattern('deleteUser')
     async delete(@Payload() payload: { id: string; }) {
         const { id } = payload;

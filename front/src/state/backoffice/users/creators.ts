@@ -30,6 +30,15 @@ export const updateUserAction = (user: User) => {
     }
 }
 
+export const activeUserAction = (id: number) => {
+    return (dispatch: Dispatch<Action>) => {
+        dispatch({
+            type: UserActionType.ACTIVE_USER,
+            payload: id,
+        })
+    }
+}
+
 export const inactiveUserAction = (id: number) => {
     return (dispatch: Dispatch<Action>) => {
         dispatch({

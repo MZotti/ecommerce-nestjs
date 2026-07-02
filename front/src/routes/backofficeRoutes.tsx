@@ -56,14 +56,10 @@ export const backofficeRoutes = [
             { path: 'customers', element: <Customers /> },
             { path: 'customers/:id', element: <ViewCustomer /> },
 
-            {
-                path: 'users', element: <RoleGuard roles={['ADMIN', 'MANAGER']} />, children: [
-                    { path: '', element: <Users /> },
-                    { path: 'users/create', element: <CreateUser /> },
-                    { path: 'users/:id', element: <ViewUser /> },
-                    { path: 'users/:id/update', element: <UpdateUser /> },
-                ]
-            },
+            { path: 'users', element: <Users />, },
+            { path: 'users/create', element: <CreateUser /> },
+            { path: 'users/:id', element: <ViewUser /> },
+            { path: 'users/:id/update', element: <UpdateUser /> },
 
             { path: '*', element: <BackofficeHome /> },
         ],

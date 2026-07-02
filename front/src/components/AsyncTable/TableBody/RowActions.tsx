@@ -5,7 +5,7 @@ import { Link } from "react-router-dom"
 import DeleteAction from "./DeleteAction"
 import { useState } from "react"
 
-const RowActions = ({ id }: { id: number }) => {
+const RowActions = ({ id, model }: { id: number, model: any }) => {
     const [deleteIsOpen, setDeleteIsOpen] = useState<boolean>(false);
     const { canUpdate, deleteAction, customRowActions } = useTableContext()
 
@@ -23,7 +23,7 @@ const RowActions = ({ id }: { id: number }) => {
                             canUpdate && <Menu.Item value="new-txt" cursor="pointer" asChild><Link to={`${id}/update`}><PencilLineIcon size="16px" /> Update</Link></Menu.Item>
                         }
                         {
-                            customRowActions && customRowActions.map(action => <Menu.Item value={action.label}>{action.icon} {action.label}</Menu.Item>)
+                            customRowActions && customRowActions.filter(action => action.visible ? action.visible(model) : action).map(action => <Menu.Item cursor="pointer" value={action.label} onClick={() => action.callback(id)}>{action.icon} {action.label}</Menu.Item>)
                         }
                         {
                             deleteAction !== undefined && <Menu.Item value="delete" color="red" cursor="pointer" onClick={() => setDeleteIsOpen(true)}><TrashIcon size="16px" /> Delete</Menu.Item>

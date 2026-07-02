@@ -1,6 +1,6 @@
 import { CreateUserDto } from '@app/common/dto/users/create-user.dto';
 import { UpdateUserDto } from '@app/common/dto/users/update-user.dto';
-import { Body, Controller, Delete, Get, Inject, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Inject, Param, Patch, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 import { JwtAuthGuard } from '../../../common/jwt/jwt-auth.guard';
@@ -45,6 +45,20 @@ export class BackofficeUsersController {
     async update(@Param('id') id: number, @Body() dto: UpdateUserDto) {
         return lastValueFrom(
             this.client.send('updateUser', { id, data: dto })
+        ).catch(handleRpcError);
+    }
+
+    @Patch('active/:id')
+    async active(@Param('id') id: number) {
+        return lastValueFrom(
+            this.client.send('activeUser', { id })
+        ).catch(handleRpcError);
+    }
+
+    @Patch('inactive/:id')
+    async inactive(@Param('id') id: number) {
+        return lastValueFrom(
+            this.client.send('inactiveUser', { id })
         ).catch(handleRpcError);
     }
 

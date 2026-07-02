@@ -66,6 +66,24 @@ export class UsersRepository {
         });
     }
 
+    active(id: number) {
+        return this.prisma.user.update({
+            where: { id },
+            data: {
+                isActive: true
+            }
+        })
+    }
+
+    inactive(id: number) {
+        return this.prisma.user.update({
+            where: { id },
+            data: {
+                isActive: false
+            }
+        })
+    }
+
     delete(id: number) {
         return this.prisma.user.delete({ where: { id } });
     }
