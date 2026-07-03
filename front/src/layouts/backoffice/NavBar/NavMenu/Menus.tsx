@@ -1,4 +1,4 @@
-import { hasRole } from "@/functions/auth"
+import { Role } from "@/enums/roles"
 import { BasketIcon, ChartBarIcon, UserListIcon } from "@phosphor-icons/react"
 
 export interface MenuItem {
@@ -51,7 +51,7 @@ const menu: MenuItem[] = [
                 id: 'customers',
                 label: 'Customers',
                 link: 'customers',
-                roles: ['ADMIN', 'MANAGER'],
+                roles: [Role.ADMIN, Role.MANAGER],
                 subItems: []
             },
         ]
@@ -60,7 +60,7 @@ const menu: MenuItem[] = [
         id: 'administration',
         label: 'Administration',
         icon: <UserListIcon size="18px" />,
-        roles: ['ADMIN', 'MANAGER'],
+        roles: [Role.ADMIN, Role.MANAGER],
         subItems: [
             {
                 id: 'users',
