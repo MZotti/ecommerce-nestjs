@@ -2,9 +2,14 @@ import 'dotenv/config';
 import { NestFactory } from '@nestjs/core';
 import { OrdersServiceModule } from './app.module';
 import { Transport } from '@nestjs/microservices';
+import { WinstonModule } from 'nest-winston';
+import { createLogger } from '@app/common/logger/logger.config';
 
 async function bootstrap() {
 	const app = await NestFactory.createMicroservice(OrdersServiceModule, {
+		logger: WinstonModule.createLogger({
+			instance: createLogger('orders-service'),
+		}),
 		transport: Transport.TCP,
 		options: {
 			host: '0.0.0.0',
@@ -26,6 +31,5 @@ async function bootstrap() {
 
 	await app.listen();
 	await eventApp.listen();
-
 }
 bootstrap();

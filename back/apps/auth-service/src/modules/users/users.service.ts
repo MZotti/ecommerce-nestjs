@@ -1,6 +1,6 @@
 import { CreateUserDto } from '@app/common/dto/users/create-user.dto';
 import { UpdateUserDto } from '@app/common/dto/users/update-user.dto';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { AppRpcException } from '@app/common/errors/app-rpc.exception';
 import { Prisma } from '@prisma/client';
 import { UsersRepository } from './users.repository';
