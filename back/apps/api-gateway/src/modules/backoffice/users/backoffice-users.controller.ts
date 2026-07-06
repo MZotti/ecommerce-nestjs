@@ -7,6 +7,7 @@ import { JwtAuthGuard } from '../../../common/jwt/jwt-auth.guard';
 import { handleRpcError } from '../../../common/utils/handle-rpc-error.util';
 import { RolesGuard } from '../../../common/jwt/roles.guard';
 import { Roles } from '../../../common/decorators/roles.decorator';
+import { UserPaginationDto } from '@app/common/dto/users/user-pagination.dto';
 
 @Controller('backoffice/users')
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -18,14 +19,10 @@ export class BackofficeUsersController {
 
     @Get()
     async findAll(
-        @Query('page') page = 1,
-        @Query('perPage') perPage = 10,
-        @Query('search') search = ""
+        @Query() query: UserPaginationDto
     ) {
         return this.client.send('findAllUsers', {
-            page: Number(page),
-            perPage: Number(perPage),
-            search: search,
+            query
         });
     }
 

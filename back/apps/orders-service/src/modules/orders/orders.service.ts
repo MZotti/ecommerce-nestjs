@@ -7,6 +7,8 @@ import { AppRpcException } from '@app/common/errors/app-rpc.exception';
 import { lastValueFrom } from 'rxjs';
 import { OrdersRepository } from './orders.repository';
 import { OrdersPaymentsService } from '../orders-payments/orders-payments.service';
+import { OrdersFilter } from './orders.filter';
+import { OrderPaginationDto } from '@app/common/dto/orders/order-pagination.dto';
 
 @Injectable()
 export class OrdersService {
@@ -17,12 +19,15 @@ export class OrdersService {
         @Inject('EVENT_BUS') private eventBus: ClientProxy
     ) { }
 
-    async findAll({ page, perPage }: { page: number, perPage: number }) {
+    async findAll(query: OrderPaginationDto) {
+        const { page, perPage } = query
         const skip = (page - 1) * perPage;
 
+        const where = OrdersFilter.build(query);
+
         const [data, total] = await Promise.all([
-            this.ordersRepository.findMany({ skip, take: perPage }),
-            this.ordersRepository.count(),
+            this.ordersRepository.findMany({ skip, take: perPage, where }),
+            this.ordersRepository.count(where),
         ]);
 
         return {

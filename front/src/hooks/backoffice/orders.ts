@@ -8,13 +8,13 @@ import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-const useGetOrders = (currentPage: number, perPage: number, search?: string, filters?: string) => {
+const useGetOrders = (currentPage: number, perPage: number, filters?: string) => {
     const dispatch = useDispatch()
     const { paginateOrdersAction } = bindActionCreators(orderCreator, dispatch)
 
     const query = useQuery<Pagination<Order>>({
-        queryKey: ['orders', currentPage, perPage, search, filters],
-        queryFn: () => getOrders(currentPage, perPage, search, filters),
+        queryKey: ['orders', currentPage, perPage, filters],
+        queryFn: () => getOrders(currentPage, perPage, filters),
     })
 
     useEffect(() => {

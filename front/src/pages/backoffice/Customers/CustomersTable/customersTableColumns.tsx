@@ -30,19 +30,7 @@ const columns: TableColumn[] = [
     },
 ]
 
-const filterFields: Filter[] = [
-    {
-        name: 'createdAt',
-        label: 'Data de Cadastro',
-        fieldType: FilterField.DATE,
-        colSpan: 1,
-    },
-    {
-        name: 'deleted_at',
-        label: 'Data de Exclusão',
-        fieldType: FilterField.DATE,
-        colSpan: 1,
-    },
+const filterFields: React.ReactNode[] = [
 ]
 
 export {

@@ -30,7 +30,7 @@ describe('BackofficeUsersController', () => {
 
   describe('findAll', () => {
     it('should send "findAllUsers" with pagination and search', () => {
-      controller.findAll(1, 10, '');
+      controller.findAll({ page: 1, perPage: 30 });
       expect(mockClient.send).toHaveBeenCalledWith('findAllUsers', { page: 1, perPage: 10, search: '' });
     });
   });

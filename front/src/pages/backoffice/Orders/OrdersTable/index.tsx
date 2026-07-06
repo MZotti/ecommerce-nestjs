@@ -44,7 +44,7 @@ const OrdersTable = () => {
         setFilters,
     } = usePagination()
 
-    const { data: fetchData, isFetching } = useGetOrders(currentPage, perPage, search, filters)
+    const { data: fetchData, isFetching } = useGetOrders(currentPage, perPage, filters)
     const { meta } = fetchData || {};
 
     const [rows, setRows] = useState<number[]>([])

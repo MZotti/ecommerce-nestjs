@@ -8,6 +8,7 @@ import { IncreaseProductStockDto } from '@app/common/dto/products/increase-produ
 import { handleRpcError } from '../../../common/utils/handle-rpc-error.util';
 import { RolesGuard } from '../../../common/jwt/roles.guard';
 import { Roles } from '../../../common/decorators/roles.decorator';
+import { ProductPaginationDto } from '@app/common/dto/products/product-pagination.dto';
 
 @Controller('backoffice/products')
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -19,14 +20,10 @@ export class BackofficeProductsController {
 
     @Get()
     async findAll(
-        @Query('page') page = 1,
-        @Query('perPage') perPage = 10,
-        @Query('search') search = "",
+        @Query() query: ProductPaginationDto
     ) {
         return this.client.send('findAllProducts', {
-            page: Number(page),
-            perPage: Number(perPage),
-            search: search
+            query
         });
     }
 

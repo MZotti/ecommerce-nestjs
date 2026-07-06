@@ -3,7 +3,7 @@
 import type RowAction from '@/interfaces/rowAction'
 import type Filter from 'interfaces/filter'
 import type TableColumn from 'interfaces/table'
-import { createContext, useContext } from 'react'
+import React, { createContext, useContext } from 'react'
 
 export interface TableContextProps<T = unknown> {
     data: T[]
@@ -14,7 +14,7 @@ export interface TableContextProps<T = unknown> {
     perPage: number
     lastPage: number
     totalItems: number
-    filterFields: Filter[]
+    filterFields: React.ReactNode[]
     setCurrentPage: (args1: number) => void
     setPerPage: (args1: number) => void
     setSearch: (args1: string) => void

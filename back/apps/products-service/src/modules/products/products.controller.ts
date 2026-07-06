@@ -3,6 +3,7 @@ import { ProductsService } from './products.service';
 import { Ctx, EventPattern, MessagePattern, Payload, RmqContext } from '@nestjs/microservices';
 import { CreateProductDto } from '@app/common/dto/products/create-product.dto';
 import { UpdateProductDto } from '@app/common/dto/products/update-product.dto';
+import { ProductPaginationDto } from '@app/common/dto/products/product-pagination.dto';
 
 @Controller('products')
 export class ProductsController {
@@ -11,8 +12,9 @@ export class ProductsController {
     ) { }
 
     @MessagePattern('findAllProducts')
-    async findAll(@Payload() payload: { page: number; perPage: number; search?: string }) {
-        return this.productsService.findAll(payload);
+    async findAll(@Payload() payload: { query: ProductPaginationDto }) {
+        const { query } = payload;
+        return this.productsService.findAll(query);
     }
 
     @MessagePattern('findAllStoreProducts')

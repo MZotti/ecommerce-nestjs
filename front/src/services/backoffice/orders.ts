@@ -1,8 +1,8 @@
 import { BACKOFFICE_URL } from '@/enums/urls';
 import AXIOS from '@/services/api'
 
-const getOrders = async (page = 1, perPage = 10, search = "", filters = "") => {
-    const { data } = await AXIOS.get(`${BACKOFFICE_URL}/orders?page=${page}&perPage=${perPage}&search=${search}`)
+const getOrders = async (page = 1, perPage = 10, filters = "") => {
+    const { data } = await AXIOS.get(`${BACKOFFICE_URL}/orders?page=${page}&perPage=${perPage}&${filters}`)
 
     return data;
 }

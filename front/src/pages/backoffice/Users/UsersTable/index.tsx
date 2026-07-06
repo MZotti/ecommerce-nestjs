@@ -111,7 +111,7 @@ const UsersTable = () => {
                     deleteAction: deleteAction,
                     rowsSelected: rows,
                     setRowsSelected,
-                    clearRowsSelected
+                    clearRowsSelected,
                 }}
             >
                 <AsyncTable />

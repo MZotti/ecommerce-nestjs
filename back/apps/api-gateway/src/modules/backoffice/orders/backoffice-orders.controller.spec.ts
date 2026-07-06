@@ -30,7 +30,7 @@ describe('BackofficeOrdersController', () => {
 
   describe('findAll', () => {
     it('should send "findAllOrders" with page and perPage as numbers', () => {
-      controller.findAll(1, 10);
+      controller.findAll({ page: 1, perPage: 30 });
       expect(mockClient.send).toHaveBeenCalledWith('findAllOrders', { page: 1, perPage: 10 });
     });
   });

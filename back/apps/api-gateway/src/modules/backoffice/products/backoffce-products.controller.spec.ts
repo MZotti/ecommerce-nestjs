@@ -30,7 +30,7 @@ describe('BackofficeProductsController', () => {
 
   describe('findAll', () => {
     it('should send "findAllProducts" with pagination and search', () => {
-      controller.findAll(1, 10, '');
+      controller.findAll({ page: 1, perPage: 10 });
       expect(mockClient.send).toHaveBeenCalledWith('findAllProducts', { page: 1, perPage: 10, search: '' });
     });
   });

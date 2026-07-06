@@ -3,6 +3,7 @@ import { UsersService } from './users.service';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { CreateUserDto } from '@app/common/dto/users/create-user.dto';
 import { UpdateUserDto } from '@app/common/dto/users/update-user.dto';
+import { UserPaginationDto } from '@app/common/dto/users/user-pagination.dto';
 
 @Controller('users')
 export class UsersController {
@@ -11,8 +12,9 @@ export class UsersController {
     ) { }
 
     @MessagePattern('findAllUsers')
-    async findAll(@Payload() payload: { page: number; perPage: number; search: string }) {
-        return this.usersService.findAll(payload);
+    async findAll(@Payload() payload: { query: UserPaginationDto }) {
+        const { query } = payload;
+        return this.usersService.findAll(query);
     }
 
     @MessagePattern('findUser')

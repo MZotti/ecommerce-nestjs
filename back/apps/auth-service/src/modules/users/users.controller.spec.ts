@@ -31,7 +31,7 @@ describe('UsersController', () => {
 
   describe('findAll', () => {
     it('should call usersService.findAll with payload', async () => {
-      const payload = { page: 1, perPage: 10, search: '' };
+      const payload = { query: { page: 1, perPage: 10, search: '' } };
       mockUsersService.findAll.mockResolvedValue({ data: [], meta: {} });
       await controller.findAll(payload);
       expect(service.findAll).toHaveBeenCalledWith(payload);

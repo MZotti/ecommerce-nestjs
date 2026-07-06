@@ -39,7 +39,7 @@ describe('ProductsController', () => {
   describe('findAll', () => {
     it('should call productsService.findAll with payload', async () => {
       mockProductsService.findAll.mockResolvedValue({ data: [], meta: {} });
-      await controller.findAll({ page: 1, perPage: 10 });
+      await controller.findAll({ query: { page: 1, perPage: 10 } });
       expect(service.findAll).toHaveBeenCalledWith({ page: 1, perPage: 10 });
     });
   });

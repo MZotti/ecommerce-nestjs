@@ -5,17 +5,18 @@ import { AppRpcException } from '@app/common/errors/app-rpc.exception';
 import { Prisma } from '@prisma/client';
 import { ProductsRepository } from './products.repository';
 import slugfy from 'slugify';
+import { ProductsFilter } from './products.filter';
+import { ProductPaginationDto } from '@app/common/dto/products/product-pagination.dto';
 
 @Injectable()
 export class ProductsService {
     constructor(private productsRepository: ProductsRepository) { }
 
-    async findAll({ page, perPage, search }: { page: number, perPage: number, search?: string }) {
+    async findAll(query: ProductPaginationDto) {
+        const { page, perPage } = query;
         const skip = (page - 1) * perPage;
 
-        const where: Prisma.ProductWhereInput = {
-            name: { contains: search, mode: 'insensitive' },
-        };
+        const where = ProductsFilter.build(query);
 
         const [data, total] = await Promise.all([
             this.productsRepository.findMany({ skip, take: perPage, where }),

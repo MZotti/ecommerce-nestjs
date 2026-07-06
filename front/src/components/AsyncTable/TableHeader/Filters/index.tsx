@@ -1,42 +1,41 @@
-import { Badge, Box, Button, CloseButton, Dialog, Grid, Portal } from '@chakra-ui/react'
+import { Badge, Box, Button, CloseButton, Dialog, Portal } from '@chakra-ui/react'
 import { EraserIcon, FunnelIcon } from '@phosphor-icons/react'
 import { useTableContext } from 'contexts/TableContext'
 
-import { FormProvider, useForm } from 'react-hook-form'
-import FilterInput from './FilterInput'
-import { setupFilters } from 'functions/filters'
 import { useState } from 'react'
-
-const getFilterValues = (values = {}): number => {
-    let count = 0;
-
-    Object.keys(values).forEach(value => {
-        if(values[value] != "")
-            count++;
-    })
-
-    return count;
-}
+import { useForm } from 'react-hook-form'
+import FormContainer from '@/components/Form/FormContainer'
 
 const Filters = () => {
     const [open, setOpen] = useState(false)
 
     const { filterFields, setFilters } = useTableContext()
-    const register = useForm()
-
-    const { getValues, resetField } = register
+    const methods = useForm();
+    const { getValues, reset, resetField } = methods
 
     const onFilter = () => {
-        const filterString = setupFilters(getValues())
+        const values = getValues();
+        const params = new URLSearchParams();
 
-        setFilters(filterString)
+        Object.keys(values).map(val => values[val] && values[val] !== '' && params.append(val, values[val].toString()))
+
+        setFilters(params.toString())
+
         setOpen(false)
     }
 
     const onReset = () => {
-        filterFields.forEach(field => resetField(field.name, { defaultValue: '' }))
-
+        const values = getValues();
+        Object.keys(values).forEach(val => resetField(val, { defaultValue: '' }))
+        reset();
         setFilters("")
+    }
+
+    const countParams = () => {
+        const values = getValues();
+        const count = Object.keys(values).filter(val => values[val]).length
+
+        return count;
     }
 
     return (
@@ -45,10 +44,10 @@ const Filters = () => {
                 <Dialog.Trigger asChild>
                     <Button size="sm" variant="subtle">
                         {
-                            getFilterValues(getValues()) == 0 ?
+                            countParams() == 0 ?
                                 <FunnelIcon />
                                 :
-                                <Badge variant="surface">{getFilterValues(getValues())}</Badge>
+                                <Badge variant="surface">{countParams()}</Badge>
                         }
                         Filters
                     </Button>
@@ -61,13 +60,12 @@ const Filters = () => {
                                 <Dialog.Title>Filters</Dialog.Title>
                             </Dialog.Header>
                             <Dialog.Body>
-                                <FormProvider {...register}>
-                                    <Grid templateColumns="repeat(4, 1fr)" gap={4}>
-                                        {filterFields.map(field => (
-                                            <FilterInput key={field.name} field={field} />
-                                        ))}
-                                    </Grid>
-                                </FormProvider>
+                                <FormContainer
+                                    methods={methods}
+                                    columns={4}
+                                >
+                                    {filterFields.map(field => field)}
+                                </FormContainer>
                             </Dialog.Body>
                             <Dialog.Footer>
                                 <Dialog.ActionTrigger asChild>

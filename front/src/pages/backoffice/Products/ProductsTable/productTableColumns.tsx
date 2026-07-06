@@ -1,3 +1,6 @@
+import DatePickerInput from '@/components/Inputs/DatePickerInput'
+import SelectInput from '@/components/Inputs/SelectInput'
+import SliderInput from '@/components/Inputs/SliderInput'
 import StockStatusDisplay from '@/components/StockStatusDisplay'
 import { formatPriceToCurrency } from '@/functions/textFormat'
 import { Text } from '@chakra-ui/react'
@@ -33,19 +36,89 @@ const columns: TableColumn[] = [
     },
 ]
 
-const filterFields: Filter[] = [
-    {
-        name: 'createdAt',
-        label: 'Data de Cadastro',
-        fieldType: FilterField.DATE,
-        colSpan: 1,
-    },
-    {
-        name: 'deleted_at',
-        label: 'Data de Exclusão',
-        fieldType: FilterField.DATE,
-        colSpan: 1,
-    },
+const filterFields: React.ReactNode[] = [
+    <SelectInput
+        key='category'
+        id='category'
+        label='Category'
+        options={[
+            {
+                label: 'Graphic Card',
+                value: 'graphic-card'
+            },
+            {
+                label: 'CPU',
+                value: 'cpus'
+            },
+            {
+                label: 'Mother Board',
+                value: 'mother-board'
+            },
+            {
+                label: 'RAM',
+                value: 'ram'
+            },
+            {
+                label: 'Storage',
+                value: 'storage'
+            },
+            {
+                label: 'Power Supply',
+                value: 'power-supply'
+            },
+            {
+                label: 'CPU Cooler',
+                value: 'cpi-cooler'
+            },
+            {
+                label: 'Case',
+                value: 'case'
+            },
+            {
+                label: 'Case Fan',
+                value: 'case-fan'
+            },
+        ]}
+        colSpan={2}
+    />,
+    <SelectInput
+        key='stock'
+        id='stock'
+        label='Stock'
+        options={[
+            {
+                label: 'Good',
+                value: 'good'
+            },
+            {
+                label: 'Low',
+                value: 'low'
+            },
+            {
+                label: 'Empty',
+                value: 'empty'
+            },
+        ]}
+        colSpan={2}
+    />,
+    <DatePickerInput
+        key='createdAtStart'
+        id='createdAtStart'
+        label='Created At Start'
+        colSpan={2}
+    />,
+    <DatePickerInput
+        key='createdAtEnd'
+        id='createdAtEnd'
+        label='Created At End'
+        colSpan={2}
+    />,
+    <SliderInput
+        key='price'
+        id='price'
+        label='Price Range'
+        colSpan={4}
+    />
 ]
 
 export {

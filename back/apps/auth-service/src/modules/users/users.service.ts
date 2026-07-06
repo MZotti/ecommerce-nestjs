@@ -6,21 +6,18 @@ import { Prisma } from '@prisma/client';
 import { UsersRepository } from './users.repository';
 
 import * as bcrypt from 'bcrypt';
+import { UserPaginationDto } from '@app/common/dto/users/user-pagination.dto';
+import { UsersFilter } from './users.filter';
 
 @Injectable()
 export class UsersService {
     constructor(private usersRepository: UsersRepository) { }
 
-    async findAll({ page, perPage, search }: { page: number, perPage: number, search?: string }) {
+    async findAll(query: UserPaginationDto) {
+        const { page, perPage } = query;
         const skip = (page - 1) * perPage;
 
-        const where: Prisma.UserWhereInput = {
-            roleId: { not: 5 },
-            OR: [
-                { name: { contains: search, mode: 'insensitive' } },
-                { email: { contains: search, mode: 'insensitive' } },
-            ],
-        };
+        const where = UsersFilter.build(query);
 
         const [data, total] = await Promise.all([
             this.usersRepository.findMany({ skip, take: perPage, where }),
