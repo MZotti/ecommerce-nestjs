@@ -4,6 +4,7 @@ import { Ctx, EventPattern, MessagePattern, Payload, RmqContext } from '@nestjs/
 import { CreateProductDto } from '@app/common/dto/products/create-product.dto';
 import { UpdateProductDto } from '@app/common/dto/products/update-product.dto';
 import { ProductPaginationDto } from '@app/common/dto/products/product-pagination.dto';
+import { ProductAnalyticsDto } from '@app/common/dto/analytics/product-analytics.dto';
 
 @Controller('products')
 export class ProductsController {
@@ -101,5 +102,19 @@ export class ProductsController {
         } catch (error) {
             channel.nack(message);
         }
+    }
+
+    @MessagePattern('getProductsStock')
+    async getProductsStockAnalytics(@Payload() payload: { query: ProductAnalyticsDto }) {
+        const { query } = payload;
+
+        return this.productsService.getProductsStock(query);
+    }
+
+    @MessagePattern('getProductsPrice')
+    async getProductsPriceAnalytics(@Payload() payload: { query: ProductAnalyticsDto }) {
+        const { query } = payload;
+
+        return this.productsService.getProductsPrice(query);
     }
 }

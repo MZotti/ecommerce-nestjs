@@ -1,3 +1,4 @@
+import { ProductAnalyticsDto } from "@app/common/dto/analytics/product-analytics.dto";
 import { ProductPaginationDto } from "@app/common/dto/products/product-pagination.dto";
 import { Prisma, PaymentMethod, OrderStatus } from "@prisma/client";
 
@@ -61,4 +62,30 @@ export class ProductsFilter {
         return where;
     }
 
+    static buildAnalytics(
+        query: ProductAnalyticsDto,
+    ): Prisma.ProductWhereInput {
+
+        const where: Prisma.ProductWhereInput = {};
+
+        if (query.category) {
+            where.category = {
+                slug: query.category
+            }
+        }
+
+        if (query.createdAtStart || query.createdAtEnd) {
+            where.createdAt = {}
+
+            if (query.createdAtStart) {
+                where.createdAt.gte = new Date(`${query.createdAtStart} 00:00:00`)
+            }
+
+            if (query.createdAtEnd) {
+                where.createdAt.lte = new Date(`${query.createdAtEnd} 23:59:59`)
+            }
+        }
+
+        return where;
+    }
 }

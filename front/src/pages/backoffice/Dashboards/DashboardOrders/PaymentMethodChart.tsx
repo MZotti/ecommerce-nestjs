@@ -1,15 +1,16 @@
 import ChartContainer from '@/components/ChartContainer'
+import type { LabelAndValue } from '@/interfaces/analytics'
 import { Chart, useChart } from "@chakra-ui/charts"
 import { GridItem } from '@chakra-ui/react'
 import { Legend, Pie, PieChart, Sector, Tooltip } from "recharts"
 
-const PaymentMethodChart = () => {
+const PaymentMethodChart = ({ data }: { data: LabelAndValue[]}) => {
     const chart = useChart({
         data: [
-            { name: "Pix", value: 400, color: "green.solid" },
-            { name: "Credit", value: 300, color: "purple.solid" },
-            { name: "Debit", value: 300, color: "blue.solid" },
-            { name: "Payment Order", value: 200, color: "cyan.solid" },
+            { name: "Pix", value: data.find(val => val.label == 'PIX')?.value || 0, color: "green.solid" },
+            { name: "Credit", value: data.find(val => val.label == 'CREDIT')?.value || 0, color: "purple.solid" },
+            { name: "Debit", value: data.find(val => val.label == 'DEBIT')?.value || 0, color: "blue.solid" },
+            { name: "Payment Order", value: data.find(val => val.label == 'PAYMENT_ORDER')?.value || 0, color: "cyan.solid" },
         ],
     })
 

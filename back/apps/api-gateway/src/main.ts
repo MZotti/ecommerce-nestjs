@@ -7,9 +7,6 @@ import { createLogger } from '@app/common/logger/logger.config';
 
 async function bootstrap() {
 	const app = await NestFactory.create(ApiGatewayModule, {
-		logger: WinstonModule.createLogger({
-			instance: createLogger('api-gateway'),
-		}),
 	});
 
 	app.useGlobalPipes(

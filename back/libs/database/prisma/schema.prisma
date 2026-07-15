@@ -178,13 +178,16 @@ model OrderPayment {
 }
 
 model OrderItem {
-  id                Int     @id @default(autoincrement())
-  order             Order   @relation(fields: [orderId], references: [id])
-  orderId           Int
+  id                    Int     @id @default(autoincrement())
+  order                 Order   @relation(fields: [orderId], references: [id])
+  orderId               Int
   
-  productId         Int
-  productName       String
-  productImageUrl   String?
-  price             Float
-  quantity          Int
+  productId             Int
+  productName           String
+  productSlug           String
+  productCategoryId     Int
+  productCategorySlug   String
+  productImageUrl       String?
+  price                 Float
+  quantity              Int
 }

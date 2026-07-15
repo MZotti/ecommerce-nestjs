@@ -3,7 +3,6 @@ import { BackofficeProductsController } from './backoffice-products.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
-	providers: [BackofficeProductsModule],
 	controllers: [BackofficeProductsController],
 	imports: [
 		ClientsModule.register([

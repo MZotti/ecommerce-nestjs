@@ -104,6 +104,20 @@ services:
       - .:/app
       - /app/node_modules
       - rabbitmq_data:/var/lib/rabbitmq
+      
+  analytics-service:
+    build: .
+    container_name: analytics-service
+    command: yarn start:analytics
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - app-network
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - rabbitmq_data:/var/lib/rabbitmq
 
 volumes:
   postgres_data:

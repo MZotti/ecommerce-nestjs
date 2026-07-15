@@ -28,7 +28,7 @@ export class OrdersRepository {
         return this.prisma.order.findMany({
             ...args,
             orderBy: { createdAt: 'desc' },
-            select: { ...this.orderSelect, orderPayment: true},
+            select: { ...this.orderSelect, orderPayment: true },
         });
     }
 
@@ -39,7 +39,7 @@ export class OrdersRepository {
     findById(id: number) {
         return this.prisma.order.findUnique({
             where: { id },
-            select: { ...this.orderSelect, orderPayment: true},
+            select: { ...this.orderSelect, orderPayment: true },
         });
     }
 
@@ -59,5 +59,15 @@ export class OrdersRepository {
 
     findOrderItems(orderId: number) {
         return this.prisma.orderItem.findMany({ where: { orderId } });
+    }
+
+    groupBy(column: Prisma.OrderScalarFieldEnum, args?: { where: Prisma.OrderWhereInput }) {
+        return this.prisma.order.groupBy({
+            by: column,
+            _count: {
+                id: true,
+            },
+            ...args,
+        })
     }
 }

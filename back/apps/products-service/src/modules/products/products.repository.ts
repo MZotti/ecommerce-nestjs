@@ -29,7 +29,7 @@ export class ProductsRepository {
         imageUrl: true,
     } satisfies Prisma.ProductSelect;
 
-    findMany(args: { skip: number; take: number; where?: Prisma.ProductWhereInput }) {
+    findMany(args: { skip?: number; take?: number; where?: Prisma.ProductWhereInput }) {
         return this.prisma.product.findMany({
             ...args,
             orderBy: { createdAt: 'desc' },
@@ -37,8 +37,10 @@ export class ProductsRepository {
         });
     }
 
-    count() {
-        return this.prisma.product.count();
+    count(where?: Prisma.ProductWhereInput) {
+        return this.prisma.product.count({
+            where
+        });
     }
 
     findById(id: number) {
@@ -56,7 +58,7 @@ export class ProductsRepository {
     }
 
     findManyByIds(ids: number[]) {
-        return this.prisma.product.findMany({ where: { id: { in: ids } } });
+        return this.prisma.product.findMany({ where: { id: { in: ids } }, include: { category: true } });
     }
 
     findManyByName(name: string) {

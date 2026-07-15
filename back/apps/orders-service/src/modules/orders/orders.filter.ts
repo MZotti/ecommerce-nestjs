@@ -1,3 +1,4 @@
+import { OrderAnalyticsDto } from "@app/common/dto/analytics/order-analytics.dto";
 import { OrderPaginationDto } from "@app/common/dto/orders/order-pagination.dto";
 import { Prisma, PaymentMethod, OrderStatus } from "@prisma/client";
 
@@ -33,6 +34,31 @@ export class OrdersFilter {
 
             if (query.createdAtEnd) {
                 where.createdAt.lte = new Date(`${query.createdAtEnd} 23:59:59`)
+            }
+        }
+
+        return where;
+    }
+
+    static buildAnalytics(
+        query: OrderAnalyticsDto,
+    ): Prisma.OrderWhereInput {
+
+        const where: Prisma.OrderWhereInput = {};
+
+        if (query.createdAtStart || query.createdAtEnd) {
+            where.createdAt = {}
+
+            if (query.createdAtStart) {
+                where.createdAt = {
+                    gte: new Date(`${query.createdAtStart} 00:00:00`)
+                }
+            }
+
+            if (query.createdAtEnd) {
+                where.createdAt = {
+                    lte: new Date(`${query.createdAtEnd} 23:59:59`)
+                }
             }
         }
 

@@ -7,6 +7,8 @@ import { ProductsRepository } from './products.repository';
 import slugfy from 'slugify';
 import { ProductsFilter } from './products.filter';
 import { ProductPaginationDto } from '@app/common/dto/products/product-pagination.dto';
+import { ProductAnalyticsDto } from '@app/common/dto/analytics/product-analytics.dto';
+import { empty } from '@prisma/client/runtime/client';
 
 @Injectable()
 export class ProductsService {
@@ -168,5 +170,55 @@ export class ProductsService {
         }
 
         return true;
+    }
+
+    async getProductsStock(query: ProductAnalyticsDto) {
+        const where = ProductsFilter.buildAnalytics(query);
+
+        const good = await this.productsRepository.count({
+            ...where,
+            stock: {
+                gt: 10
+            }
+        })
+        const low = await this.productsRepository.count({
+            ...where,
+            stock: {
+                gt: 0,
+                lte: 10
+            }
+        })
+        const empty = await this.productsRepository.count({
+            ...where,
+            stock: 0
+        })
+
+        return {
+            good,
+            low,
+            empty
+        }
+    }
+
+    async getProductsPrice(query: ProductAnalyticsDto) {
+        const where = ProductsFilter.buildAnalytics(query);
+
+        const data: { from: number, to: number, value: number }[] = [];
+
+        for (let i = 0; i < 20; i++) {
+            data.push({
+                from: (i * 50) + 1,
+                to: 50 * (i + 1),
+                value: 0
+            })
+        }
+
+        const products = await this.productsRepository.findMany({ where })
+
+        data.forEach(d => {
+            d.value = products.filter(product => product.price >= d.from && product.price <= d.to).length
+        })
+
+        return data;
     }
 }

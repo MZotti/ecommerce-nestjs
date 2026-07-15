@@ -1,24 +1,22 @@
 import ChartContainer from '@/components/ChartContainer'
+import type { MonthOrders } from '@/interfaces/analytics'
 import { Chart, useChart } from '@chakra-ui/charts'
 import { GridItem } from '@chakra-ui/react'
 import { Bar, BarChart, CartesianGrid, Tooltip, XAxis, YAxis } from 'recharts'
 
-const OrdersPerMonth = () => {
+const OrdersPerMonth = ({ data }: { data: MonthOrders[] }) => {
     const chart = useChart({
-        data: [
-            { sales: 63000, month: "June" },
-            { sales: 72000, month: "July" },
-            { sales: 85000, month: "August" },
-            { sales: 79000, month: "September" },
-            { sales: 90000, month: "October" },
-            { sales: 95000, month: "November" },
-            { sales: 88000, month: "December" },
-        ],
-        series: [{ name: "sales", color: "teal.solid" }],
+        data: data.map(val => {
+            return {
+                label: val.label,
+                Orders: val.value
+            }
+        }),
+        series: [{ name: "Orders", color: "teal.solid" }],
     })
 
     return (
-        <GridItem colSpan={{ base: 3 }}>
+        <GridItem colSpan={{ base: 4 }}>
             <ChartContainer title="Orders per month">
                 <Chart.Root height="16rem" my="auto" chart={chart}>
                     <BarChart data={chart.data} responsive>
@@ -26,7 +24,7 @@ const OrdersPerMonth = () => {
                         <XAxis
                             axisLine={false}
                             tickLine={false}
-                            dataKey={chart.key("month")}
+                            dataKey={chart.key("label")}
                             tickFormatter={(value) => value.slice(0, 3)}
                         />
                         <YAxis
@@ -44,7 +42,6 @@ const OrdersPerMonth = () => {
                         />
                         {chart.series.map((item: any) => (
                             <Bar
-                                isAnimationActive={false}
                                 key={item.name}
                                 dataKey={chart.key(item.name)}
                                 fill={chart.color(item.color)}

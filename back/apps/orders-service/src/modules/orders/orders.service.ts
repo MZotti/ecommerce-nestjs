@@ -9,10 +9,13 @@ import { OrdersRepository } from './orders.repository';
 import { OrdersPaymentsService } from '../orders-payments/orders-payments.service';
 import { OrdersFilter } from './orders.filter';
 import { OrderPaginationDto } from '@app/common/dto/orders/order-pagination.dto';
+import { OrderAnalyticsDto } from '@app/common/dto/analytics/order-analytics.dto';
+import { PrismaService } from '@app/database/prisma.service';
 
 @Injectable()
 export class OrdersService {
     constructor(
+        private prisma: PrismaService,
         private ordersRepository: OrdersRepository,
         private orderPaymentService: OrdersPaymentsService,
         @Inject('PRODUCTS_SERVICE') private productsClient: ClientProxy,
@@ -80,6 +83,8 @@ export class OrdersService {
             this.productsClient.send<ProductDto[]>('findManyByIds', productIds),
         );
 
+        console.log(">>", products);
+
         const productMap = new Map(
             products.map(p => [p.id, p]),
         );
@@ -101,6 +106,9 @@ export class OrdersService {
             return {
                 productId: product.id,
                 productName: product.name,
+                productSlug: product.slug,
+                productCategoryId: product.category.id,
+                productCategorySlug: product.category.slug,
                 productImageUrl: product.imageUrl,
                 quantity: item.quantity,
                 price,
@@ -188,5 +196,126 @@ export class OrdersService {
         }
 
         return order;
+    }
+
+    async getOrdersPerMonth(query: OrderAnalyticsDto) {
+        const data = await this.prisma.$queryRaw<{ month: Date, value: number }[]>`
+            SELECT 
+                DATE_TRUNC('month', "createdAt") AS month, 
+                COUNT(id) AS value
+            FROM "Order"
+            GROUP BY DATE_TRUNC('month', "createdAt")
+            ORDER BY month DESC;
+        `;
+
+        const months = [
+            {
+                month: 1,
+                label: "Jan",
+                value: 0,
+            },
+            {
+                month: 2,
+                label: "Feb",
+                value: 0,
+            },
+            {
+                month: 3,
+                label: "Mar",
+                value: 0,
+            },
+            {
+                month: 4,
+                label: "Apr",
+                value: 0,
+            },
+            {
+                month: 5,
+                label: "May",
+                value: 0,
+            },
+            {
+                month: 6,
+                label: "Jun",
+                value: 0,
+            },
+            {
+                month: 7,
+                label: "Jul",
+                value: 0,
+            },
+            {
+                month: 8,
+                label: "Augt",
+                value: 0,
+            },
+            {
+                month: 9,
+                label: "Sep",
+                value: 0,
+            },
+            {
+                month: 10,
+                label: "Oct",
+                value: 0,
+            },
+            {
+                month: 11,
+                label: "Nov",
+                value: 0,
+            },
+            {
+                month: 12,
+                label: "Dec",
+                value: 0,
+            },
+        ]
+
+        const ordersPerMonth = months.map(month => {
+            const value = Number(data.find(val => val.month.getMonth() + 1 === month.month)?.value) || 0
+            return {
+                label: month.label,
+                value: value
+            }
+        })
+
+        return ordersPerMonth
+    }
+
+    async getPaymentMethods(query: OrderAnalyticsDto) {
+        const where = OrdersFilter.buildAnalytics(query);
+
+        const data = await this.ordersRepository.groupBy("paymentMethod", { where });
+
+        const paymentMethods = data.map(a => {
+            return {
+                label: a.paymentMethod,
+                value: a._count.id
+            }
+        })
+
+        return paymentMethods
+    }
+
+    async getOrdersStatus(query: OrderAnalyticsDto) {
+        const where = OrdersFilter.buildAnalytics(query);
+
+        const data = await this.ordersRepository.groupBy("status", {
+            where: {
+                status: {
+                    in: ['PENDING', 'PAID', 'SHIPPED']
+                },
+                ...where
+            },
+        });
+
+        const ordersStatus = data.map(a => {
+            return {
+                label: a.status,
+                value: a._count.id
+            }
+        })
+
+        return ordersStatus
     }
 }

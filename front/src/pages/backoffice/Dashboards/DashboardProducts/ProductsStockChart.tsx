@@ -1,14 +1,15 @@
 import ChartContainer from "@/components/ChartContainer"
+import type { ProductsStock } from "@/interfaces/analytics"
 import { Chart, useChart } from "@chakra-ui/charts"
 import { GridItem } from "@chakra-ui/react"
 import { Legend, Pie, PieChart, Sector, Tooltip } from "recharts"
 
-const ProductsStockChart = () => {
+const ProductsStockChart = ({ data }: { data: ProductsStock }) => {
     const chart = useChart({
         data: [
-            { name: "Good", value: 600, color: "green.solid" },
-            { name: "Low", value: 200, color: "yellow.solid" },
-            { name: "Empty", value: 160, color: "red.solid" },
+            { name: "Good", value: data.good, color: "green.solid" },
+            { name: "Low", value: data.low, color: "yellow.solid" },
+            { name: "Empty", value: data.empty, color: "red.solid" },
         ],
     })
 
