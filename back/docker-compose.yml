@@ -132,6 +132,20 @@ services:
       - .:/app
       - /app/node_modules
       - rabbitmq_data:/var/lib/rabbitmq
+      
+  shipping-service:
+    build: .
+    container_name: shipping-service
+    command: yarn start:shipping
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - app-network
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - rabbitmq_data:/var/lib/rabbitmq
 
 volumes:
   postgres_data:

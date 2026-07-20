@@ -218,3 +218,28 @@ enum PaymentStatus {
   PAYMENT_FAILED
   PAYMENT_CANCELED
 }
+
+// SHIPPING
+
+model Shipping {
+  id              Int @id @default(autoincrement())
+  orderId         Int
+  trackingCode    String?
+  carrier         String
+  service         String?
+  status          ShippingStatus
+  estimatedDate   DateTime?
+  shippedAt       DateTime?
+  deliveredAt     DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+enum ShippingStatus {
+  PENDING
+  PREPARING
+  SHIPPED
+  DELIVERED
+  RETURNED
+  CANCELED
+}

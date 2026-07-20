@@ -14,6 +14,7 @@
     "start:orders": "nest start orders-service --watch --exec \"node -r tsconfig-paths/register\"",
     "start:analytics": "nest start analytics-service --watch --exec \"node -r tsconfig-paths/register\"",
     "start:payments": "nest start payments-service --watch --exec \"node -r tsconfig-paths/register\"",
+    "start:shipping": "nest start shipping-service --watch --exec \"node -r tsconfig-paths/register\"",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/apps/ecommerce-back/main",
     "build": "nest build",
