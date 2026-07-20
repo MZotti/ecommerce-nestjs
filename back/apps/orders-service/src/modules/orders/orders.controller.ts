@@ -1,10 +1,11 @@
 import { Controller } from '@nestjs/common';
 import { OrdersService } from './orders.service';
-import { MessagePattern, Payload } from '@nestjs/microservices';
+import { Ctx, EventPattern, MessagePattern, Payload, RmqContext } from '@nestjs/microservices';
 import { CreateOrderDto } from '@app/common/dto/orders/create-order.dto';
 import { CreateCustomerOrderDto } from '@app/common/dto/orders/create-customer-order.dto';
 import { OrderPaginationDto } from '@app/common/dto/orders/order-pagination.dto';
 import { OrderAnalyticsDto } from '@app/common/dto/analytics/order-analytics.dto';
+import { OrderStatus } from '@prisma/client';
 
 @Controller('orders')
 export class OrdersController {
@@ -54,6 +55,20 @@ export class OrdersController {
         return this.ordersService.cancelOrder(Number(id));
     }
 
+    @EventPattern('updateOrderStatus')
+    async statusUpdated(@Payload() data: { id: number, status: OrderStatus }, @Ctx() context: RmqContext) {
+        const { id, status } = data;
+        const channel = context.getChannelRef();
+        const message = context.getMessage();
+
+        try {
+            this.ordersService.updateStatus(id, status);
+            channel.ack(message);
+        } catch (error) {
+            channel.nack(message);
+        }
+    }
+
     @MessagePattern('getOrdersPerMonth')
     async ordersPerMonth(@Payload() payload: { query: OrderAnalyticsDto }) {
         const { query } = payload;
@@ -74,4 +89,5 @@ export class OrdersController {
 
         return this.ordersService.getOrdersStatus(query);
     }
+
 }

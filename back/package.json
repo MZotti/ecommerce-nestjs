@@ -13,6 +13,7 @@
     "start:products": "nest start products-service --watch --exec \"node -r tsconfig-paths/register\"",
     "start:orders": "nest start orders-service --watch --exec \"node -r tsconfig-paths/register\"",
     "start:analytics": "nest start analytics-service --watch --exec \"node -r tsconfig-paths/register\"",
+    "start:payments": "nest start payments-service --watch --exec \"node -r tsconfig-paths/register\"",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/apps/ecommerce-back/main",
     "build": "nest build",
@@ -54,6 +55,7 @@
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.2",
     "slugify": "^1.6.9",
+    "stripe": "^22.3.2",
     "winston": "^3.19.0"
   },
   "devDependencies": {

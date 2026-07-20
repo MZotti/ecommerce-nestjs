@@ -19,7 +19,7 @@ import { OrdersPaymentsModule } from '../orders-payments/orders-payments.module'
 				},
 			},
 			{
-				name: 'EVENT_BUS',
+				name: 'PRODUCTS_EVENTS',
 				transport: Transport.RMQ,
 				options: {
 					urls: [process.env.RABBITMQ_URL || ''],
@@ -28,7 +28,18 @@ import { OrdersPaymentsModule } from '../orders-payments/orders-payments.module'
 						durable: true,
 					},
 				},
-			}
+			},
+			{
+				name: 'PAYMENT_EVENTS',
+				transport: Transport.RMQ,
+				options: {
+					urls: [process.env.RABBITMQ_URL || ''],
+					queue: 'payments_events_queue',
+					queueOptions: {
+						durable: true,
+					},
+				},
+			},
 		]),
 		OrdersPaymentsModule
 	]

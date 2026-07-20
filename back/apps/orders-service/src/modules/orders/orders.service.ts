@@ -11,6 +11,7 @@ import { OrdersFilter } from './orders.filter';
 import { OrderPaginationDto } from '@app/common/dto/orders/order-pagination.dto';
 import { OrderAnalyticsDto } from '@app/common/dto/analytics/order-analytics.dto';
 import { PrismaService } from '@app/database/prisma.service';
+import { OrderStatus } from '@prisma/client';
 
 @Injectable()
 export class OrdersService {
@@ -19,7 +20,8 @@ export class OrdersService {
         private ordersRepository: OrdersRepository,
         private orderPaymentService: OrdersPaymentsService,
         @Inject('PRODUCTS_SERVICE') private productsClient: ClientProxy,
-        @Inject('EVENT_BUS') private eventBus: ClientProxy
+        @Inject('PRODUCTS_EVENTS') private productsEvents: ClientProxy,
+        @Inject('PAYMENT_EVENTS') private paymentEvents: ClientProxy,
     ) { }
 
     async findAll(query: OrderPaginationDto) {
@@ -83,8 +85,6 @@ export class OrdersService {
             this.productsClient.send<ProductDto[]>('findManyByIds', productIds),
         );
 
-        console.log(">>", products);
-
         const productMap = new Map(
             products.map(p => [p.id, p]),
         );
@@ -139,7 +139,8 @@ export class OrdersService {
             shippingZipCode,
         });
 
-        this.eventBus.emit('orderCreated', { items: orderItems });
+        this.productsEvents.emit('orderCreated', { items: orderItems });
+        this.paymentEvents.emit('orderCreated', { id: order.id, paymentMethod: order.paymentMethod, total: order.total });
 
         if (paymentMethod === "CREDIT" || paymentMethod === "DEBIT") {
             const { cardBrand, cardNumber, holderName, expiresMonth, expiresYear } = dto;
@@ -175,7 +176,7 @@ export class OrdersService {
         const orderItems = await this.ordersRepository.findOrderItems(id);
         const order = await this.ordersRepository.update(id, { status: OrderStatusEnum.CANCELED });
 
-        this.eventBus.emit('orderCanceled', { items: orderItems });
+        this.productsEvents.emit('orderCanceled', { items: orderItems });
 
         return order;
     }
@@ -190,9 +191,9 @@ export class OrdersService {
         const statusEnum = OrderStatusEnum[status];
         const order = await this.ordersRepository.update(id, { status: statusEnum });
 
-        if (status == 'cancelled') {
+        if (statusEnum == OrderStatus.CANCELED) {
             const orderItems = await this.ordersRepository.findOrderItems(id);
-            this.eventBus.emit('orderCanceled', { items: orderItems });
+            this.productsEvents.emit('orderCanceled', { items: orderItems });
         }
 
         return order;

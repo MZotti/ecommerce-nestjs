@@ -118,6 +118,20 @@ services:
       - .:/app
       - /app/node_modules
       - rabbitmq_data:/var/lib/rabbitmq
+      
+  payments-service:
+    build: .
+    container_name: payments-service
+    command: yarn start:payments
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - app-network
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - rabbitmq_data:/var/lib/rabbitmq
 
 volumes:
   postgres_data:

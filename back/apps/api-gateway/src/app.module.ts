@@ -16,6 +16,7 @@ import { StoreProductsModule } from './modules/store/products/store-products.mod
 import { StoreOrdersModule } from './modules/store/orders/store-orders.module';
 import { StoreAddressesModule } from './modules/store/addresses/store-addresses.module';
 import { StorePaymentCardsModule } from './modules/store/payment-cards/store-payment-cards.module';
+import { PaymentsModule } from './modules/backoffice/payments/payments.module';
 
 
 @Module({
@@ -29,6 +30,7 @@ import { StorePaymentCardsModule } from './modules/store/payment-cards/store-pay
 		BackofficeOrdersModule,
 
 		AnalyticsModule,
+		PaymentsModule,
 
 		StoreProductsModule,
 		StoreOrdersModule,
@@ -66,6 +68,14 @@ import { StorePaymentCardsModule } from './modules/store/payment-cards/store-pay
 				options: {
 					host: 'analytics-service',
 					port: 3004,
+				},
+			},
+			{
+				name: 'PAYMENTS_SERVICE',
+				transport: Transport.TCP,
+				options: {
+					host: 'payments-service',
+					port: 3005,
 				},
 			},
 		]),
