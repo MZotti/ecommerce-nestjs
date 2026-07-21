@@ -25,6 +25,18 @@ const putOrder = async (id: number, payload: any) => {
     return data;
 }
 
+const shipOrder = async (id: number) => {
+    const { data } = await AXIOS.patch(`${BACKOFFICE_URL}/orders/ship/${id}`)
+
+    return data;
+}
+
+const cancelOrder = async (id: number) => {
+    const { data } = await AXIOS.patch(`${BACKOFFICE_URL}/orders/cancel/${id}`)
+
+    return data;
+}
+
 const deleteOrder = async (id: number) => {
     const { data } = await AXIOS.delete(`${BACKOFFICE_URL}/orders/${id}`)
 
@@ -42,6 +54,8 @@ export {
     getOrder,
     postOrder,
     putOrder,
+    shipOrder,
+    cancelOrder,
     deleteOrder,
     getCustomerOrders
 }

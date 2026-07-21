@@ -48,6 +48,13 @@ export class OrdersController {
         return this.ordersService.create(orderDto);
     }
 
+    @MessagePattern('shipOrder')
+    async shipOrder(@Payload() payload: { id: number; }) {
+        const { id } = payload
+
+        return this.ordersService.shipOrder(Number(id));
+    }
+
     @MessagePattern('cancelOrder')
     async cancelOrder(@Payload() payload: { id: number; }) {
         const { id } = payload

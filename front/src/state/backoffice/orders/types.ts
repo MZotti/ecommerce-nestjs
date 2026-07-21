@@ -1,4 +1,6 @@
 export enum OrderActionType {
     PAGINATE_ORDERS = 'PAGINATE_ORDERS',
     CREATE_ORDER = 'CREATE_ORDER',
+    SHIP_ORDER = 'SHIP_ORDER',
+    CANCEL_ORDER = 'CANCEL_ORDER',
 }

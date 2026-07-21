@@ -39,6 +39,13 @@ export class BackofficeOrdersController {
         ).catch(handleRpcError);
     }
 
+    @Patch('ship/:id')
+    async shipOrder(@Param('id') id: number) {
+        return lastValueFrom(
+            this.client.send('shipOrder', { id })
+        ).catch(handleRpcError);
+    }
+
     @Patch('cancel/:id')
     async cancelOrder(@Param('id') id: number) {
         return lastValueFrom(

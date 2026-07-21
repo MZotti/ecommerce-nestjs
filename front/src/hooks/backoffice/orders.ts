@@ -1,7 +1,7 @@
 import type HookCallBack from '@/interfaces/hook'
 import type Order from '@/interfaces/order'
 import type Pagination from '@/interfaces/pagination'
-import { getCustomerOrders, getOrder, getOrders, postOrder } from '@/services/backoffice/orders'
+import { getCustomerOrders, getOrder, getOrders, postOrder, shipOrder } from '@/services/backoffice/orders'
 import { orderCreator } from '@/state/backoffice'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useEffect } from 'react'
@@ -80,4 +80,24 @@ const useCreateOrder = ({ onSuccess, onError }: HookCallBack) => {
     return query;
 }
 
-export { useGetOrders, useGetCustomerOrders, useGetOrder, useLazyGetOrder, useCreateOrder }
+const useShipOrder = ({ onSuccess, onError }: HookCallBack) => {
+    const dispatch = useDispatch()
+    const { shipOrderAction } = bindActionCreators(orderCreator, dispatch)
+
+    const query = useMutation({
+        mutationFn: (id: number) => shipOrder(id),
+        onSuccess: () => onSuccess && onSuccess(),
+        onError: (error) => onError && onError(error)
+    })
+
+    useEffect(() => {
+        if (query.data) {
+            shipOrderAction(query.data)
+        }
+    }, [query.data])
+
+    return query;
+
+}
+
+export { useGetOrders, useGetCustomerOrders, useGetOrder, useLazyGetOrder, useCreateOrder, useShipOrder }

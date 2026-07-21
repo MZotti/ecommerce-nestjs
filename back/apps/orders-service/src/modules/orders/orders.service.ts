@@ -22,6 +22,7 @@ export class OrdersService {
         @Inject('PRODUCTS_SERVICE') private productsClient: ClientProxy,
         @Inject('PRODUCTS_EVENTS') private productsEvents: ClientProxy,
         @Inject('PAYMENT_EVENTS') private paymentEvents: ClientProxy,
+        @Inject('SHIPPING_EVENTS') private shipppingEvents: ClientProxy,
     ) { }
 
     async findAll(query: OrderPaginationDto) {
@@ -154,6 +155,24 @@ export class OrdersService {
                 holderName
             })
         }
+
+        return order;
+    }
+
+    async shipOrder(id: number) {
+        const existingOrder = await this.ordersRepository.findById(id);
+
+        if (!existingOrder) {
+            throw new AppRpcException(404, 'Order not found');
+        }
+
+        if (existingOrder.status !== OrderStatusEnum.PAID) {
+            throw new AppRpcException(403, 'Order can only be shipped if status is "PAID"');
+        }
+
+        const order = await this.ordersRepository.update(id, { status: OrderStatusEnum.SHIPPED });
+
+        this.shipppingEvents.emit('orderShipped', { id });
 
         return order;
     }

@@ -40,6 +40,17 @@ import { OrdersPaymentsModule } from '../orders-payments/orders-payments.module'
 					},
 				},
 			},
+			{
+				name: 'SHIPPING_EVENTS',
+				transport: Transport.RMQ,
+				options: {
+					urls: [process.env.RABBITMQ_URL || ''],
+					queue: 'shipping_events_queue',
+					queueOptions: {
+						durable: true,
+					},
+				},
+			},
 		]),
 		OrdersPaymentsModule
 	]

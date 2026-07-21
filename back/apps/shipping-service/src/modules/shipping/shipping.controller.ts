@@ -8,10 +8,12 @@ export class ShippingController {
         private readonly shippingService: ShippingService
     ) { }
 
-    @MessagePattern("createShipping")
-    async paymentIntent(
-        @Payload() data: any
+    @MessagePattern("orderShipped")
+    async orderShipped(
+        @Payload() data: { id: number }
     ) {
-        return this.shippingService.create(data);
+        const { id } = data;
+
+        return this.shippingService.create(id);
     }
 }

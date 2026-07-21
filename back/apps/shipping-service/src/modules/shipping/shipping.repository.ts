@@ -8,11 +8,30 @@ export class ShippingRepository {
 
     private readonly paymentSelect = {
         id: true,
-    } satisfies Prisma.PaymentSelect;
+    } satisfies Prisma.ShippingSelect;
 
-    create(data: Prisma.PaymentUncheckedCreateInput) {
-        return this.prisma.payment.create({
+    findById(id: number) {
+        return this.prisma.shipping.findUnique({
+            where: { id }
+        });
+    }
+
+    findByOrderId(orderId: number) {
+        return this.prisma.shipping.findFirst({
+            where: { orderId }
+        })
+    }
+
+    create(data: Prisma.ShippingUncheckedCreateInput) {
+        return this.prisma.shipping.create({
             data,
         });
+    }
+
+    update(id: number, data: Prisma.ShippingUncheckedUpdateInput) {
+        return this.prisma.shipping.update({
+            where: { id },
+            data
+        })
     }
 }
